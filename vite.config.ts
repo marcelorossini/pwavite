@@ -10,19 +10,63 @@ export default defineConfig({
     VitePWA({
       workbox: {
         globPatterns: ["**/*"],
+        runtimeCaching: [
+          {
+            urlPattern: /^https?:\/\/.*\.(jpg|jpeg|gif|png|svg|ico|webp)(\?.*)?$/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'images',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          },
+          {
+            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          },
+          {
+            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'gstatic-fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              },
+            }
+          }
+        ]
       },
       includeAssets: [
         "**/*",
       ],
       manifest: {
-        "theme_color": "#f69435",
-        "background_color": "#f69435",
+        "theme_color": "#ffffff",
+        "background_color": "#ffffff",
         "display": "standalone",
         "scope": "/",
         "start_url": "/",
-        "short_name": "Vite PWA",
-        "description": "Vite PWA Boilerplate",
-        "name": "Vite PWA Boilerplate",
+        "short_name": "Catálogo",
+        "description": "Catálogo Representantes",
+        "name": "Catálogo Representantes",
         "icons": [
             {
                 "src": "/icon-192x192.png",

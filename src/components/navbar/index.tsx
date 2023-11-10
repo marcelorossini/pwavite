@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 export default function Navbar() {
 
   return (
-    <div className="flex items-center h-20 gap-4 px-6 shadow-md z-50">
+    <div className="flex items-center h-16 gap-4 px-6 shadow-md z-50">
       <div className="w-20 relative h-full">
         <Link to="/">
           <img

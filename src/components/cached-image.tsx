@@ -12,8 +12,8 @@ export default function CachedImage(props: any) {
 
 
   async function getOfflineImage() {
-    const isOnlineResponse = await isOnline();
-    if (!isOnlineResponse) return;
+    //const isOnlineResponse = await isOnline();
+    //if (!isOnlineResponse) return;
     const imageElement = refImage.current;
     const cachedImage = await getStoreDataByKey<IStoreImages>(
       Stores.Images,
