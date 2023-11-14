@@ -8,7 +8,7 @@ interface ICachedImage extends HTMLImageElement {
 
 export default function CachedImage(props: any) {
   const {
-    src: urlImage,
+    src: srcProps,
     className: classNameProps = "",
     loading: loadingProps,
   } = props;
@@ -24,18 +24,18 @@ export default function CachedImage(props: any) {
         setIsLoading((oldState) => true);
         const cachedImage = await getStoreDataByKey<IStoreImages>(
           Stores.Images,
-          urlImage
+          srcProps
         );
         if (!cachedImage?.imageBase64) throw new Error("Sem imagem em cache");
         setBase64Image(cachedImage.imageBase64);
       } catch (error) {
-        console.error(urlImage, error);
+        console.error(srcProps, error);
         setIsError((oldState) => true);
       }      
       setIsLoading((oldState) => false);
     }
     getOfflineImage();
-  }, [, isError]);
+  }, []);
 
   // Se imagem em cache
   if (!!base64Image) return <img {...props} src={base64Image} />;
