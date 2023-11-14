@@ -22,7 +22,7 @@ export default function Sector(props: ISector) {
         <SectorHeader {...props} />
       )}
       <div className="w-full h-fit">
-        <Carousel />
+        <Carousel id={props.id}/>
       </div>
     </div>
   );

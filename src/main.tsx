@@ -10,7 +10,7 @@ import {
 
 const updateSW = registerSW({
   onNeedRefresh() {
-    if (confirm("New content available. Reload?")) {
+    if (confirm("Nova versão, deseja atualizar?")) {
       updateSW(true);
     }
   },

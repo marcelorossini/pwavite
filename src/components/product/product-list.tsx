@@ -18,7 +18,7 @@ export default function ProductList() {
 
   if (isLoading) return <p>Loading...</p>;
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 gap-x-4 py-4">
       {data.map((product) => (
         <ProductCard key={product.id} data={product} />
       ))}
@@ -34,13 +34,13 @@ export function ProductCard(props: IProductCard) {
   const { codigo, nome, imagemPrincipal, imagemVariacaoPrincipal } = data;
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="h-full aspect-[4/3] relative">
-        <Link to={`/produtos/${codigo}`}>
+      <div className="w-full h-full aspect-[4/3] relative">
+        <Link to={`/produtos/${codigo}`} className="contents">
           <CachedImage
             src={`${
               import.meta.env.VITE_STORAGE_IMAGES
             }/promarket/Produtos/Principal/${imagemPrincipal}__preview.png`}
-            alt="logo"
+            alt=""
             loading="lazy"
             className="w-full h-full object-contain"
           />

@@ -1,5 +1,6 @@
 import { fetchWrapper, FetchResponse } from "./base";
 import { ISector } from "@/interfaces/api/sector";
+import { ISectorImages } from "@/interfaces/api/sector-images";
 
 
 export async function getAll() {
@@ -13,6 +14,6 @@ export async function get(id: string) {
 }
 
 export async function getImages(id: string) {
-  const response = await fetchWrapper(`/api/ProdutosImagensPrincipais/GetAllFromSetor?SetorId=${id}`); 
+  const response = await fetchWrapper<ISectorImages[]>(`/api/SetorImagens/GetAllFromSetor?SetorId=${id}`); 
   return response
 }

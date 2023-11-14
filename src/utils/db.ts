@@ -56,7 +56,7 @@ export const addData = <T>(
       let request: IDBOpenDBRequest = window.indexedDB.open(DBNAME, version);
 
       request.onsuccess = () => {
-        console.log("request.onsuccess - addData", data);
+        //console.log("request.onsuccess - addData", data);
         let db: IDBDatabase = request.result;
         const tx = db.transaction(storeName, "readwrite");
         const store = tx.objectStore(storeName);
@@ -84,7 +84,7 @@ export const deleteData = (
     let request: IDBOpenDBRequest = window.indexedDB.open(DBNAME, version);
 
     request.onsuccess = () => {
-      console.log("request.onsuccess - deleteData", key);
+      //console.log("request.onsuccess - deleteData", key);
       let db: IDBDatabase = request.result;
       const tx = db.transaction(storeName, "readwrite");
       const store = tx.objectStore(storeName);
@@ -108,7 +108,7 @@ export const updateData = <T>(
     let request: IDBOpenDBRequest = window.indexedDB.open(DBNAME, version);
 
     request.onsuccess = () => {
-      console.log("request.onsuccess - updateData", key);
+      //console.log("request.onsuccess - updateData", key);
       let db: IDBDatabase = request.result;
       const tx = db.transaction(storeName, "readwrite");
       const store = tx.objectStore(storeName);
@@ -130,7 +130,7 @@ export const getStoreData = <T>(storeName: Stores): Promise<T[]> => {
     let request: IDBOpenDBRequest = window.indexedDB.open(DBNAME);
 
     request.onsuccess = () => {
-      console.log("request.onsuccess - getAllData");
+      //console.log("request.onsuccess - getAllData");
       let db: IDBDatabase = request.result;
       const tx = db.transaction(storeName, "readonly");
       const store = tx.objectStore(storeName);
@@ -150,7 +150,7 @@ export const getStoreDataByKey = <T>(
     let request: IDBOpenDBRequest = window.indexedDB.open(DBNAME);
 
     request.onsuccess = () => {
-      console.log("request.onsuccess - getStoreDataByKey");
+      //console.log("request.onsuccess - getStoreDataByKey");
       let db: IDBDatabase = request.result;
       const tx = db.transaction(storeName, "readonly");
       const store = tx.objectStore(storeName);
