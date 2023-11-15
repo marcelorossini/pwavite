@@ -5,7 +5,12 @@ import Sector from ".";
 
 import { getAll } from "@/fetch/sectors";
 
-export default function SectorList() {
+interface ISectorList {
+  className?: string;
+}
+
+export default function SectorList(props: ISectorList) {
+  const { className } = props;
   const { isLoading, data } = useQuery(["sectors"], getAll);
 
   if (isLoading) return <div>Loading...</div>;
@@ -20,6 +25,7 @@ export default function SectorList() {
           color={sector.cor}
           description={sector.descricao}
           clickable={true}
+          className={className}
         />
       ))}
     </>

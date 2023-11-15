@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import '@/styles/index.css'
 import { router } from '@/config/router'
+import IsOnlineChecker from '@/utils/is-online-checker'
 
 import { registerSW } from "virtual:pwa-register";
 import {
@@ -31,5 +32,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <QueryClientProvider client={queryClient}>      
     <RouterProvider router={router} />
     </QueryClientProvider>
+    <IsOnlineChecker />
   </React.StrictMode>,
 )

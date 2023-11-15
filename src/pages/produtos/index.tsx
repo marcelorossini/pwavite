@@ -7,6 +7,7 @@ import { SectorHeader } from "@/components/sector/index";
 import ProductList from "@/components/product/product-list";
 import Select from "@/components/forms/select";
 import Layout from "@/components/layout";
+import { useQuery } from "react-query";
 import { getAllBySector } from "@/fetch/products";
 import { getByCode } from "@/fetch/products";
 import { getAll as getAllFinishing } from "@/fetch/finishing";
@@ -18,116 +19,118 @@ interface IProdutoProps {}
 
 export default function Produto(props: IProdutoProps) {
   let { codigo } = useParams();
-  const productCode = "";
-  const [product, setProduct] = React.useState<IProduct>({} as IProduct);
-  const [finishing, setFinishing] = React.useState<IFinishing[]>([]);
 
-  React.useEffect(() => {
-    async function loadingData() {
-      // @ts-ignore
-      const { data: responseProduct } = await getByCode(codigo);
-      setProduct(responseProduct || {});
-      const { data: responseFinishing } = await getAllFinishing();
-      setFinishing(responseFinishing || []);
-    }
-    loadingData();
-  }, [productCode]);
+  const { isLoading: isLoadingProduct, data: dataProduct } = useQuery(
+    ["product", codigo],
+    async () => getByCode(codigo as string)
+  );
+  const product = dataProduct?.data as IProduct;
+
+  const { isLoading: isLoadingFinishing, data: dataFinishing } = useQuery(
+    ["finishing"],
+    getAllFinishing
+  );
+  const finishing = dataFinishing?.data as IFinishing[];
 
   return (
     <Layout>
-      <div className="flex flex-col gap-6">
-        <div className="flex flex-col">
-          <strong>{product.nome?.toUpperCase()}</strong>
-          <small>{product.codigo}</small>
-        </div>
-        {/*IMAGENS*/}
-        <div className="grid grid-cols-4 gap-4">
-          {/*PRINCIPAL*/}
-          <div className="col-span-3 aspect-square">
-            <div className="relative aspect-square overflow-hidden">
-              {!!product?.imagemPrincipal ? (
-                <CachedImage
-                  src={`${
-                    import.meta.env.VITE_STORAGE_IMAGES
-                  }/promarket/Produtos/Principal/${
-                    product.imagemPrincipal
-                  }__preview.png`}
-                  alt="img"
-                  className="w-full h-full top-0 left-0 object-contain"
-                />
-              ) : null}
-            </div>
+      {isLoadingProduct || isLoadingFinishing ? (
+        "Carregando..."
+      ) : (
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col">
+            <strong>{product.nome?.toUpperCase()}</strong>
+            <small>{product.codigo}</small>
           </div>
-          {/*VARIACOES*/}
-          <div className="relative overflow-auto">
-            <div className="flex gap-4 flex-col absolute top-0 left-0 w-full">
-              <OtherImages />
-              <OtherImages />
-              <OtherImages />
-              <OtherImages />
-              <OtherImages />
-              <OtherImages />
-              <OtherImages />
-            </div>
-          </div>
-          {/*LOJAS*/}
-          <div className="col-span-4 w-full overflow-auto">
-            <div className="flex flex-nowrap">
-              <StoreImages />
-              <StoreImages />
-              <StoreImages />
-              <StoreImages />
-              <StoreImages />
-              <StoreImages />
-              <StoreImages />
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col gap-2">
-          <Box name="Acabamentos">
-            <div className="w-full overflow-auto">
-              <div className="flex flex-nowrap">
-                {finishing.map((finish) => (
-                  <FinishImages
-                    key={finish.fileName}
-                    filename={finish.fileName}
+          {/*IMAGENS*/}
+          <div className="grid grid-cols-4 gap-4">
+            {/*PRINCIPAL*/}
+            <div className="col-span-3 aspect-square">
+              <div className="relative aspect-square overflow-hidden">
+                {!!product?.imagemPrincipal ? (
+                  <CachedImage
+                    src={`${
+                      import.meta.env.VITE_STORAGE_IMAGES
+                    }/promarket/Produtos/Principal/${
+                      product.imagemPrincipal
+                    }__preview.png`}
+                    alt="img"
+                    className="w-full h-full top-0 left-0 object-contain"
                   />
-                ))}
+                ) : null}
               </div>
             </div>
-          </Box>
-          <Box name="Dimensões (m)">
-            <Select />
-          </Box>
-          <Box>
-            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md">
-              Adicionar à lista
-            </button>
-          </Box>
-          {!!product?.diferenciais ? (
-            <Box name="Diferenciais">
-              <p
-                dangerouslySetInnerHTML={{
-                  __html: product?.diferenciais || "",
-                }}
-              ></p>
+            {/*VARIACOES*/}
+            <div className="relative overflow-auto">
+              <div className="flex gap-4 flex-col absolute top-0 left-0 w-full">
+                <OtherImages />
+                <OtherImages />
+                <OtherImages />
+                <OtherImages />
+                <OtherImages />
+                <OtherImages />
+                <OtherImages />
+              </div>
+            </div>
+            {/*LOJAS*/}
+            <div className="col-span-4 w-full overflow-auto">
+              <div className="flex flex-nowrap">
+                <StoreImages />
+                <StoreImages />
+                <StoreImages />
+                <StoreImages />
+                <StoreImages />
+                <StoreImages />
+                <StoreImages />
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <Box name="Acabamentos">
+              <div className="w-full overflow-auto">
+                <div className="flex flex-nowrap">
+                  {finishing.map((finish) => (
+                    <FinishImages
+                      key={finish.fileName}
+                      filename={finish.fileName}
+                    />
+                  ))}
+                </div>
+              </div>
             </Box>
-          ) : (
-            <></>
-          )}
-          <Box name="Especificações">
-            <p>
-              Lorem opsumLorem opsumLorem opsumLorem opsum opsumLore Lorem
-              opsumLorem opsumLorem opsumLorem opsum
-            </p>
-          </Box>
+            <Box name="Dimensões (m)">
+              <Select />
+            </Box>
+            <Box>
+              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md">
+                Adicionar à lista
+              </button>
+            </Box>
+            {!!product?.diferenciais ? (
+              <Box name="Diferenciais">
+                <p
+                  dangerouslySetInnerHTML={{
+                    __html: product?.diferenciais || "",
+                  }}
+                ></p>
+              </Box>
+            ) : (
+              <></>
+            )}
+            <Box name="Especificações">
+              <p>
+                Lorem opsumLorem opsumLorem opsumLorem opsum opsumLore Lorem
+                opsumLorem opsumLorem opsumLorem opsum
+              </p>
+            </Box>
+          </div>
+
+          <hr />
+
+          <SectorHeader id="" name="ADEGA" description="asdasd" color="red" />
+          <ProductList />
         </div>
-
-        <hr />
-
-        <SectorHeader id="" name="ADEGA" description="asdasd" color="red" />
-        <ProductList />
-      </div>
+      )}
     </Layout>
   );
 }

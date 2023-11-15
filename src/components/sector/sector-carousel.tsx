@@ -23,12 +23,13 @@ export default function SectorCarousel(props: ISectorCarousel) {
   return (
     <div>
       <Swiper
-        slidesPerView={1.1}
-        spaceBetween={10}
+        slidesPerView={1.2}
+        spaceBetween={24}
         navigation
         loop
         modules={[Navigation, Autoplay]}
-        pagination={{ clickable: true }}
+        pagination={{ clickable: true }}        
+        style={{ paddingLeft: "24px" }}
         autoplay={{
           stopOnLastSlide: false,
         }}

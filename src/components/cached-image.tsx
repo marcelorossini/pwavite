@@ -1,10 +1,7 @@
 import React from "react";
 import { getStoreDataByKey, Stores, IStoreImages } from "@/utils/db";
 import { CiImageOff } from "react-icons/ci";
-
-interface ICachedImage extends HTMLImageElement {
-  src: string;
-}
+import { useAppStore } from "@/stores/app";
 
 export default function CachedImage(props: any) {
   const {
@@ -13,15 +10,16 @@ export default function CachedImage(props: any) {
     loading: loadingProps,
   } = props;
 
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const { isOnline } = useAppStore();
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [isError, setIsError] = React.useState<boolean>(false);
   const [base64Image, setBase64Image] = React.useState<string>("");
 
   React.useEffect(() => {
     async function getOfflineImage() {
-      if (window.navigator.onLine && !isError) return;
+      if (isOnline) return
       try {
-        setIsLoading((oldState) => true);
+        //setIsLoading((oldState) => true);
         const cachedImage = await getStoreDataByKey<IStoreImages>(
           Stores.Images,
           srcProps
@@ -29,24 +27,22 @@ export default function CachedImage(props: any) {
         if (!cachedImage?.imageBase64) throw new Error("Sem imagem em cache");
         setBase64Image(cachedImage.imageBase64);
       } catch (error) {
-        console.error(srcProps, error);
         setIsError((oldState) => true);
-      }      
-      setIsLoading((oldState) => false);
+      }
+      //setIsLoading((oldState) => false);
     }
     getOfflineImage();
-  }, []);
+  }, [isOnline]);
 
-  // Se imagem em cache
-  if (!!base64Image) return <img {...props} src={base64Image} />;
-
+  /*
   // Se houve erro
-  if (isError)
+  if (!isOnline && isError)
     return (
       <div className="w-full h-full flex items-center justify-center">
         <CiImageOff size={56} className="text-blue-700" />
       </div>
     );
+*/
 
   // Default
   return (
@@ -55,12 +51,12 @@ export default function CachedImage(props: any) {
         <div className="w-full h-full bg-slate-300 animate-pulse rounded-md" />
       ) : null}
       <img
-        {...props}
-        className={`${classNameProps} ${isLoading ? "hidden" : ""}`}
-        loading={!window.navigator.onLine ? "eager" : loadingProps}
-        //onLoad={() => setIsLoading((oldState) => false)}
-        //onError={() => setIsError((oldState) => true)}
-      />
+          {...props}
+          className={`${classNameProps} ${isLoading ? "invisible absolute top-0 left-0 w-0 h-0" : ""}`}
+          loading={!isOnline ? "eager" : loadingProps}
+          onLoad={() => setIsLoading((oldState) => false)}
+          src={!isOnline && !!base64Image ? base64Image : srcProps}
+        />
     </>
   );
 }

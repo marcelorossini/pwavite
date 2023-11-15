@@ -1,5 +1,8 @@
 //import { authOptions } from "@nextAuthConfig/route";
 //import { getServerSession } from "next-auth/next";
+import { getStoreDataByKey, addData, Stores } from "../utils/db";
+import isOnline from 'is-online';
+
 interface IInfo {
   url: string;
 }
@@ -23,6 +26,18 @@ export async function fetchWrapper<T>(url: string): Promise<FetchResponse<T>> {
 
     // Info
     response.info.url = fullUrl
+
+    //const isOnlineResponse = await isOnline();
+    //if (!isOnlineResponse) {
+    if (!window.navigator.onLine) {
+      console.log('Usando cache')
+      const cachedDataJson = await getStoreDataByKey<Stores.Requests>(Stores.Requests, fullUrl)
+      // @ts-ignore
+      response.data = JSON.parse(cachedDataJson.json)
+      // @ts-ignore
+      console.log(response.data)
+      return response
+    }
     
     //console.log('fetch',session)
     //if (!session) throw new Error("Not logged");
@@ -44,6 +59,11 @@ export async function fetchWrapper<T>(url: string): Promise<FetchResponse<T>> {
     
     //@ts-ignore
     const data = await res.json();
+
+    await addData(Stores.Requests, {
+      url: fullUrl,
+      json: JSON.stringify(data),
+    });
 
     response.data = data as T
   } catch (error) { 

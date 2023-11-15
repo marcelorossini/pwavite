@@ -1,0 +1,92 @@
+import React, { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { Link } from "react-router-dom";
+import { IProduct } from "@/interfaces/api/product";
+import { useNavigate } from "react-router-dom";
+import { useAppStore } from "@/stores/app";
+// @ts-ignore
+import Index from "flexsearch/dist/module/index";
+
+import CachedImage from "@/components/cached-image";
+import { getAll } from "@/fetch/products";
+
+interface IFlexSearchProductsProps {
+  query?: string;
+}
+export default function FlexSearchProducts(props: IFlexSearchProductsProps) {
+  const { query } = props;
+  const { isLoading, data: queryData } = useQuery(["products"], getAll);
+
+  if (isLoading) return <p>Loading...</p>;
+
+  return (
+    <FlexSearchProductsAux query={query} data={queryData?.data as IProduct[]} />
+  );
+}
+
+interface IFlexSearchProductsAuxProps {
+  query?: string;
+  data: IProduct[];
+}
+export function FlexSearchProductsAux(props: IFlexSearchProductsAuxProps) {
+  const { query, data } = props;
+
+  const [index, setIndex] = useState(new Index({}));
+  const [results, setResults] = useState<IProduct[]>([]);
+
+  useEffect(() => {
+    if (data.length === 0) return;
+
+    data.forEach((item) => {
+      setIndex(index.add(item.id, item.nome));
+    });
+  }, [data]);
+
+  useEffect(() => {
+    const searchResults = index.search(query) as string[];
+    const mappedResults = searchResults.map((result) =>
+      data.find((product) => product.id == result)
+    ) as IProduct[];
+    setResults(mappedResults);
+  }, [query]);
+
+  return (
+    <div>
+      <ul className="flex flex-col gap-4">
+        {results.map((result) => (
+          <li className="title" key={result.id}>
+            <ProductItem data={result} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function ProductItem(props: { data: IProduct }) {
+  const { data } = props;
+  const navigate = useNavigate();
+  const { setSearchOpened } = useAppStore();
+
+  function handleClick() {
+    navigate(`/produtos/${data.codigo}`);
+    setSearchOpened(false);
+  }
+
+  return (
+    <div className="grid grid-cols-[100px_auto] gap-x-2" onClick={handleClick}>
+      <div className="row-span-2">
+        <CachedImage
+          src={`${
+            import.meta.env.VITE_STORAGE_IMAGES
+          }/promarket/Produtos/Principal/${data.imagemPrincipal}__preview.png`}
+          alt=""
+          loading="lazy"
+          className="w-full h-full object-contain"
+        />
+      </div>
+      <strong>{data.codigo}</strong>
+      <p className="text-sm">{data.nome}</p>
+    </div>
+  );
+}

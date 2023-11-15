@@ -34,15 +34,15 @@ export function ProductCard(props: IProductCard) {
   const { codigo, nome, imagemPrincipal, imagemVariacaoPrincipal } = data;
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="w-full h-full aspect-[4/3] relative">
-        <Link to={`/produtos/${codigo}`} className="contents">
+      <div className="w-full h-full aspect-[4/3] relative rounded-md overflow-hidden">
+        <Link to={`/produtos/${codigo}`} className="contents" preventScrollReset>
           <CachedImage
             src={`${
               import.meta.env.VITE_STORAGE_IMAGES
             }/promarket/Produtos/Principal/${imagemPrincipal}__preview.png`}
             alt=""
             loading="lazy"
-            className="w-full h-full object-contain"
+            className="w-full h-full object-cover"
           />
         </Link>
       </div>

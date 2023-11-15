@@ -163,4 +163,18 @@ export const getStoreDataByKey = <T>(
   });
 };
 
+export const dropDatabase = (): Promise<boolean> => {
+  return new Promise((resolve) => {
+    let request: any = window.indexedDB.deleteDatabase(DBNAME);
+
+    request.onerror = () => {
+      console.error("Error deleting database.");
+    };
+
+    request.onsuccess = () => {
+      console.log("Database deleted successfully");
+    };
+  });
+};
+
 export {};
