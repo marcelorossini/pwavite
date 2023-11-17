@@ -35,7 +35,7 @@ export default function SectorCarousel(props: ISectorCarousel) {
         }}
       >
         {sectorImages.map((sectorImage) => (
-          <SwiperSlide>
+          <SwiperSlide key={sectorImage.id}>
             <CarouselImage
               src={`${
                 import.meta.env.VITE_STORAGE_IMAGES

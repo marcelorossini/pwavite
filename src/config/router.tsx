@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "/produtos/:codigo",
+    path: "/produtos/:id",
     element: <Produtos />,
     errorElement: <ErrorPage />,
   },

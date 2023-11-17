@@ -1,24 +1,30 @@
 //import { authOptions } from "@nextAuthConfig/route";
 //import { getServerSession } from "next-auth/next";
 import { getStoreDataByKey, addData, Stores } from "../utils/db";
-import isOnline from 'is-online';
+import { useAppStore } from "@/stores/app";
 
 interface IInfo {
   url: string;
 }
 
-export type FetchResponse<T> = {
+export type IFetchResponse<T> = {
   data: T;
   error?: string;
   info: IInfo;
 }
 
-export async function fetchWrapper<T>(url: string): Promise<FetchResponse<T>> {
+interface IOptionsParams<T> {
+  method?: string;
+  formatToStore?: (data: T) => T;
+}
+
+export async function fetchWrapper<T>(url: string, options?: IOptionsParams<T> ): Promise<IFetchResponse<T>> {
   const response = {
     data: null as T,
     error: undefined,
     info: { } as IInfo
-  } as FetchResponse<T>
+  } as IFetchResponse<T>
+  const { isOnline } = useAppStore.getState()
   
   try {
     //const session = await getServerSession(authOptions);
@@ -29,8 +35,7 @@ export async function fetchWrapper<T>(url: string): Promise<FetchResponse<T>> {
 
     //const isOnlineResponse = await isOnline();
     //if (!isOnlineResponse) {
-    if (!window.navigator.onLine) {
-      console.log('Usando cache')
+    if (!isOnline) {
       const cachedDataJson = await getStoreDataByKey<Stores.Requests>(Stores.Requests, fullUrl)
       // @ts-ignore
       response.data = JSON.parse(cachedDataJson.json)
@@ -60,9 +65,14 @@ export async function fetchWrapper<T>(url: string): Promise<FetchResponse<T>> {
     //@ts-ignore
     const data = await res.json();
 
+    //@ts-ignore
+    const dataForStore = options?.formatToStore? options.formatToStore(data) : data; 
+    if (!!options?.formatToStore)
+    console.log(dataForStore)
+
     await addData(Stores.Requests, {
       url: fullUrl,
-      json: JSON.stringify(data),
+      json: JSON.stringify(dataForStore),
     });
 
     response.data = data as T

@@ -1,18 +1,19 @@
 import { fetchWrapper } from "./base";
 import { IProduct } from "@/interfaces/api/product";
 
-export async function getAll() {
-  const response = await fetchWrapper<IProduct[]>('/api/Produto/GetAllOrdered'); 
-  return response
+export async function get(id: string) {
+  return await fetchWrapper<IProduct>(`/api/Produto/GetWithAll?id=${id}`); 
 }
 
-export async function getAllBySector() {
-  const response = await fetchWrapper<IProduct[]>('/api/Produto/GetAllOrdered'); 
-  return response
+export async function getAll() {
+  return await fetchWrapper<IProduct[]>('/api/Produto/GetAllOrdered'); 
+}
+
+export async function getAllBySector(id: string) {
+  return await fetchWrapper<IProduct[]>(`/api/Produto/GetAllFromSetor?Setor=${id}`); 
 }
 
 export async function getByCode(code: string) {
-  const response = await fetchWrapper<IProduct>(`/api/Produto/GetByCode?code=${code}`); 
-  return response
+  return await fetchWrapper<IProduct>(`/api/Produto/GetByCode?code=${code}`); 
 }
 

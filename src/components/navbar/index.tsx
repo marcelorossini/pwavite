@@ -1,16 +1,17 @@
 import React from "react";
 import Separator from "../separator";
 
-import { BsSearch } from "react-icons/bs";
+import { IoSearchOutline } from "react-icons/io5";
 import Logo from "@/assets/logo-promarket-azul.svg";
 import { Link } from "react-router-dom";
 import { useAppStore } from "@/stores/app";
 
 export default function Navbar() {
   const { setSearchOpened, isOnline } = useAppStore();
+  const size = getSizeClassName()
 
   return (
-    <div className="flex items-center h-16 gap-4 px-6 shadow-md z-10">
+    <div className={`flex items-center gap-4 px-6 shadow-md z-20 bg-white ${size}`}>
       <div className="w-20 relative h-full">
         <Link to="/">
           <img
@@ -29,12 +30,16 @@ export default function Navbar() {
       </div>
       <div className="flex-1 flex justify-end">
         <button
-          className="bg-slate-200 w-12 h-10 rounded-xl text-slate-800 flex justify-center items-center"
+          className="bg-slate-200 w-12 h-9 rounded-xl text-slate-800 flex justify-center items-center"
           onClick={() => setSearchOpened(true)}
         >
-          <BsSearch />
+          <IoSearchOutline size={20} />
         </button>
       </div>
     </div>
   );
+}
+
+export function getSizeClassName() {
+  return "h-16"
 }

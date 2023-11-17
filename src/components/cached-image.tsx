@@ -47,12 +47,12 @@ export default function CachedImage(props: any) {
   // Default
   return (
     <>
-      {isLoading ? (
-        <div className="w-full h-full bg-slate-300 animate-pulse rounded-md" />
-      ) : null}
+      {/*      
+      <div className={`w-full h-full bg-slate-300 animate-pulse rounded-md ${!isLoading ? 'hidden' : ''}`} />
+      */}
       <img
           {...props}
-          className={`${classNameProps} ${isLoading ? "invisible absolute top-0 left-0 w-0 h-0" : ""}`}
+          className={`${classNameProps} ${isLoading ? "bg-slate-300 animate-pulse" : ""}`}
           loading={!isOnline ? "eager" : loadingProps}
           onLoad={() => setIsLoading((oldState) => false)}
           src={!isOnline && !!base64Image ? base64Image : srcProps}

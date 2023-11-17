@@ -1,3 +1,4 @@
+import { IImage } from "./image";
 export interface IProduct {
   codigo: string;
   nome: string;
@@ -16,5 +17,8 @@ export interface IProduct {
   deletedWhen: string;
   createdByUserId: string;
   updatedByUserId: string;
-  }
-  
+  caracteristicasId: string[];
+  medidasId: string[];
+  acabamentosId: string[];
+  imagens: IImage[];
+}

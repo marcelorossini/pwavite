@@ -5,11 +5,11 @@ import Navbar from "../navbar";
 import BottomBar from "../bottom-bar";
 import SearchPortal from "../search-portal";
 
-
 export interface ILayout {
   children: React.ReactNode;
   defaultPadding?: boolean;
 }
+
 export default function Layout(props: ILayout) {
   const { children, defaultPadding = true } = props;
   return (
@@ -20,7 +20,7 @@ export default function Layout(props: ILayout) {
           defaultPadding ? "p-6" : ""
         } overflow-auto flex-1 relative`}
       >
-        <div className="fixed top-16 right-0 opacity-80 p-6 z-50">
+        <div className="fixed top-16 right-0 opacity-80 p-6 z-10">
           <Sync />  
         </div>  
         {children}

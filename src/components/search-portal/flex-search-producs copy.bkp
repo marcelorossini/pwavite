@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import { Link } from "react-router-dom";
 import { IProduct } from "@/interfaces/api/product";
 import { useNavigate } from "react-router-dom";
 import { useAppStore } from "@/stores/app";
 // @ts-ignore
-import Document from "flexsearch/dist/module/document";
-import removeAccents from "remove-accents";
+import Index from "flexsearch/dist/module/index";
 
 import CachedImage from "@/components/cached-image";
 import { getAll } from "@/fetch/products";
@@ -30,65 +30,38 @@ interface IFlexSearchProductsAuxProps {
 }
 export function FlexSearchProductsAux(props: IFlexSearchProductsAuxProps) {
   const { query, data } = props;
-  const [results, setResults] = React.useState<IProduct[]>([]);
-  
-  // Cria documento
-  const [index, setIndex] = React.useState(
-    new Document({
-      charset: "latin:extra",
-      preset: "match",
-      tokenize: "full",
-      language: "pt_BR",
-      cache: false,
-      document: {
-        index: [
-          "codigo",
-          "nome",
-          "nomeSemAcento",
-          "diferenciais",
-          "diferenciaisSemAcento",
-        ],
-      },
-    })
-  );
 
-  React.useEffect(() => {
+  const options = {
+    charset: "latin:extra",
+    preset: "match",
+    tokenize: "full",
+    cache: false,
+  };
+
+  const [index, setIndex] = useState(new Index(options));
+  const [results, setResults] = useState<IProduct[]>([]);
+
+  useEffect(() => {
     if (data.length === 0) return;
 
-    // Atualiza index
     data.forEach((item) => {
-      setIndex(
-        index.add({
-          ...item,
-          nomeSemAcento: removeAccents(item.nome || ""),
-          diferenciaisSemAcento: removeAccents(item.diferenciais || ""),
-          id: item.id,
-        })
-      );
+      setIndex(index.add(item.id, item.nome));
     });
   }, [data]);
 
-  React.useEffect(() => {
-    // Pesquisa
-    const flexSearchResponse = index.search(query);
-    // Retorna ID de todos os campos
-    const searchResults = flexSearchResponse
-      .map((i: { field: string; result: string[] }) => i.result)
-      .flat();
-    // Remove duplicados
-    const uniqueResults = [...new Set(searchResults)];
-    // Busca documento correspondente
-    const mappedResults = uniqueResults.map((result: any) =>
+  useEffect(() => {
+    const searchResults = index.search(query) as string[];
+    const mappedResults = searchResults.map((result) =>
       data.find((product) => product.id == result)
     ) as IProduct[];
-    setResults((oldState) => mappedResults);
+    setResults(mappedResults);
   }, [query]);
 
   return (
     <div>
-      <ul className="flex flex-col gap-4 divide-y">
+      <ul className="flex flex-col gap-4">
         {results.map((result) => (
-          <li className="title pt-4 first:pt-0" key={result.id}>
+          <li className="title" key={result.id}>
             <ProductItem data={result} />
           </li>
         ))}

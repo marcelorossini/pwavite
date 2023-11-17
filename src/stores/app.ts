@@ -10,6 +10,6 @@ export interface IAppState {
 export const useAppStore = create<IAppState>()((set) => ({
   isSearchOpened: false,
   setSearchOpened: (param) => set({ isSearchOpened: param }),
-  isOnline: false,
+  isOnline: true,
   setIsOnline: (param) => set({ isOnline: param }),
 }));

@@ -1,7 +1,6 @@
-import { fetchWrapper, FetchResponse } from "./base";
+import { fetchWrapper } from "./base";
 import { ISector } from "@/interfaces/api/sector";
 import { ISectorImages } from "@/interfaces/api/sector-images";
-
 
 export async function getAll() {
   const response = await fetchWrapper<ISector[]>('/api/Setor/GetAllOrdered'); 

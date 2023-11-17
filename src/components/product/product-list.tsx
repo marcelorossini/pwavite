@@ -1,26 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useQuery } from "react-query";
 
-import { getAllBySector } from "@/fetch/products";
 import { IProduct } from "@/interfaces/api/product";
-import { imageToCache } from "@/utils/image";
+import { useSearchParams } from "react-router-dom";
 
 import CachedImage from "@/components/cached-image";
 
-export default function ProductList() {
-  const { isLoading, data: queryData } = useQuery(["products"], getAllBySector);
-  const data = queryData?.data as IProduct[];
+interface IQueryParamsProps {
+  [key: string]: any;
+}
 
-  React.useEffect(() => {
-    //generateCache()
-  }, [])
+interface IProductListProps {
+  data: IProduct[];
+  queryParams?: IQueryParamsProps;
+}
 
-  if (isLoading) return <p>Loading...</p>;
+export default function ProductList(props: IProductListProps) {
+  const { data, queryParams = {} } = props;
+
   return (
     <div className="grid grid-cols-2 gap-x-4 py-4">
       {data.map((product) => (
-        <ProductCard key={product.id} data={product} />
+        <ProductCard key={product.id} data={product} queryParams={queryParams}/>
       ))}
     </div>
   );
@@ -28,14 +29,17 @@ export default function ProductList() {
 
 interface IProductCard {
   data: IProduct;
+  queryParams?: IQueryParamsProps;
 }
 export function ProductCard(props: IProductCard) {
-  const { data } = props;
-  const { codigo, nome, imagemPrincipal, imagemVariacaoPrincipal } = data;
+  const { data, queryParams = {}  } = props;
+  const { id, codigo, nome, imagemPrincipal, imagemVariacaoPrincipal } = data;
+
+  const queryString = (new URLSearchParams(queryParams)).toString()
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="w-full h-full aspect-[4/3] relative rounded-md overflow-hidden">
-        <Link to={`/produtos/${codigo}`} className="contents" preventScrollReset>
+        <Link to={`/produtos/${id}${!!queryString ? `?${queryString}` : ''}`} className="contents" preventScrollReset>
           <CachedImage
             src={`${
               import.meta.env.VITE_STORAGE_IMAGES
@@ -51,6 +55,7 @@ export function ProductCard(props: IProductCard) {
   );
 }
 
+/*
 export async function generateCache() {
   const products = await getAllBySector();
 
@@ -64,3 +69,4 @@ export async function generateCache() {
     )
   );
 }
+*/

@@ -6,4 +6,10 @@ export async function getAll() {
   return response
 }
 
+export async function getByProductId(id: string) {
+  if (!id)
+    throw new Error("Produto não encontrado");
+
+  return await fetchWrapper<IFinishing[]>(`/api/ProdutosAcabamentos/GetAllForModal?Produto=${id}`); 
+}
 

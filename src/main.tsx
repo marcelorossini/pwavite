@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client'
 import '@/styles/index.css'
 import { router } from '@/config/router'
 import IsOnlineChecker from '@/utils/is-online-checker'
+import { clearCache } from '@/components/sync'
+import { initDB } from '@/utils/db'
 
 import { registerSW } from "virtual:pwa-register";
 import {
@@ -12,11 +14,13 @@ import {
 const updateSW = registerSW({
   onNeedRefresh() {
     if (confirm("Nova versão, deseja atualizar?")) {
-      updateSW(true);
+      clearCache().then(() => {
+        updateSW(true);
+      })
     }
   },
   onOfflineReady() {
-    console.log("offline ready");
+    console.log("offline ready.");
   },
 });
 
@@ -27,6 +31,7 @@ import {
 // Create a client
 const queryClient = new QueryClient()
 
+initDB()
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>      

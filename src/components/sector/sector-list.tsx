@@ -13,7 +13,7 @@ export default function SectorList(props: ISectorList) {
   const { className } = props;
   const { isLoading, data } = useQuery(["sectors"], getAll);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading className={className} />;
 
   return (
     <>
@@ -30,4 +30,28 @@ export default function SectorList(props: ISectorList) {
       ))}
     </>
   );
+}
+
+export function Loading(props: ISectorList) {
+  return (
+    <>
+      <LoadingItem {...props}/>
+      <LoadingItem {...props}/>
+      <LoadingItem {...props}/>
+      <LoadingItem {...props}/>
+      <LoadingItem {...props}/>      
+      <LoadingItem {...props}/>      
+    </>
+  );
+}
+
+export function LoadingItem(props: ISectorList) {
+  const { className } = props
+  return <div className={`flex flex-col gap-4 ${className}`}>
+    <div className="w-full h-6 bg-slate-300 animate-pulse rounded-md"/>
+    <div className="w-full flex gap-6 overflow-hidden">
+      <div className="w-5/6 h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse rounded-md" />
+      <div className="w-5/6 h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse rounded-md" />
+    </div>    
+  </div>;
 }

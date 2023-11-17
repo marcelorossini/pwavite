@@ -1,40 +1,49 @@
 "use client";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import CachedImage from "@/components/cached-image";
 
 import { SectorHeader } from "@/components/sector/index";
-import ProductList from "@/components/product/product-list";
+import ProductListBySector from "@/components/product/product-list-by-sector";
 import Select from "@/components/forms/select";
 import Layout from "@/components/layout";
 import { useQuery } from "react-query";
-import { getAllBySector } from "@/fetch/products";
-import { getByCode } from "@/fetch/products";
-import { getAll as getAllFinishing } from "@/fetch/finishing";
+import { get } from "@/fetch/products";
+import { getByProductId as getFinishingByProductId } from "@/fetch/finishing";
+import { getByProductId as getDimensionByProductId } from "@/fetch/dimensions";
+import { get as getProductImages } from "@/fetch/products-images";
 
 import { IFinishing } from "@/interfaces/api/finishing";
 import { IProduct } from "@/interfaces/api/product";
+import { IDimension } from "@/interfaces/api/dimension";
+import { IImage } from "@/interfaces/api/image";
 
 interface IProdutoProps {}
 
 export default function Produto(props: IProdutoProps) {
-  let { codigo } = useParams();
+  const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const setor = searchParams.get("setor");
+  const [selectedFinishing, setSelectedFinishing] = React.useState<string>("");
 
   const { isLoading: isLoadingProduct, data: dataProduct } = useQuery(
-    ["product", codigo],
-    async () => getByCode(codigo as string)
+    ["product", id],
+    async () => get(id as string)
   );
-  const product = dataProduct?.data as IProduct;
+  const product = dataProduct?.data || ({} as IProduct);
 
-  const { isLoading: isLoadingFinishing, data: dataFinishing } = useQuery(
-    ["finishing"],
-    getAllFinishing
-  );
-  const finishing = dataFinishing?.data as IFinishing[];
+  const { isLoading: isLoadingProductImages, data: dataProductImages } =
+    useQuery(["product-images", id], async () =>
+      getProductImages(id as string)
+    );
+  const productImages = dataProductImages?.data || ([] as IImage[]);
+  console.log("images", productImages);
+
+  const otherImages = productImages.filter((image) => !image.padrao);
 
   return (
     <Layout>
-      {isLoadingProduct || isLoadingFinishing ? (
+      {isLoadingProduct ? (
         "Carregando..."
       ) : (
         <div className="flex flex-col gap-6">
@@ -63,13 +72,15 @@ export default function Produto(props: IProdutoProps) {
             {/*VARIACOES*/}
             <div className="relative overflow-auto">
               <div className="flex gap-4 flex-col absolute top-0 left-0 w-full">
-                <OtherImages />
-                <OtherImages />
-                <OtherImages />
-                <OtherImages />
-                <OtherImages />
-                <OtherImages />
-                <OtherImages />
+                {isLoadingProductImages ? (
+                  "carregando"
+                ) : (
+                  <>
+                    {otherImages.map((image) => (
+                      <OtherImages filename={image.fileName} />
+                    ))}
+                  </>
+                )}
               </div>
             </div>
             {/*LOJAS*/}
@@ -87,19 +98,14 @@ export default function Produto(props: IProdutoProps) {
           </div>
           <div className="flex flex-col gap-2">
             <Box name="Acabamentos">
-              <div className="w-full overflow-auto">
-                <div className="flex flex-nowrap">
-                  {finishing.map((finish) => (
-                    <FinishImages
-                      key={finish.fileName}
-                      filename={finish.fileName}
-                    />
-                  ))}
-                </div>
-              </div>
+              <FinishGroup
+                productId={product.id}
+                selectedFinishing={selectedFinishing}
+                setSelectedFinishing={(id) => setSelectedFinishing(id)}
+              />
             </Box>
             <Box name="Dimensões (m)">
-              <Select />
+              <DimensionsGroup productId={product.id} />
             </Box>
             <Box>
               <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md">
@@ -117,18 +123,20 @@ export default function Produto(props: IProdutoProps) {
             ) : (
               <></>
             )}
+            {/*            
             <Box name="Especificações">
               <p>
                 Lorem opsumLorem opsumLorem opsumLorem opsum opsumLore Lorem
                 opsumLorem opsumLorem opsumLorem opsum
               </p>
-            </Box>
+            </Box>          
+              */}
           </div>
 
           <hr />
 
-          <SectorHeader id="" name="ADEGA" description="asdasd" color="red" />
-          <ProductList />
+          <SectorHeader id={setor as string} />
+          <ProductListBySector sectorId={setor as string} />
         </div>
       )}
     </Layout>
@@ -168,26 +176,119 @@ function StoreImages() {
   );
 }
 
-function OtherImages() {
+interface IOtherImagesProps {
+  filename: string;
+}
+function OtherImages(props: IOtherImagesProps) {
   return (
     <div className="relative aspect-square overflow-hidden">
-      <img
-        src="https://pmkt.blob.core.windows.net/promarket/Produtos/Principal/ff659d4fc0f14625a76f5da4490e2073__preview.png"
+      <CachedImage
+        src={`${
+          import.meta.env.VITE_STORAGE_IMAGES
+        }/promarket/Produtos/Principal/${props.filename}__preview.png`}
         alt="img"
-        className="w-full h-full top-0 left-0 object-contain"
+        className="w-full h-full top-0 left-0 object-cover"
       />
     </div>
   );
 }
 
-interface IFinishImagesProps {
-  filename: string;
+interface IDimensionsGroupProps {
+  productId: string;
 }
-function FinishImages(props: IFinishImagesProps) {
-  const { filename } = props;
+
+function DimensionsGroup(props: IDimensionsGroupProps) {
+  const { productId } = props;
+  const {
+    isLoading: isLoadingDimensions,
+    data: dataDimensions,
+    isError: isErrorDimension,
+    isSuccess: isSuccessDimension,
+  } = useQuery(
+    ["dimensions", productId],
+    async () => await getDimensionByProductId(productId)
+  );
+  const dimensions = dataDimensions?.data || ([] as IDimension[]);
+
   return (
-    <div className="w-[15%] mr-3 shrink-0">
-      <div className="relative aspect-square border rounded-md overflow-hidden">
+    <>
+      {!isSuccessDimension ? (
+        "Carregando"
+      ) : (
+        <Select
+          data={dimensions.map((dimension) => ({
+            value: dimension.id,
+            label: dimension.medida,
+          }))}
+        />
+      )}
+    </>
+  );
+}
+
+interface IFinishGroupProps {
+  productId: string;
+  selectedFinishing: string;
+  setSelectedFinishing: (id: string) => void;
+}
+
+function FinishGroup(props: IFinishGroupProps) {
+  const { productId, selectedFinishing, setSelectedFinishing } = props;
+
+  const {
+    isLoading: isLoadingFinishing,
+    data: dataFinishing,
+    isSuccess: isSuccessFinishing,
+  } = useQuery(
+    ["finishing", productId],
+    async () => await getFinishingByProductId(productId)
+  );
+  const finishing = dataFinishing?.data || ([] as IFinishing[]);
+
+  return (
+    <>
+      {!isSuccessFinishing ? (
+        "Carregando"
+      ) : (
+        <div className="w-full overflow-auto">
+          <div className="flex flex-nowrap">
+            {finishing.map((finish) => (
+              <FinishImages
+                key={finish.fileName}
+                id={finish.id}
+                filename={finish.fileName}
+                active={selectedFinishing == finish.id}
+                onSelected={setSelectedFinishing}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+interface IFinishImagesProps {
+  id: string;
+  filename: string;
+  active: boolean;
+  onSelected: (id: string) => void;
+}
+
+function FinishImages(props: IFinishImagesProps) {
+  const { id, filename, active, onSelected } = props;
+
+  function handleClick() {
+    onSelected(active ? "" : id);
+  }
+
+  return (
+    <div className={`w-[15%] h-fit mr-3 shrink-0`} onClick={handleClick}>
+      <div
+        className={`relative aspect-square rounded-md overflow-hidden border-2 ${
+          active ? "border-blue-500" : "border-transparent"
+        }`}
+      >
         <img
           src={`https://pmkt.blob.core.windows.net/promarket/Acabamentos/${filename}__small.png`}
           alt="img"

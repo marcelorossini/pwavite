@@ -6,14 +6,10 @@ import Layout from "@/components/layout";
 import { SectorHeader } from "@/components/sector/index";
 import SectorDotList from "@/components/sector/sector-dot-list";
 import Tabs from "@/components/tabs";
-import ProductList from "@/components/product/product-list";
+import ProductListBySector from "@/components/product/product-list-by-sector";
 
 import { HiOutlinePhotograph } from "react-icons/hi";
 import { TbListDetails } from "react-icons/tb";
-
-import { get, getImages as getSectorImages } from "@/fetch/sectors";
-
-import { ISector } from "@/interfaces/api/sector";
 
 type ISetorParams = {
   id: string;
@@ -21,47 +17,39 @@ type ISetorParams = {
 
 export default function Setor() {
   const { id } = useParams<ISetorParams>();
-  const { isLoading, data: queryData } = useQuery(
-    ["sectors", id],
-    async () => await get(id as string)
-  );
-  const data = queryData?.data as ISector;
-
-  if (isLoading) return <div>Carregando...</div>;
+  /*
+      <div className="flex flex-col gap-6 py-6">
+        <SectorDotList className="px-6" />
+        <SectorList className="px-6"/>
+      </div>
+*/
 
   return (
-    <Layout>
-      {isLoading ? (
-        <>Carregando</>
-      ) : (
-        <div className="flex flex-col gap-6">
-          <SectorDotList />
-          <SectorHeader
-            id={data.id}
-            name={data.nome}
-            description={data.descricao}
-            color={data.cor}
-          />
+    <Layout defaultPadding={false}>
+      <div className="flex flex-col gap-6 py-6">
+        <SectorDotList className="px-6" />
+        <div className="flex flex-col gap-6 px-6">
+          <SectorHeader id={id as string} />
           <Tabs
             items={[
               {
                 id: "fotos",
                 name: "FOTOS DE LOJA",
                 icon: <HiOutlinePhotograph />,
-                component: <>a</>,
+                component: <></>,
               },
               {
                 id: "tecnico",
                 name: "TÉCNICO",
                 icon: <TbListDetails />,
-                component: <ProductList />,
+                component: <ProductListBySector sectorId={id as string} />,
               },
             ]}
             default="fotos"
             alignCenter={true}
           />
         </div>
-      )}
+      </div>
     </Layout>
   );
 }

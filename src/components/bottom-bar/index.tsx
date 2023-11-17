@@ -15,17 +15,12 @@ import {
 } from "react-icons/hi2";
 
 export default function BottomBar() {
-  const [isPwaIos, setIsPwaIos] = React.useState<boolean>();
-
-  React.useEffect(() => {
-    setIsPwaIos(isPwa() && isIOS);
-  }, []);
+  const sizeClassName = getSizeClassName();
+  const marginBottomClassName = getMarginBottomClassName();
 
   return (
     <div
-      className={`flex flex-nowrap px-6 h-16 gap-4 border-t z-50 ${
-        isPwaIos ? "mb-4" : ""
-      }`}
+      className={`flex flex-nowrap px-6 gap-4 border-t z-20 bg-white ${sizeClassName} ${marginBottomClassName}`}
     >
       <BottomBarItem
         route="/"
@@ -53,4 +48,13 @@ export default function BottomBar() {
       />
     </div>
   );
+}
+
+export function getSizeClassName() {
+  return `h-16`
+}
+
+export function getMarginBottomClassName() {
+  const isPwaIos = isPwa() && isIOS
+  return isPwaIos ? 'mb-4' : ''
 }

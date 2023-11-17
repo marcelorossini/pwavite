@@ -30,7 +30,7 @@ export const initDB = (): Promise<boolean | IDBDatabase> => {
 
       if (!db.objectStoreNames.contains(Stores.Requests)) {
         db.createObjectStore(Stores.Requests, { keyPath: ImagesKey });
-      }      
+      }
       // no need to resolve here
     };
 
@@ -51,28 +51,27 @@ export const addData = <T>(
   storeName: string,
   data: T
 ): Promise<T | string | null> => {
-  return new Promise((resolve) => {
-    initDB().then(() => {
-      let request: IDBOpenDBRequest = window.indexedDB.open(DBNAME, version);
+  return new Promise(async (resolve) => {
+    await initDB();
+    let request: IDBOpenDBRequest = window.indexedDB.open(DBNAME, version);
 
-      request.onsuccess = () => {
-        //console.log("request.onsuccess - addData", data);
-        let db: IDBDatabase = request.result;
-        const tx = db.transaction(storeName, "readwrite");
-        const store = tx.objectStore(storeName);
-        store.add(data);
-        resolve(data);
-      };
+    request.onsuccess = () => {
+      //console.log("request.onsuccess - addData", data);
+      let db: IDBDatabase = request.result;
+      const tx = db.transaction(storeName, "readwrite");
+      const store = tx.objectStore(storeName);
+      store.put(data);
+      resolve(data);
+    };
 
-      request.onerror = () => {
-        const error = request.error?.message;
-        if (error) {
-          resolve(error);
-        } else {
-          resolve("Unknown error");
-        }
-      };
-    });
+    request.onerror = () => {
+      const error = request.error?.message;
+      if (error) {
+        resolve(error);
+      } else {
+        resolve("Unknown error");
+      }
+    };
   });
 };
 
@@ -146,12 +145,13 @@ export const getStoreDataByKey = <T>(
   storeName: Stores,
   key: string
 ): Promise<T> => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     let request: IDBOpenDBRequest = window.indexedDB.open(DBNAME);
 
     request.onsuccess = () => {
       //console.log("request.onsuccess - getStoreDataByKey");
       let db: IDBDatabase = request.result;
+      if (!checkStoreCreated(db, storeName)) reject(false);
       const tx = db.transaction(storeName, "readonly");
       const store = tx.objectStore(storeName);
       const res = store.get(key);
@@ -163,18 +163,61 @@ export const getStoreDataByKey = <T>(
   });
 };
 
-export const dropDatabase = (): Promise<boolean> => {
+export const clearDatabase = (): Promise<boolean> => {
   return new Promise((resolve) => {
-    let request: any = window.indexedDB.deleteDatabase(DBNAME);
+    let request: IDBOpenDBRequest = window.indexedDB.open(DBNAME);
 
-    request.onerror = () => {
-      console.error("Error deleting database.");
-    };
-
-    request.onsuccess = () => {
-      console.log("Database deleted successfully");
+    request.onsuccess = async () => {
+      //console.log("request.onsuccess - getStoreDataByKey");
+      let db: IDBDatabase = request.result;
+      await clearData(db, Stores.Images);
+      await clearData(db, Stores.Requests);
+      resolve(true);
     };
   });
 };
 
+export const dropDatabase = (): Promise<boolean> => {
+  return new Promise((resolve) => {
+    let request: IDBOpenDBRequest = window.indexedDB.deleteDatabase(DBNAME);
+
+    request.onsuccess = () => {
+      console.log("Database deleted successfully");
+      resolve(true);
+    };
+
+    request.onerror = () => {
+      console.log("Error deleting database.");
+      resolve(false);
+    };
+  });
+};
+
+function clearData(db: IDBDatabase, table: string) {
+  return new Promise((resolve) => {
+    // open a read/write db transaction, ready for clearing the data
+    const transaction = db.transaction([table], "readwrite");
+
+    // create an object store on the transaction
+    const objectStore = transaction.objectStore(table);
+
+    // Make a request to clear all the data out of the object store
+    const objectStoreRequest = objectStore.clear();
+
+    objectStoreRequest.onsuccess = (event) => {
+      resolve(true);
+    };
+  });
+}
+
 export {};
+
+function checkStoreCreated(db: IDBDatabase, storeName: string) {
+  try {
+    const tx = db.transaction(storeName, "readonly");
+    tx.objectStore(storeName);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}

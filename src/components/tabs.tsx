@@ -14,7 +14,8 @@ interface TabsProps {
   alignCenter?: boolean;
 }
 
-export default function Tabs(props: TabsProps) {
+export default function 
+Tabs(props: TabsProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const { items = [], alignCenter = false } = props;
   const [activeId, setActiveId] = React.useState(props.default);
@@ -39,7 +40,7 @@ export default function Tabs(props: TabsProps) {
   return (
     <div>
       <div className="">
-        <div className="border-b border-gray-200">
+        <div className="">
           <nav
             className={`mb-px flex gap-6 ${
               alignCenter ? "justify-center" : ""
@@ -51,7 +52,7 @@ export default function Tabs(props: TabsProps) {
                 <button
                   key={item.name}
                   type="button"
-                  className={`inline-flex shrink-0 items-center gap-2 border-b-2 ${
+                  className={`inline-flex shrink-0 items-center gap-2 border-b-2 transition-all ${
                     item.id == activeId
                       ? "border-sky-500 px-1 pb-2 text-sm font-medium text-sky-600"
                       : "border-transparent px-1 pb-2 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
