@@ -24,8 +24,14 @@ export async function fetchWrapper<T>(url: string, options?: IOptionsParams<T> )
     error: undefined,
     info: { } as IInfo
   } as IFetchResponse<T>
-  const { isOnline } = useAppStore.getState()
-  
+    
+  // Verifica se a conexão foi checada
+  while(true) {
+    const { isNetworkChecked } = useAppStore.getState()
+    if (isNetworkChecked) break
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+
   try {
     //const session = await getServerSession(authOptions);
     const fullUrl = `${import.meta.env.VITE_API_BACKEND}${url}`
@@ -35,8 +41,9 @@ export async function fetchWrapper<T>(url: string, options?: IOptionsParams<T> )
 
     //const isOnlineResponse = await isOnline();
     //if (!isOnlineResponse) {
+      const { isOnline } = useAppStore.getState()
     if (!isOnline) {
-      const cachedDataJson = await getStoreDataByKey<Stores.Requests>(Stores.Requests, fullUrl)
+      const cachedDataJson = await getStoreDataByKey<Stores.Requests>(Stores.Requests, url.trim())
       // @ts-ignore
       response.data = JSON.parse(cachedDataJson.json)
       // @ts-ignore
@@ -71,7 +78,7 @@ export async function fetchWrapper<T>(url: string, options?: IOptionsParams<T> )
     console.log(dataForStore)
 
     await addData(Stores.Requests, {
-      url: fullUrl,
+      url: url.trim(),
       json: JSON.stringify(dataForStore),
     });
 

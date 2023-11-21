@@ -15,13 +15,12 @@ export default defineConfig(({ mode }) => {
           maximumFileSizeToCacheInBytes: 10485760,
           runtimeCaching: [
             {
-              urlPattern:
-                /^https?:\/\/.*\.(jpg|jpeg|gif|png|svg|ico|webp)(\?.*)?$/i,
+              urlPattern: /^.*cache=true.*$/i,
               handler: "CacheFirst",
               options: {
-                cacheName: "images-cache",
+                cacheName: "url-assets-cache",
                 expiration: {
-                  maxEntries: 100,
+                  maxEntries: 999999999,
                   maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
                 },
                 cacheableResponse: {

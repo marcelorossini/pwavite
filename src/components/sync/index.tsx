@@ -7,13 +7,13 @@ import { clearDatabase } from "@/utils/db";
 
 import { ImSpinner8 } from "react-icons/im";
 
-import {
-  getAll as getAllProducts,
-  getByCode as getProductByCode,
-} from "@/fetch/products";
-import { getAll as getAllSectors, get as getSector } from "@/fetch/sectors";
-import { getByProductId as getFinishingByProductId } from "@/fetch/finishing";
+import { getAll as getAllProducts, get as getProduct, getAllBySector as getAllProductsBySector} from "@/fetch/products";
+import { getAll as getAllSectors, get as getSector, getImages as getSectorImages } from "@/fetch/sectors";
+import { getByProductId as getFinishingByProductId, getAll as getAllFinishing } from "@/fetch/finishing";
 import { getByProductId as getDimensionsByProductId } from "@/fetch/dimensions";
+import { get as getProductImages } from "@/fetch/products-images";
+
+import { imageToCache } from "@/utils/image";
 
 //import { generateCache as generateCacheProductList } from "@/components/product/product-list";
 
@@ -31,28 +31,29 @@ async function syncProcess() {
   const isOnlineResponse = await isOnline();
   if (!isOnlineResponse) return;
 
-  const { data: products } = await getAllProducts();
-
-  for await (const productData of products) {
-    if (!!productData?.codigo) {
-      await getProductByCode(productData.codigo);
+    // Todos setores
+    const { data: sectors } = await getAllSectors();
+    for await (const sector of sectors) {
+      if (!!sector?.id) {
+        await getSector(sector?.id);
+        await getAllProductsBySector(sector?.id);
+        await generateSectorsImageCache(sector?.id)
+      }
     }
+
+  // Todos produtos
+  const { data: products } = await getAllProducts();
+  for await (const productData of products) {
+    await getProduct(productData.id);
+    await generateProductImageCache(productData.id);
     await getFinishingByProductId(productData.id);
     await getDimensionsByProductId(productData.id);
   }
 
-  const { data: sectors, info: infoSectors } = await getAllSectors();
+  // Acabamentos
+  await generateFinishingImageCache()
 
-  //getSector
-  for await (const sector of sectors) {
-    if (!!sector?.id) {
-      await getSector(sector?.id);
-    }
-  }
-
-  //await generateCacheProductList();
-
-  localStorage.setItem(LOCALSTORAGE_KEY, dayjs().format());  
+  localStorage.setItem(LOCALSTORAGE_KEY, dayjs().format());
 }
 
 export default function Sync() {
@@ -64,7 +65,7 @@ export default function Sync() {
       await syncProcess();
       setInProgress(false);
     }
-    sync()
+    sync();
   }, []);
 
   return (
@@ -77,7 +78,7 @@ export function ClearButton() {
     <button
       className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md mt-24"
       onClick={async () => {
-        await clearCache()
+        await clearCache();
         window.location.reload();
       }}
     >
@@ -87,6 +88,50 @@ export function ClearButton() {
 }
 
 export async function clearCache() {
-  await clearDatabase()
-  localStorage.clear()  
+  await clearDatabase();
+  localStorage.clear();
+}
+
+export async function generateProductImageCache(id: string) {
+  const productsImages = await getProductImages(id);
+
+  await Promise.allSettled(
+    productsImages.data.map((product) =>
+      imageToCache(
+        `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Produtos/Principal/${
+          product.fileName
+        }__preview.png`
+      )
+    )
+  );
+}
+
+export async function generateSectorsImageCache(id: string) {
+  const sectorImages = await getSectorImages(id);
+
+  await Promise.allSettled(
+    sectorImages.data.map((sectorImage) =>
+      imageToCache(
+        `${
+          import.meta.env.VITE_STORAGE_IMAGES
+        }/promarket/Setores/Principal/${
+          sectorImage.fileName
+        }__preview.webp`
+      )
+    )
+  );
+}
+
+export async function generateFinishingImageCache() {
+  const finishingImages = await getAllFinishing();
+
+  await Promise.allSettled(
+    finishingImages.data.map((finishingImage) =>
+      imageToCache(
+        `${
+          import.meta.env.VITE_STORAGE_IMAGES
+        }/promarket/Acabamentos/${finishingImage.fileName}__small.png`
+      )
+    )
+  );
 }

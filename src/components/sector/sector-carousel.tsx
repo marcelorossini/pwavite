@@ -6,6 +6,8 @@ import { useQuery } from "react-query";
 
 import { getImages } from "@/fetch/sectors";
 import { ISectorImages } from "@/interfaces/api/sector-images";
+import CachedImage from "@/components/cached-image";
+
 // Import Swiper styles
 import "swiper/css";
 
@@ -57,7 +59,7 @@ interface ICarouselImage {
 export function CarouselImage({ src }: ICarouselImage) {
   return (
     <div className="w-full aspect-[4/3] relative overflow-hidden rounded-md">
-      <img src={src} alt="" className="w-full h-full object-cover" loading="eager" />
+      <CachedImage src={src} alt="" className="w-full h-full object-cover" loading="eager" />
     </div>
   );
 }

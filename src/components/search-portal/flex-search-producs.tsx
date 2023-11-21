@@ -103,7 +103,7 @@ function ProductItem(props: { data: IProduct }) {
   const { setSearchOpened } = useAppStore();
 
   function handleClick() {
-    navigate(`/produtos/${data.codigo}`);
+    navigate(`/produtos/${data.id}`);
     setSearchOpened(false);
   }
 

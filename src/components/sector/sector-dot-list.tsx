@@ -47,7 +47,7 @@ function Item(props: ISectorItemProps) {
       <Link to={url}>
         <div className="w-20 flex flex-col gap-2 relative overflow-hidden">
           <div className="w-full h-full aspect-square rounded-full bg-slate-200 relative">
-            {image ? <img src={image} alt={name} className="p-2" /> : null}
+            {image ? <img src={`${image}?cache=true`} alt={name} className="p-2" /> : null}
           </div>
           <small className="w-full h-8 text-xs line-clamp-2 text-center subpixel-antialiased leading-tight">
             {name}

@@ -15,7 +15,7 @@ export default function Navbar() {
       <div className="w-20 relative h-full">
         <Link to="/">
           <img
-            src={Logo}
+            src={`${Logo}?cache=true`}
             alt="logo"
             className="w-full h-full top-0 left-0 object-contain"
           />

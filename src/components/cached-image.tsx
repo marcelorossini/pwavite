@@ -17,46 +17,52 @@ export default function CachedImage(props: any) {
 
   React.useEffect(() => {
     async function getOfflineImage() {
-      if (isOnline) return
+      setIsError(oldState => false)
+      if (!srcProps) return;
+      if (isOnline) return;
+      setIsLoading(oldState => true)
       try {
-        //setIsLoading((oldState) => true);
         const cachedImage = await getStoreDataByKey<IStoreImages>(
           Stores.Images,
-          srcProps
+          srcProps.trim()
         );
         if (!cachedImage?.imageBase64) throw new Error("Sem imagem em cache");
-        setBase64Image(cachedImage.imageBase64);
+        setBase64Image((oldState) => cachedImage.imageBase64);
       } catch (error) {
-        setIsError((oldState) => true);
+        setIsError(oldState => true)
       }
-      //setIsLoading((oldState) => false);
+      setIsLoading(oldState => true)
     }
     getOfflineImage();
-  }, [isOnline]);
+  }, [srcProps, isOnline]);
 
-  /*
   // Se houve erro
-  if (!isOnline && isError)
+  if (isError)
     return (
       <div className="w-full h-full flex items-center justify-center">
         <CiImageOff size={56} className="text-blue-700" />
       </div>
     );
-*/
 
   // Default
   return (
     <>
-      {/*      
-      <div className={`w-full h-full bg-slate-300 animate-pulse rounded-md ${!isLoading ? 'hidden' : ''}`} />
-      */}
-      <img
+      {isOnline ? (
+        <img
           {...props}
-          className={`${classNameProps} ${isLoading ? "bg-slate-300 animate-pulse" : ""}`}
-          loading={!isOnline ? "eager" : loadingProps}
+          className={`${classNameProps} ${isLoading ? "bg-slate-200" : ""}`}
           onLoad={() => setIsLoading((oldState) => false)}
-          src={!isOnline && !!base64Image ? base64Image : srcProps}
+          src={srcProps}
         />
+      ) : (
+        <img
+          {...props}
+          loading={"eager"}
+          className={`${classNameProps} ${isLoading ? "bg-slate-200" : ""}`}
+          onLoad={() => setIsLoading((oldState) => false)}
+          src={base64Image}
+        />
+      )}
     </>
   );
 }

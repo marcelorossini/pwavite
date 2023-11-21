@@ -37,7 +37,6 @@ export default function Produto(props: IProdutoProps) {
       getProductImages(id as string)
     );
   const productImages = dataProductImages?.data || ([] as IImage[]);
-  console.log("images", productImages);
 
   const otherImages = productImages.filter((image) => !image.padrao);
 
@@ -77,7 +76,7 @@ export default function Produto(props: IProdutoProps) {
                 ) : (
                   <>
                     {otherImages.map((image) => (
-                      <OtherImages filename={image.fileName} />
+                      <OtherImages key={image.fileName} filename={image.fileName} />
                     ))}
                   </>
                 )}
@@ -86,13 +85,15 @@ export default function Produto(props: IProdutoProps) {
             {/*LOJAS*/}
             <div className="col-span-4 w-full overflow-auto">
               <div className="flex flex-nowrap">
-                <StoreImages />
-                <StoreImages />
-                <StoreImages />
-                <StoreImages />
-                <StoreImages />
-                <StoreImages />
-                <StoreImages />
+                {isLoadingProductImages ? (
+                  "carregando"
+                ) : (
+                  <>
+                    {otherImages.map((image) => (
+                      <StoreImages key={image.fileName} filename={image.fileName} />
+                    ))}
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -135,8 +136,12 @@ export default function Produto(props: IProdutoProps) {
 
           <hr />
 
-          <SectorHeader id={setor as string} />
-          <ProductListBySector sectorId={setor as string} />
+          {!!setor ? (
+            <>
+              <SectorHeader id={setor as string} />
+              <ProductListBySector sectorId={setor as string} />
+            </>
+          ) : null}
         </div>
       )}
     </Layout>
@@ -162,12 +167,14 @@ function Box(props: IBoxProps) {
   );
 }
 
-function StoreImages() {
+function StoreImages(props: IOtherImagesProps) {
   return (
     <div className="w-[calc(25%-.75rem)] mr-4 shrink-0">
       <div className="relative aspect-square border rounded-md overflow-hidden">
-        <img
-          src="https://pmkt.blob.core.windows.net/promarket/Produtos/Principal/bb8b58fe6fcf4ae0bda54b01abdad135__preview.png"
+        <CachedImage
+          src={`${
+            import.meta.env.VITE_STORAGE_IMAGES
+          }/promarket/Produtos/Principal/${props.filename}__preview.png`}
           alt="img"
           className="w-full h-full top-0 left-0 object-cover"
         />
@@ -289,7 +296,7 @@ function FinishImages(props: IFinishImagesProps) {
           active ? "border-blue-500" : "border-transparent"
         }`}
       >
-        <img
+        <CachedImage
           src={`https://pmkt.blob.core.windows.net/promarket/Acabamentos/${filename}__small.png`}
           alt="img"
           className="w-full h-full top-0 left-0 object-cover select-none"

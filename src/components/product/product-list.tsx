@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { IProduct } from "@/interfaces/api/product";
-import { useSearchParams } from "react-router-dom";
 
 import CachedImage from "@/components/cached-image";
 
@@ -19,7 +18,7 @@ export default function ProductList(props: IProductListProps) {
   const { data, queryParams = {} } = props;
 
   return (
-    <div className="grid grid-cols-2 gap-x-4 py-4">
+    <div className="grid grid-cols-2 gap-4 py-4">
       {data.map((product) => (
         <ProductCard key={product.id} data={product} queryParams={queryParams}/>
       ))}
@@ -50,7 +49,7 @@ export function ProductCard(props: IProductCard) {
           />
         </Link>
       </div>
-      <strong>{codigo}</strong>
+      <strong className="h-5">{codigo}</strong>
     </div>
   );
 }

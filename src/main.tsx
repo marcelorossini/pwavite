@@ -14,9 +14,10 @@ import {
 const updateSW = registerSW({
   onNeedRefresh() {
     if (confirm("Nova versão, deseja atualizar?")) {
-      clearCache().then(() => {
-        updateSW(true);
-      })
+      updateSW(true);
+      //clearCache().then(() => {
+      
+      //})
     }
   },
   onOfflineReady() {

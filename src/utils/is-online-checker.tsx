@@ -5,12 +5,13 @@ import { useAppStore } from "@/stores/app";
 export default function IsOnlineChecker() { 
   async function checkIsOnline() {
     const isOnlineResponse = await isOnline();
-    const { isOnline: isOnlineStore, setIsOnline } = useAppStore.getState()
+    const { isOnline: isOnlineStore, setIsOnline, setIsNetworkChecked } = useAppStore.getState()
 
     if (isOnlineStore != isOnlineResponse) {
         setIsOnline(isOnlineResponse);
         console.log(`Conexão: ${isOnlineResponse ? 'online': 'offline'}`)
     }
+    setIsNetworkChecked(true)
   }
 
   React.useEffect(() => {
