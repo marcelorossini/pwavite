@@ -35,7 +35,7 @@ function ListaItem(props: IListaItem) {
       <div className="relative pt-[100%] aspect-square overflow-hidden">
         <img
           src="https://pmkt.blob.core.windows.net/promarket/Produtos/Principal/ff659d4fc0f14625a76f5da4490e2073__preview.png"
-          alt="img"
+          alt=" "
           className="w-full h-full top-0 left-0 object-cover"
         />
       </div>

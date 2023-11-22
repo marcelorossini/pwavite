@@ -16,7 +16,7 @@ export default function Navbar() {
         <Link to="/">
           <img
             src={`${Logo}?cache=true`}
-            alt="logo"
+            alt=" "
             className="w-full h-full top-0 left-0 object-contain"
           />
         </Link>

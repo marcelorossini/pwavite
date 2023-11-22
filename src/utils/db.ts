@@ -163,6 +163,23 @@ export const getStoreDataByKey = <T>(
   });
 };
 
+export const countStoreData = <T>(storeName: Stores): Promise<number> => {
+  return new Promise((resolve) => {
+    let request: IDBOpenDBRequest = window.indexedDB.open(DBNAME);
+
+    request.onsuccess = () => {
+      let db: IDBDatabase = request.result;
+      const tx = db.transaction(storeName, "readonly");
+      const store = tx.objectStore(storeName);
+      const res = store.count();
+      res.onsuccess = () => {
+        resolve(res.result);
+      };
+    };
+  });
+};
+
+
 export const clearDatabase = (): Promise<boolean> => {
   return new Promise((resolve) => {
     let request: IDBOpenDBRequest = window.indexedDB.open(DBNAME);

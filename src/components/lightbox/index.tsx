@@ -1,25 +1,33 @@
 import React from "react";
-import Lightbox from "yet-another-react-lightbox";
-import "yet-another-react-lightbox/styles.css";
+import { useAppStore } from "@/stores/app";
+import Component, { IImages, ILightboxProps } from "./component";
+import { convertToOfflineImage } from "@/utils/image";
 
-export default function App() {
-  const [open, setOpen] = React.useState<boolean>(false);
+export default function LightboxComponent(props: ILightboxProps) {
+  const { images } = props;
+  const [slides, setSlides] = React.useState<IImages[]>([]);
+  const { isOnline } = useAppStore();
 
-  return (
-    <>
-      <button type="button" onClick={() => setOpen(true)}>
-        Open Lightbox
-      </button>
+  async function getOfflineImages() {
+    for await (const image of images) {
+      const offlineSrc = await convertToOfflineImage(image.src);
+      setSlides((oldState) => [
+        ...oldState,
+        {
+          ...image,
+          src: offlineSrc,
+        },
+      ]);
+    }
+  }
 
-      <Lightbox
-        open={open}
-        close={() => setOpen(false)}
-        slides={[
-          { src: "/image1.jpg" },
-          { src: "/image2.jpg" },
-          { src: "/image3.jpg" },
-        ]}
-      />
-    </>
-  );
+  React.useEffect(() => {
+    if (isOnline) {
+      setSlides(images);
+    } else {
+      getOfflineImages();
+    }
+  }, [isOnline]);
+
+  return <Component {...props} images={slides} />;
 }

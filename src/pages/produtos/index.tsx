@@ -1,13 +1,15 @@
 "use client";
 import React from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import CachedImage from "@/components/cached-image";
+import { useQuery } from "react-query";
 
+import CachedImage from "@/components/cached-image";
 import { SectorHeader } from "@/components/sector/index";
 import ProductListBySector from "@/components/product/product-list-by-sector";
 import Select from "@/components/forms/select";
 import Layout from "@/components/layout";
-import { useQuery } from "react-query";
+import Lightbox from "@/components/lightbox";
+
 import { get } from "@/fetch/products";
 import { getByProductId as getFinishingByProductId } from "@/fetch/finishing";
 import { getByProductId as getDimensionByProductId } from "@/fetch/dimensions";
@@ -25,6 +27,8 @@ export default function Produto(props: IProdutoProps) {
   const [searchParams] = useSearchParams();
   const setor = searchParams.get("setor");
   const [selectedFinishing, setSelectedFinishing] = React.useState<string>("");
+  const [lightboxStoreOpen, setLightboxStoreOpen] = React.useState<boolean>(false);
+  const [lightboxStoreSlide, setLightboxStoreSlide] = React.useState<number>(0);
 
   const { isLoading: isLoadingProduct, data: dataProduct } = useQuery(
     ["product", id],
@@ -61,8 +65,8 @@ export default function Produto(props: IProdutoProps) {
                       import.meta.env.VITE_STORAGE_IMAGES
                     }/promarket/Produtos/Principal/${
                       product.imagemPrincipal
-                    }__preview.png`}
-                    alt="img"
+                    }_.webp`}
+                    alt=" "
                     className="w-full h-full top-0 left-0 object-contain"
                   />
                 ) : null}
@@ -76,7 +80,13 @@ export default function Produto(props: IProdutoProps) {
                 ) : (
                   <>
                     {otherImages.map((image) => (
-                      <OtherImages key={image.fileName} filename={image.fileName} />
+                      <OtherImages
+                        key={image.fileName}
+                        filename={image.fileName}
+                        setLightboxOpen={() => {}}
+                        setLightboxSlide={() => {}}
+                        slideIndex={0}
+                      />
                     ))}
                   </>
                 )}
@@ -89,9 +99,29 @@ export default function Produto(props: IProdutoProps) {
                   "carregando"
                 ) : (
                   <>
-                    {otherImages.map((image) => (
-                      <StoreImages key={image.fileName} filename={image.fileName} />
+                    {otherImages.map((image, index) => (
+                      <StoreImages
+                        key={image.fileName}
+                        filename={image.fileName}
+                        setLightboxOpen={setLightboxStoreOpen}
+                        setLightboxSlide={setLightboxStoreSlide}
+                        slideIndex={index}
+                      />
                     ))}
+                    <Lightbox
+                      isOpen={lightboxStoreOpen}
+                      onClose={() => setLightboxStoreOpen(false)}
+                      index={lightboxStoreSlide}
+                      images={otherImages.map((image) => ({
+                        title: null,
+                        description: null,
+                        src: `${
+                          import.meta.env.VITE_STORAGE_IMAGES
+                        }/promarket/Produtos/Principal/${
+                          image.fileName
+                        }_.webp`,
+                      }))}
+                    />
                   </>
                 )}
               </div>
@@ -168,15 +198,22 @@ function Box(props: IBoxProps) {
 }
 
 function StoreImages(props: IOtherImagesProps) {
+  const { setLightboxOpen, filename, slideIndex, setLightboxSlide } = props;
   return (
-    <div className="w-[calc(25%-.75rem)] mr-4 shrink-0">
+    <div
+      className="w-[calc(25%-.75rem)] mr-4 shrink-0"
+      onClick={() => setLightboxOpen(true)}
+    >
       <div className="relative aspect-square border rounded-md overflow-hidden">
         <CachedImage
           src={`${
             import.meta.env.VITE_STORAGE_IMAGES
-          }/promarket/Produtos/Principal/${props.filename}__preview.png`}
-          alt="img"
+          }/promarket/Produtos/Principal/${props.filename}__small.webp`}
+          alt=" "
           className="w-full h-full top-0 left-0 object-cover"
+          onClick={() => {
+            setLightboxSlide(slideIndex)
+          }}
         />
       </div>
     </div>
@@ -185,6 +222,10 @@ function StoreImages(props: IOtherImagesProps) {
 
 interface IOtherImagesProps {
   filename: string;
+  setLightboxOpen: (isOpen: boolean) => void;
+  setLightboxSlide: (slide: number) => void;
+  slideIndex: number;
+
 }
 function OtherImages(props: IOtherImagesProps) {
   return (
@@ -192,8 +233,8 @@ function OtherImages(props: IOtherImagesProps) {
       <CachedImage
         src={`${
           import.meta.env.VITE_STORAGE_IMAGES
-        }/promarket/Produtos/Principal/${props.filename}__preview.png`}
-        alt="img"
+        }/promarket/Produtos/Principal/${props.filename}__small.webp`}
+        alt=" "
         className="w-full h-full top-0 left-0 object-cover"
       />
     </div>
@@ -298,7 +339,7 @@ function FinishImages(props: IFinishImagesProps) {
       >
         <CachedImage
           src={`https://pmkt.blob.core.windows.net/promarket/Acabamentos/${filename}__small.png`}
-          alt="img"
+          alt=" "
           className="w-full h-full top-0 left-0 object-cover select-none"
         />
       </div>

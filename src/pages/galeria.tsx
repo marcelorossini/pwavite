@@ -52,7 +52,7 @@ function ImagemLoja(props: IImagemLoja) {
     >
       <img
         src="https://pmkt.blob.core.windows.net/promarket/Produtos/Principal/bb8b58fe6fcf4ae0bda54b01abdad135__preview.png"
-        alt="img"
+        alt=" "
         className="w-full h-full top-0 left-0 object-cover"
       />
       <div className="absolute bottom-0 left-0 px-2 py-1 font-medium text-sm text-white text-shadow-md">
@@ -69,7 +69,7 @@ function ImagemInauguracoes() {
     >
       <img
         src="https://pmkt.blob.core.windows.net/promarket/Produtos/Principal/bb8b58fe6fcf4ae0bda54b01abdad135__preview.png"
-        alt="img"        
+        alt=" "        
         className="w-full h-full top-0 left-0 object-cover"
       />
       <div className="absolute bottom-0 left-0 px-2 py-1 font-medium text-sm text-white text-shadow-md">

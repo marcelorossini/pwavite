@@ -7,9 +7,20 @@ import { clearDatabase } from "@/utils/db";
 
 import { ImSpinner8 } from "react-icons/im";
 
-import { getAll as getAllProducts, get as getProduct, getAllBySector as getAllProductsBySector} from "@/fetch/products";
-import { getAll as getAllSectors, get as getSector, getImages as getSectorImages } from "@/fetch/sectors";
-import { getByProductId as getFinishingByProductId, getAll as getAllFinishing } from "@/fetch/finishing";
+import {
+  getAll as getAllProducts,
+  get as getProduct,
+  getAllBySector as getAllProductsBySector,
+} from "@/fetch/products";
+import {
+  getAll as getAllSectors,
+  get as getSector,
+  getImages as getSectorImages,
+} from "@/fetch/sectors";
+import {
+  getByProductId as getFinishingByProductId,
+  getAll as getAllFinishing,
+} from "@/fetch/finishing";
 import { getByProductId as getDimensionsByProductId } from "@/fetch/dimensions";
 import { get as getProductImages } from "@/fetch/products-images";
 
@@ -31,15 +42,15 @@ async function syncProcess() {
   const isOnlineResponse = await isOnline();
   if (!isOnlineResponse) return;
 
-    // Todos setores
-    const { data: sectors } = await getAllSectors();
-    for await (const sector of sectors) {
-      if (!!sector?.id) {
-        await getSector(sector?.id);
-        await getAllProductsBySector(sector?.id);
-        await generateSectorsImageCache(sector?.id)
-      }
+  // Todos setores
+  const { data: sectors } = await getAllSectors();
+  for await (const sector of sectors) {
+    if (!!sector?.id) {
+      await getSector(sector?.id);
+      await getAllProductsBySector(sector?.id);
+      await generateSectorsImageCache(sector?.id);
     }
+  }
 
   // Todos produtos
   const { data: products } = await getAllProducts();
@@ -51,7 +62,7 @@ async function syncProcess() {
   }
 
   // Acabamentos
-  await generateFinishingImageCache()
+  await generateFinishingImageCache();
 
   localStorage.setItem(LOCALSTORAGE_KEY, dayjs().format());
 }
@@ -95,15 +106,22 @@ export async function clearCache() {
 export async function generateProductImageCache(id: string) {
   const productsImages = await getProductImages(id);
 
-  await Promise.allSettled(
-    productsImages.data.map((product) =>
+  await Promise.allSettled([
+    ...productsImages.data.map((product) =>
       imageToCache(
         `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Produtos/Principal/${
           product.fileName
-        }__preview.png`
+        }_.webp`
       )
-    )
-  );
+    ),
+    ...productsImages.data.map((product) =>
+      imageToCache(
+        `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Produtos/Principal/${
+          product.fileName
+        }__small.webp`
+      )
+    ),
+  ]);
 }
 
 export async function generateSectorsImageCache(id: string) {
@@ -112,9 +130,7 @@ export async function generateSectorsImageCache(id: string) {
   await Promise.allSettled(
     sectorImages.data.map((sectorImage) =>
       imageToCache(
-        `${
-          import.meta.env.VITE_STORAGE_IMAGES
-        }/promarket/Setores/Principal/${
+        `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Setores/Principal/${
           sectorImage.fileName
         }__preview.webp`
       )
@@ -128,9 +144,9 @@ export async function generateFinishingImageCache() {
   await Promise.allSettled(
     finishingImages.data.map((finishingImage) =>
       imageToCache(
-        `${
-          import.meta.env.VITE_STORAGE_IMAGES
-        }/promarket/Acabamentos/${finishingImage.fileName}__small.png`
+        `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Acabamentos/${
+          finishingImage.fileName
+        }__small.png`
       )
     )
   );
