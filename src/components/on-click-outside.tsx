@@ -1,19 +1,24 @@
-import React from 'react'
+import React from "react";
 
-export default function OnClickOutside(props: { children: React.ReactNode, action: () => void}) {
+export default function OnClickOutside(props: {
+  children: React.ReactNode;
+  action: () => void;
+}) {
   const { children, action } = props;
   const childrenRef = React.useRef();
-  
+
   const childrenClone = React.cloneElement(children as any, {
     ref: (ref: any) => {
-        childrenRef.current = ref
-    }
-  })
+      childrenRef.current = ref;
+    },
+  });
 
   React.useEffect(() => {
+    // @ts-ignore
     function handleClickOutside(event) {
+      // @ts-ignore
       if (childrenRef.current && !childrenRef.current.contains(event.target)) {
-        action()
+        action();
       }
     }
     // Bind the event listener

@@ -1,5 +1,4 @@
 import React from "react";
-import { Gallery } from "react-grid-gallery";
 
 interface IImages {
   src: string;
@@ -47,7 +46,7 @@ export default function GalleryComponent(props: ISectorCarousel) {
   return (
     <div className="grid grid-flow-row-dense grid-cols-12 gap-2">
       {images.map((image, index) => (
-        <ItemGrid className={`${arrayFinal[index]}`} src={image.src} />
+        <ItemGrid key={index} className={`${arrayFinal[index]}`} src={image.src} />
       ))}
     </div>
   );
