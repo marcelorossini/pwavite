@@ -8,6 +8,7 @@ import { useAppStore } from "@/stores/app";
 import { SearchBox, SearchBoxButton } from "../search-portal";
 import LinkIcons from "../link-icons";
 import { isMobileOnly } from "react-device-detect";
+import CachedImage from "@/components/cached-image";
 
 import {
   HiOutlineHeart,
@@ -28,7 +29,7 @@ export default function Navbar() {
         <div className="w-20 relative h-full">
           <Link to="/">
             <img
-              src={`${Logo}?cache=true`}
+              src={Logo}
               alt=" "
               className="w-full h-full top-0 left-0 object-contain"
             />
