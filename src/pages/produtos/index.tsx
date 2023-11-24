@@ -27,7 +27,8 @@ export default function Produto(props: IProdutoProps) {
   const [searchParams] = useSearchParams();
   const setor = searchParams.get("setor");
   const [selectedFinishing, setSelectedFinishing] = React.useState<string>("");
-  const [lightboxStoreOpen, setLightboxStoreOpen] = React.useState<boolean>(false);
+  const [lightboxStoreOpen, setLightboxStoreOpen] =
+    React.useState<boolean>(false);
   const [lightboxStoreSlide, setLightboxStoreSlide] = React.useState<number>(0);
 
   const { isLoading: isLoadingProduct, data: dataProduct } = useQuery(
@@ -55,106 +56,108 @@ export default function Produto(props: IProdutoProps) {
             <small>{product.codigo}</small>
           </div>
           {/*IMAGENS*/}
-          <div className="grid grid-cols-4 gap-4">
-            {/*PRINCIPAL*/}
-            <div className="col-span-3 aspect-square">
-              <div className="relative aspect-square overflow-hidden">
-                {!!product?.imagemPrincipal ? (
-                  <CachedImage
-                    src={`${
-                      import.meta.env.VITE_STORAGE_IMAGES
-                    }/promarket/Produtos/Principal/${
-                      product.imagemPrincipal
-                    }_.webp`}
-                    alt=" "
-                    className="w-full h-full top-0 left-0 object-contain"
-                  />
-                ) : null}
-              </div>
-            </div>
-            {/*VARIACOES*/}
-            <div className="relative overflow-auto">
-              <div className="flex gap-4 flex-col absolute top-0 left-0 w-full">
-                {isLoadingProductImages ? (
-                  "carregando"
-                ) : (
-                  <>
-                    {otherImages.map((image) => (
-                      <OtherImages
-                        key={image.fileName}
-                        filename={image.fileName}
-                        setLightboxOpen={() => {}}
-                        setLightboxSlide={() => {}}
-                        slideIndex={0}
-                      />
-                    ))}
-                  </>
-                )}
-              </div>
-            </div>
-            {/*LOJAS*/}
-            <div className="col-span-4 w-full overflow-auto">
-              <div className="flex flex-nowrap">
-                {isLoadingProductImages ? (
-                  "carregando"
-                ) : (
-                  <>
-                    {otherImages.map((image, index) => (
-                      <StoreImages
-                        key={image.fileName}
-                        filename={image.fileName}
-                        setLightboxOpen={setLightboxStoreOpen}
-                        setLightboxSlide={setLightboxStoreSlide}
-                        slideIndex={index}
-                      />
-                    ))}
-                    <Lightbox
-                      isOpen={lightboxStoreOpen}
-                      onClose={() => setLightboxStoreOpen(false)}
-                      index={lightboxStoreSlide}
-                      images={otherImages.map((image) => ({
-                        title: null,
-                        description: null,
-                        src: `${
-                          import.meta.env.VITE_STORAGE_IMAGES
-                        }/promarket/Produtos/Principal/${
-                          image.fileName
-                        }_.webp`,
-                      }))}
+          <div className="grid grid-cols-1 md:grid-cols-[400px_auto_400px] gap-6">
+            <div className="grid grid-cols-4 gap-4">
+              {/*PRINCIPAL*/}
+              <div className="col-span-3 aspect-square">
+                <div className="relative aspect-square overflow-hidden">
+                  {!!product?.imagemPrincipal ? (
+                    <CachedImage
+                      src={`${
+                        import.meta.env.VITE_STORAGE_IMAGES
+                      }/promarket/Produtos/Principal/${
+                        product.imagemPrincipal
+                      }_.webp`}
+                      alt=" "
+                      className="w-full h-full top-0 left-0 object-contain"
                     />
-                  </>
-                )}
+                  ) : null}
+                </div>
+              </div>
+              {/*VARIACOES*/}
+              <div className="relative overflow-auto">
+                <div className="flex gap-4 flex-col absolute top-0 left-0 w-full">
+                  {isLoadingProductImages ? (
+                    "carregando"
+                  ) : (
+                    <>
+                      {otherImages.map((image) => (
+                        <OtherImages
+                          key={image.fileName}
+                          filename={image.fileName}
+                          setLightboxOpen={() => {}}
+                          setLightboxSlide={() => {}}
+                          slideIndex={0}
+                        />
+                      ))}
+                    </>
+                  )}
+                </div>
+              </div>
+              {/*LOJAS*/}
+              <div className="col-span-4 w-full overflow-auto">
+                <div className="flex flex-nowrap">
+                  {isLoadingProductImages ? (
+                    "carregando"
+                  ) : (
+                    <>
+                      {otherImages.map((image, index) => (
+                        <StoreImages
+                          key={image.fileName}
+                          filename={image.fileName}
+                          setLightboxOpen={setLightboxStoreOpen}
+                          setLightboxSlide={setLightboxStoreSlide}
+                          slideIndex={index}
+                        />
+                      ))}
+                      <Lightbox
+                        isOpen={lightboxStoreOpen}
+                        onClose={() => setLightboxStoreOpen(false)}
+                        index={lightboxStoreSlide}
+                        images={otherImages.map((image) => ({
+                          title: null,
+                          description: null,
+                          src: `${
+                            import.meta.env.VITE_STORAGE_IMAGES
+                          }/promarket/Produtos/Principal/${
+                            image.fileName
+                          }_.webp`,
+                        }))}
+                      />
+                    </>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-          <div className="flex flex-col gap-2">
-            <Box name="Acabamentos">
-              <FinishGroup
-                productId={product.id}
-                selectedFinishing={selectedFinishing}
-                setSelectedFinishing={(id) => setSelectedFinishing(id)}
-              />
-            </Box>
-            <Box name="Dimensões (m)">
-              <DimensionsGroup productId={product.id} />
-            </Box>
-            <Box>
-              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md">
-                Adicionar à lista
-              </button>
-            </Box>
-            {!!product?.diferenciais ? (
-              <Box name="Diferenciais">
-                <p
-                  dangerouslySetInnerHTML={{
-                    __html: product?.diferenciais || "",
-                  }}
-                ></p>
+            <div></div>
+            <div className="flex flex-col gap-2">
+              <Box name="Acabamentos">
+                <FinishGroup
+                  productId={product.id}
+                  selectedFinishing={selectedFinishing}
+                  setSelectedFinishing={(id) => setSelectedFinishing(id)}
+                />
               </Box>
-            ) : (
-              <></>
-            )}
-            {/*            
+              <Box name="Dimensões (m)">
+                <DimensionsGroup productId={product.id} />
+              </Box>
+              <Box>
+                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md">
+                  Adicionar à lista
+                </button>
+              </Box>
+              {!!product?.diferenciais ? (
+                <Box name="Diferenciais">
+                  <p
+                    dangerouslySetInnerHTML={{
+                      __html: product?.diferenciais || "",
+                    }}
+                  ></p>
+                </Box>
+              ) : (
+                <></>
+              )}
+              {/*            
             <Box name="Especificações">
               <p>
                 Lorem opsumLorem opsumLorem opsumLorem opsum opsumLore Lorem
@@ -162,6 +165,7 @@ export default function Produto(props: IProdutoProps) {
               </p>
             </Box>          
               */}
+            </div>
           </div>
 
           <hr />
@@ -212,7 +216,7 @@ function StoreImages(props: IOtherImagesProps) {
           alt=" "
           className="w-full h-full top-0 left-0 object-cover"
           onClick={() => {
-            setLightboxSlide(slideIndex)
+            setLightboxSlide(slideIndex);
           }}
         />
       </div>
@@ -225,7 +229,6 @@ interface IOtherImagesProps {
   setLightboxOpen: (isOpen: boolean) => void;
   setLightboxSlide: (slide: number) => void;
   slideIndex: number;
-
 }
 function OtherImages(props: IOtherImagesProps) {
   return (
@@ -331,7 +334,7 @@ function FinishImages(props: IFinishImagesProps) {
   }
 
   return (
-    <div className={`w-[15%] h-fit mr-3 shrink-0`} onClick={handleClick}>
+    <div className={`w-[15%] h-fit mr-3 shrink-0 cursor-pointer`} onClick={handleClick}>
       <div
         className={`relative aspect-square rounded-md overflow-hidden border-2 ${
           active ? "border-blue-500" : "border-transparent"

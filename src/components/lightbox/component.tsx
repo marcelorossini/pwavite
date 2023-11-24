@@ -27,6 +27,17 @@ export default function LightboxComponent(props: ILightboxProps) {
       slides={images}
       index={index}
       controller={{ closeOnPullDown: true }}
+      carousel={{
+        padding: 0,
+        spacing: 0
+      }}
+      zoom={{
+        maxZoomPixelRatio: 2,
+      }}
+      render={{
+        buttonPrev: () => null,
+        buttonNext: () => null,
+      }}
     />
   );
 }

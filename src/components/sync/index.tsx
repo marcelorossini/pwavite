@@ -4,6 +4,7 @@ const LOCALSTORAGE_KEY = "last_sinc";
 import isOnline from "is-online";
 import dayjs from "dayjs";
 import { clearDatabase } from "@/utils/db";
+import isPwa from "@/utils/is-pwa";
 
 import { ImSpinner8 } from "react-icons/im";
 
@@ -29,6 +30,7 @@ import { imageToCache } from "@/utils/image";
 //import { generateCache as generateCacheProductList } from "@/components/product/product-list";
 
 async function syncProcess() {
+  if (!isPwa()) return
   // Verifica qual a ultima atualização realizada
   const storedValue = localStorage.getItem(LOCALSTORAGE_KEY);
   // Se a atualiação foi no dia anterior, atualiza novamente
@@ -127,15 +129,22 @@ export async function generateProductImageCache(id: string) {
 export async function generateSectorsImageCache(id: string) {
   const sectorImages = await getSectorImages(id);
 
-  await Promise.allSettled(
-    sectorImages.data.map((sectorImage) =>
+  await Promise.allSettled([
+    ...sectorImages.data.map((sectorImage) =>
       imageToCache(
         `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Setores/Principal/${
           sectorImage.fileName
         }__preview.webp`
       )
-    )
-  );
+    ),
+    ...sectorImages.data.map((sectorImage) =>
+      imageToCache(
+        `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Setores/Principal/${
+          sectorImage.fileName
+        }_.webp`
+      )
+    ),
+  ]);
 }
 
 export async function generateFinishingImageCache() {

@@ -1,5 +1,6 @@
 import React from 'react'
 import Layout from '../components/layout'
+import { ClearButton } from '@/components/sync';
 
 import { countStoreData, Stores } from "@/utils/db";
 
@@ -21,6 +22,7 @@ export default function Favoritos() {
     return (
       <Layout>
        {data}
+       <ClearButton />
       </Layout>
     );
   }

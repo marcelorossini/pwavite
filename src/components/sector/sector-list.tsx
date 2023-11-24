@@ -49,9 +49,10 @@ export function LoadingItem(props: ISectorList) {
   const { className } = props
   return <div className={`flex flex-col gap-4 ${className}`}>
     <div className="w-full h-6 bg-slate-300 animate-pulse rounded-md"/>
-    <div className="w-full flex gap-6 overflow-hidden">
-      <div className="w-5/6 h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse rounded-md" />
-      <div className="w-5/6 h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse rounded-md" />
+    <div className="w-full h-4 bg-slate-300 animate-pulse rounded-md"/>
+    <div className="w-full flex gap-2 overflow-hidden">
+      <div className="w-5/6 h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse" />
+      <div className="w-5/6 h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse" />
     </div>    
   </div>;
 }

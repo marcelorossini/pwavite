@@ -18,18 +18,20 @@ export default function SectorDotList(props: ISectorDotList) {
   const sectors = data?.data as ISector[];
 
   return (
-    <ul
-      className={`w-full flex gap-2 overflow-x-auto scrollbar-hide ${className}`}
-    >
-      {sectors.map((sector) => (
-        <Item
-          key={sector.id}
-          name={sector.nome}
-          url={`/setores/${sector.id}`}
-          image={sector.icone}
-        />
-      ))}
-    </ul>
+    <div>
+      <ul
+        className={`w-full flex gap-2 overflow-x-auto scrollbar-hide ${className}`}
+      >
+        {sectors.map((sector) => (
+          <Item
+            key={sector.id}
+            name={sector.nome}
+            url={`/setores/${sector.id}`}
+            image={sector.icone}
+          />
+        ))}
+      </ul>
+    </div>
   );
 }
 
@@ -47,7 +49,15 @@ function Item(props: ISectorItemProps) {
       <Link to={url}>
         <div className="w-20 flex flex-col gap-2 relative overflow-hidden">
           <div className="w-full h-full aspect-square rounded-full bg-slate-200 relative">
-            {image ? <img src={`${image}?cache=true`} alt={name} className="p-2" /> : null}
+            {image ? (
+              <img
+                src={`${
+                  import.meta.env.VITE_STORAGE_IMAGES
+                }/promarket/Setores/Icones/${image}`}
+                alt={name}
+                className="p-2"
+              />
+            ) : null}
           </div>
           <small className="w-full h-8 text-xs line-clamp-2 text-center subpixel-antialiased leading-tight">
             {name}
@@ -64,6 +74,16 @@ function Loading(props: ISectorDotList) {
     <ul
       className={`w-full flex gap-2 overflow-x-auto scrollbar-hide ${className}`}
     >
+      <LoadingItem />
+      <LoadingItem />
+      <LoadingItem />
+      <LoadingItem />
+      <LoadingItem />
+      <LoadingItem />
+      <LoadingItem />
+      <LoadingItem />
+      <LoadingItem />
+      <LoadingItem />
       <LoadingItem />
       <LoadingItem />
       <LoadingItem />

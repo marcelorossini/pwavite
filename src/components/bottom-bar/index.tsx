@@ -1,7 +1,7 @@
 import React from "react";
-import BottomBarItem from "./bottom-bar-item";
 import { isIOS } from "react-device-detect";
 import isPwa from "@/utils/is-pwa";
+import LinkIcons from "@/components/link-icons";
 
 import {
   HiOutlineHome,
@@ -22,29 +22,33 @@ export default function BottomBar() {
     <div
       className={`flex flex-nowrap px-6 gap-4 border-t z-20 bg-white ${sizeClassName} ${marginBottomClassName}`}
     >
-      <BottomBarItem
+      <LinkIcons
         route="/"
         icon={<HiOutlineHome size={25} />}
         iconActive={<HiHome size={25} />}
         title="Home"
+        direction={'col'}
       />
-      <BottomBarItem
+      <LinkIcons
         route="/favoritos"
         icon={<HiOutlineHeart size={25} />}
         iconActive={<HiHeart size={25} />}
         title="Favoritos"
+        direction={'col'}
       />
-      <BottomBarItem
+      <LinkIcons
         route="/lista"
         icon={<HiOutlineBriefcase size={25} />}
         iconActive={<HiBriefcase size={25} />}
         title="Lista"
+        direction={'col'}
       />
-      <BottomBarItem
+      <LinkIcons
         route="/galeria"
         icon={<HiOutlineBuildingStorefront size={25} />}
         iconActive={<HiBuildingStorefront size={25} />}
         title="Galeria"
+        direction={'col'}
       />
     </div>
   );

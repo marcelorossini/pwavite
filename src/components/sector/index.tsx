@@ -3,9 +3,11 @@ import SectorCarousel from "./sector-carousel";
 import { Link } from "react-router-dom";
 import { isMobileOnly } from "react-device-detect";
 import { useQuery } from "react-query";
+import Gallery from "@/components/gallery";
 
-import { get } from "@/fetch/sectors";
+import { get, getImages } from "@/fetch/sectors";
 import { ISector } from "@/interfaces/api/sector";
+import { ISectorImages } from "@/interfaces/api/sector-images";
 
 interface ISectorProps {
   id: string;
@@ -18,6 +20,13 @@ interface ISectorProps {
 
 export default function Sector(props: ISectorProps) {
   const { id, clickable } = props;
+  const { isLoading, data } = useQuery(["sectorsImages", id], async () =>
+    getImages(id)
+  );
+
+  if (isLoading) return <div>Loading...</div>;
+  const sectorImages = data?.data as ISectorImages[];
+
   return (
     <div className="flex flex-col gap-2">
       {clickable ? (
@@ -29,10 +38,25 @@ export default function Sector(props: ISectorProps) {
       )}
       {isMobileOnly ? (
         <div className="w-full h-fit">
-          <SectorCarousel id={props.id} />
+          <SectorCarousel
+            images={sectorImages.map((image) => ({
+              thumbnailSrc: `${
+                import.meta.env.VITE_STORAGE_IMAGES
+              }/promarket/Setores/Principal/${image.fileName}__preview.webp`,
+              src: `${
+                import.meta.env.VITE_STORAGE_IMAGES
+              }/promarket/Setores/Principal/${image.fileName}_.webp`,
+            }))}
+          />
         </div>
       ) : (
-        "Desktop"
+        <Gallery
+          images={sectorImages.map((image) => ({
+            src: `${
+              import.meta.env.VITE_STORAGE_IMAGES
+            }/promarket/Setores/Principal/${image.fileName}_.webp`,
+          }))}
+        />
       )}
     </div>
   );
@@ -57,7 +81,10 @@ export function SectorHeader(props: ISectorHeaderProps) {
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
       <div className="flex gap-2">
-        <div className="h-6 w-8 rounded-md" style={{ background: data.cor }}></div>
+        <div
+          className="h-6 w-8 rounded-md"
+          style={{ background: data.cor }}
+        ></div>
         <strong className="text-slate-800">{data.nome}</strong>
       </div>
       <p className="">{data.descricao}</p>

@@ -29,14 +29,43 @@ body {
   scrollbar-width: none;  /* Firefox */
 }
 
-@media screen and (max-width: 768px) {
-  .scrollbar-hide-mobile::-webkit-scrollbar {
-    display: none;
-  }
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #c2c2c2 #f3f3f3;
+}
 
-  /* For IE, Edge and Firefox */
-  .scrollbar-hide-mobile {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+/* Chrome, Edge and Safari */
+*::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+*::-webkit-scrollbar-track {  
+  background-color: #f3f3f3;
+}
+
+*::-webkit-scrollbar-track:hover {
+  background-color: #f3f3f3;
+}
+
+*::-webkit-scrollbar-track:active {
+  background-color: #f3f3f3;
+}
+
+*::-webkit-scrollbar-thumb {  
+  background-color: #c2c2c2;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #cccbcb;
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background-color: #cccbcb;
+}
+
+@media screen and (max-width: 768px) {
+  *::-webkit-scrollbar {
+    display: none;
   }
 }

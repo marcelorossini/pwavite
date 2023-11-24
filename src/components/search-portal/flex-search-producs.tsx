@@ -17,7 +17,7 @@ export default function FlexSearchProducts(props: IFlexSearchProductsProps) {
   const { query } = props;
   const { isLoading, data: queryData } = useQuery(["products"], getAll);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <></>;
 
   return (
     <FlexSearchProductsAux query={query} data={queryData?.data as IProduct[]} />
@@ -31,7 +31,7 @@ interface IFlexSearchProductsAuxProps {
 export function FlexSearchProductsAux(props: IFlexSearchProductsAuxProps) {
   const { query, data } = props;
   const [results, setResults] = React.useState<IProduct[]>([]);
-  
+
   // Cria documento
   const [index, setIndex] = React.useState(
     new Document({
@@ -86,13 +86,19 @@ export function FlexSearchProductsAux(props: IFlexSearchProductsAuxProps) {
 
   return (
     <div>
-      <ul className="flex flex-col gap-4 divide-y">
-        {results.map((result) => (
-          <li className="title pt-4 first:pt-0" key={result.id}>
-            <ProductItem data={result} />
-          </li>
-        ))}
-      </ul>
+      {results.length > 0 ? (
+        <ul className="flex flex-col gap-4 divide-y">
+          {results.map((result) => (
+            <li className="title pt-4 first:pt-0" key={result.id}>
+              <ProductItem data={result} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <>
+        {!!query ? "Nenhum resultado encontrado" : null}
+        </>        
+      )}
     </div>
   );
 }
@@ -100,15 +106,19 @@ export function FlexSearchProductsAux(props: IFlexSearchProductsAuxProps) {
 function ProductItem(props: { data: IProduct }) {
   const { data } = props;
   const navigate = useNavigate();
-  const { setSearchOpened } = useAppStore();
+  const { setSearchPortalOpened, setSearchResultsOpened } = useAppStore();
 
   function handleClick() {
     navigate(`/produtos/${data.id}`);
-    setSearchOpened(false);
+    setSearchPortalOpened(false);
+    setSearchResultsOpened(false);
   }
 
   return (
-    <div className="grid grid-cols-[100px_auto] gap-x-2" onClick={handleClick}>
+    <div
+      className="grid grid-cols-[80px_auto] gap-x-2 cursor-pointer"
+      onClick={handleClick}
+    >
       <div className="row-span-2">
         <CachedImage
           src={`${
