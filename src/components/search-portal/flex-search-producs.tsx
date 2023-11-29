@@ -119,7 +119,7 @@ function ProductItem(props: { data: IProduct }) {
       className="grid grid-cols-[80px_auto] gap-x-2 cursor-pointer"
       onClick={handleClick}
     >
-      <div className="row-span-2">
+      <div className="row-span-2 aspect-[4/3]">
         <CachedImage
           src={`${
             import.meta.env.VITE_STORAGE_IMAGES

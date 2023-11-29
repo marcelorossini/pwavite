@@ -1,7 +1,7 @@
 import React from "react";
 import Sync from "../sync";
 
-import { MobileView } from 'react-device-detect';
+import { MobileView } from "react-device-detect";
 
 import Navbar from "../navbar";
 import BottomBar from "../bottom-bar";
@@ -14,6 +14,15 @@ export interface ILayout {
 
 export default function Layout(props: ILayout) {
   const { children, defaultPadding = true } = props;
+  const [startAnimation, setStartAnimation] = React.useState(true);
+
+  React.useEffect(() => {
+    setStartAnimation((oldState) => true);
+    setTimeout(() => {
+      setStartAnimation((oldState) => false);
+    }, 1);
+  }, []);
+
   return (
     <div className="h-[calc(100dvh)] flex flex-col overscroll-none overflow-hidden">
       <Navbar />
@@ -22,7 +31,11 @@ export default function Layout(props: ILayout) {
           defaultPadding ? "p-6" : ""
         } overflow-auto flex-1 relative flex justify-center`}
       >
-        <div className="w-full max-w-7xl ">
+        <div
+          className={`w-full max-w-7xl transition-transform delay-75 transform ${
+            startAnimation ? "translate-x-[100vw] opacity-0" : "translate-x-0 opacity-100"
+          }`}
+        >
           <div className="fixed top-16 right-0 opacity-80 p-6 z-10">
             <Sync />
           </div>

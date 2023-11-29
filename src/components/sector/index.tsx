@@ -19,12 +19,13 @@ interface ISectorProps {
 }
 
 export default function Sector(props: ISectorProps) {
-  const { id, clickable } = props;
+  const { id, clickable, className } = props;
   const { isLoading, data } = useQuery(["sectorsImages", id], async () =>
     getImages(id)
   );
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingItem className={className} />;
+
   const sectorImages = data?.data as ISectorImages[];
 
   return (
@@ -40,6 +41,7 @@ export default function Sector(props: ISectorProps) {
         <div className="w-full h-fit">
           <SectorCarousel
             images={sectorImages.map((image) => ({
+              legend: image.legenda,
               thumbnailSrc: `${
                 import.meta.env.VITE_STORAGE_IMAGES
               }/promarket/Setores/Principal/${image.fileName}__preview.webp`,
@@ -76,7 +78,8 @@ export function SectorHeader(props: ISectorHeaderProps) {
   );
   const data = queryData?.data as ISector;
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return <LoadingItem className={className} withCarousel={false} />;
 
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
@@ -88,6 +91,25 @@ export function SectorHeader(props: ISectorHeaderProps) {
         <strong className="text-slate-800">{data.nome}</strong>
       </div>
       <p className="">{data.descricao}</p>
+    </div>
+  );
+}
+
+export function LoadingItem(props: {
+  className?: string;
+  withCarousel?: boolean;
+}) {
+  const { className, withCarousel = true } = props;
+  return (
+    <div className={`flex flex-col gap-4 ${className}`}>
+      <div className="w-full h-6 bg-slate-300 animate-pulse rounded-md" />
+      <div className="w-full h-4 bg-slate-300 animate-pulse rounded-md" />
+      {withCarousel ? (
+        <div className="w-full flex gap-2 overflow-hidden">
+          <div className="w-5/6 h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse" />
+          <div className="w-5/6 h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse" />
+        </div>
+      ) : null}
     </div>
   );
 }

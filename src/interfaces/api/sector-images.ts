@@ -5,6 +5,7 @@ export interface ISectorImages {
     setor: ISector;
     hash: string;
     fileName: string;
+    legenda: string;
     ordem: number;
     id: string;
     createdWhen: string;

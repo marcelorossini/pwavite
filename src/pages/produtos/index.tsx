@@ -27,6 +27,8 @@ export default function Produto(props: IProdutoProps) {
   const [searchParams] = useSearchParams();
   const setor = searchParams.get("setor");
   const [selectedFinishing, setSelectedFinishing] = React.useState<string>("");
+  const [lightboxMainOpen, setLightboxMainOpen] =
+    React.useState<boolean>(false);
   const [lightboxStoreOpen, setLightboxStoreOpen] =
     React.useState<boolean>(false);
   const [lightboxStoreSlide, setLightboxStoreSlide] = React.useState<number>(0);
@@ -43,7 +45,8 @@ export default function Produto(props: IProdutoProps) {
     );
   const productImages = dataProductImages?.data || ([] as IImage[]);
 
-  const otherImages = productImages.filter((image) => !image.padrao);
+  const otherImages = [] as IImage[]; //productImages.filter((image) => !image.padrao);
+  const storeImages = productImages.filter((image) => !image.padrao);
 
   return (
     <Layout>
@@ -59,18 +62,41 @@ export default function Produto(props: IProdutoProps) {
           <div className="grid grid-cols-1 md:grid-cols-[400px_auto_400px] gap-6">
             <div className="grid grid-cols-4 gap-4">
               {/*PRINCIPAL*/}
-              <div className="col-span-3 aspect-square">
-                <div className="relative aspect-square overflow-hidden">
+              <div
+                className={`col-span-${
+                  otherImages.length > 0 ? "3" : "4"
+                } `}
+              >
+                <div className={`relative overflow-hidden ${
+                  otherImages.length > 0 ? 'aspect-square' : ''}`}>
                   {!!product?.imagemPrincipal ? (
-                    <CachedImage
-                      src={`${
-                        import.meta.env.VITE_STORAGE_IMAGES
-                      }/promarket/Produtos/Principal/${
-                        product.imagemPrincipal
-                      }_.webp`}
-                      alt=" "
-                      className="w-full h-full top-0 left-0 object-contain"
-                    />
+                    <>
+                      <CachedImage
+                        src={`${
+                          import.meta.env.VITE_STORAGE_IMAGES
+                        }/promarket/Produtos/Principal/${
+                          product.imagemPrincipal
+                        }_.webp`}
+                        alt=" "
+                        className="w-full h-full top-0 left-0 object-contain"
+                        onClick={() => setLightboxMainOpen(true)}
+                      />
+                      <Lightbox
+                        isOpen={lightboxMainOpen}
+                        onClose={() => setLightboxMainOpen(false)}
+                        images={[
+                          {
+                            title: product.codigo,
+                            description: product.nome?.toUpperCase(),
+                            src: `${
+                              import.meta.env.VITE_STORAGE_IMAGES
+                            }/promarket/Produtos/Principal/${
+                              product.imagemPrincipal
+                            }_.webp`,
+                          },
+                        ]}
+                      />
+                    </>
                   ) : null}
                 </div>
               </div>
@@ -78,7 +104,7 @@ export default function Produto(props: IProdutoProps) {
               <div className="relative overflow-auto">
                 <div className="flex gap-4 flex-col absolute top-0 left-0 w-full">
                   {isLoadingProductImages ? (
-                    "carregando"
+                    <></>
                   ) : (
                     <>
                       {otherImages.map((image) => (
@@ -101,7 +127,7 @@ export default function Produto(props: IProdutoProps) {
                     "carregando"
                   ) : (
                     <>
-                      {otherImages.map((image, index) => (
+                      {storeImages.map((image, index) => (
                         <StoreImages
                           key={image.fileName}
                           filename={image.fileName}
@@ -114,7 +140,7 @@ export default function Produto(props: IProdutoProps) {
                         isOpen={lightboxStoreOpen}
                         onClose={() => setLightboxStoreOpen(false)}
                         index={lightboxStoreSlide}
-                        images={otherImages.map((image) => ({
+                        images={storeImages.map((image) => ({
                           title: null,
                           description: null,
                           src: `${
@@ -334,7 +360,10 @@ function FinishImages(props: IFinishImagesProps) {
   }
 
   return (
-    <div className={`w-[15%] h-fit mr-3 shrink-0 cursor-pointer`} onClick={handleClick}>
+    <div
+      className={`w-[15%] h-fit mr-3 shrink-0 cursor-pointer`}
+      onClick={handleClick}
+    >
       <div
         className={`relative aspect-square rounded-md overflow-hidden border-2 ${
           active ? "border-blue-500" : "border-transparent"

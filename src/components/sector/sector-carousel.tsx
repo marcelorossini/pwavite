@@ -5,6 +5,9 @@ import { Navigation, Autoplay, Pagination } from "swiper/modules";
 import CachedImage from "@/components/cached-image";
 import { ISectorImages } from "@/interfaces/api/sector-images";
 import Lightbox from "@/components/lightbox";
+import ImageProductDot from "@/components/image/image-product-dot";
+import ImageWithLegend from "@/components/image/image-with-legend";
+
 
 // Import Swiper styles
 import "swiper/css";
@@ -12,6 +15,7 @@ import "swiper/css";
 interface IImages {
   thumbnailSrc: string;
   src: string;
+  legend?: string;
 }
 
 interface ISectorCarousel {
@@ -49,9 +53,8 @@ export default function SectorCarousel(props: ISectorCarousel) {
               setLightboxCarouselOpen(true);
             }}
           >
-            <CarouselImage
-              src={image.thumbnailSrc}
-            />
+            <ImageProductDot/>
+            <ImageWithLegend src={image.thumbnailSrc} legend={image.legend} />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -61,7 +64,7 @@ export default function SectorCarousel(props: ISectorCarousel) {
         index={lightboxCarouselSlide}
         images={images.map((image) => ({
           title: null,
-          description: null,
+          description: image.legend,
           src: image.src,
         }))}
       />
@@ -71,17 +74,5 @@ export default function SectorCarousel(props: ISectorCarousel) {
 
 interface ICarouselImage {
   src: string;
-}
-
-export function CarouselImage({ src }: ICarouselImage) {
-  return (
-    <div className="w-full aspect-[4/3] relative overflow-hidden">
-      <CachedImage
-        src={src}
-        alt=""
-        className="w-full h-full object-cover"
-        loading="eager"
-      />
-    </div>
-  );
+  legend?: string;
 }

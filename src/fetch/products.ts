@@ -2,7 +2,7 @@ import { fetchWrapper } from "./base";
 import { IProduct } from "@/interfaces/api/product";
 
 export async function get(id: string) {
-  return await fetchWrapper<IProduct>(`/api/Produto/GetWithAll?id=${id}`); 
+  return await fetchWrapper<IProduct>(`/api/Produto?id=${id}`); 
 }
 
 export async function getAll() {

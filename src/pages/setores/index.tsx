@@ -7,6 +7,7 @@ import { SectorHeader } from "@/components/sector/index";
 import SectorDotList from "@/components/sector/sector-dot-list";
 import Tabs from "@/components/tabs";
 import ProductListBySector from "@/components/product/product-list-by-sector";
+import SectorImages from "@/components/sector/sector-images";
 
 import { HiOutlinePhotograph } from "react-icons/hi";
 import { TbListDetails } from "react-icons/tb";
@@ -36,7 +37,7 @@ export default function Setor() {
                 id: "fotos",
                 name: "FOTOS DE LOJA",
                 icon: <HiOutlinePhotograph />,
-                component: <></>,
+                component: <SectorImages id={id as string} />,
               },
               {
                 id: "tecnico",
