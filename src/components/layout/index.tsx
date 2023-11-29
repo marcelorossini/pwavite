@@ -1,7 +1,7 @@
 import React from "react";
 import Sync from "../sync";
 
-import { MobileView } from "react-device-detect";
+import { MobileView, isMobileOnly } from "react-device-detect";
 
 import Navbar from "../navbar";
 import BottomBar from "../bottom-bar";
@@ -17,6 +17,7 @@ export default function Layout(props: ILayout) {
   const [startAnimation, setStartAnimation] = React.useState(true);
 
   React.useEffect(() => {
+    if (!isMobileOnly) return;
     setStartAnimation((oldState) => true);
     setTimeout(() => {
       setStartAnimation((oldState) => false);
@@ -32,8 +33,14 @@ export default function Layout(props: ILayout) {
         } overflow-auto flex-1 relative flex justify-center`}
       >
         <div
-          className={`w-full max-w-7xl transition-transform delay-75 transform ${
-            startAnimation ? "translate-x-[100vw] opacity-0" : "translate-x-0 opacity-100"
+          className={`w-full max-w-7xl transition-transform delay-75 ${
+            isMobileOnly
+              ? `transform ${
+                  startAnimation
+                    ? "translate-x-[100vw] opacity-0"
+                    : "translate-x-0 opacity-100"
+                }`
+              : ""
           }`}
         >
           <div className="fixed top-16 right-0 opacity-80 p-6 z-10">

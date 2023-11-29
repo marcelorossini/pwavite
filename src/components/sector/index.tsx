@@ -29,7 +29,7 @@ export default function Sector(props: ISectorProps) {
   const sectorImages = data?.data as ISectorImages[];
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-4">
       {clickable ? (
         <Link to={`setores/${id}`}>
           <SectorHeader {...props} />
@@ -82,8 +82,8 @@ export function SectorHeader(props: ISectorHeaderProps) {
     return <LoadingItem className={className} withCarousel={false} />;
 
   return (
-    <div className={`flex flex-col gap-2 ${className}`}>
-      <div className="flex gap-2">
+    <div className={`flex flex-col gap-4 ${className}`}>
+      <div className="flex gap-4">
         <div
           className="h-6 w-8 rounded-md"
           style={{ background: data.cor }}
@@ -105,7 +105,7 @@ export function LoadingItem(props: {
       <div className="w-full h-6 bg-slate-300 animate-pulse rounded-md" />
       <div className="w-full h-4 bg-slate-300 animate-pulse rounded-md" />
       {withCarousel ? (
-        <div className="w-full flex gap-2 overflow-hidden">
+        <div className="w-full flex gap-4 overflow-hidden">
           <div className="w-5/6 h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse" />
           <div className="w-5/6 h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse" />
         </div>

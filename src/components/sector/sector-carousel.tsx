@@ -33,7 +33,7 @@ export default function SectorCarousel(props: ISectorCarousel) {
     <div>
       <Swiper
         slidesPerView={1.2}
-        spaceBetween={10}
+        spaceBetween={24}
         navigation
         loop
         modules={[Navigation, Autoplay]}
@@ -70,9 +70,4 @@ export default function SectorCarousel(props: ISectorCarousel) {
       />
     </div>
   );
-}
-
-interface ICarouselImage {
-  src: string;
-  legend?: string;
 }

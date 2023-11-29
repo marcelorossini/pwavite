@@ -18,7 +18,7 @@ export default function ProductList(props: IProductListProps) {
   const { data, queryParams = {} } = props;
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 py-4">
+    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 py-6">
       {data.map((product) => (
         <ProductCard key={product.id} data={product} queryParams={queryParams}/>
       ))}
@@ -37,7 +37,7 @@ export function ProductCard(props: IProductCard) {
   const queryString = (new URLSearchParams(queryParams)).toString()
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="w-full h-full aspect-[4/3] relative rounded-md overflow-hidden">
+      <div className="w-full h-full aspect-[4/3] relative overflow-hidden">
         <Link to={`/produtos/${id}${!!queryString ? `?${queryString}` : ''}`} className="contents" preventScrollReset>
           <CachedImage
             src={`${
@@ -53,19 +53,3 @@ export function ProductCard(props: IProductCard) {
     </div>
   );
 }
-
-/*
-export async function generateCache() {
-  const products = await getAllBySector();
-
-  await Promise.allSettled(
-    products.data.map((product) =>
-      imageToCache(
-        `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Produtos/Principal/${
-          product.imagemPrincipal
-        }__preview.png`
-      )
-    )
-  );
-}
-*/

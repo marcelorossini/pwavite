@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "react-query";
@@ -9,6 +8,7 @@ import ProductListBySector from "@/components/product/product-list-by-sector";
 import Select from "@/components/forms/select";
 import Layout from "@/components/layout";
 import Lightbox from "@/components/lightbox";
+import { modals } from "@mantine/modals";
 
 import { get } from "@/fetch/products";
 import { getByProductId as getFinishingByProductId } from "@/fetch/finishing";
@@ -45,8 +45,17 @@ export default function Produto(props: IProdutoProps) {
     );
   const productImages = dataProductImages?.data || ([] as IImage[]);
 
+  //const otherImages  = productImages.filter((image) => !image.padrao);
   const otherImages = [] as IImage[]; //productImages.filter((image) => !image.padrao);
   const storeImages = productImages.filter((image) => !image.padrao);
+
+  const handleAddList = () => {
+    modals.openConfirmModal({
+      title: "Confirma a adição a lista?",
+      labels: { confirm: "Confirmar", cancel: "Cancelar" },
+      onConfirm: () => {},
+    });
+  };
 
   return (
     <Layout>
@@ -60,15 +69,16 @@ export default function Produto(props: IProdutoProps) {
           </div>
           {/*IMAGENS*/}
           <div className="grid grid-cols-1 md:grid-cols-[400px_auto_400px] gap-6">
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-4 gap-x-4">
               {/*PRINCIPAL*/}
               <div
-                className={`col-span-${
-                  otherImages.length > 0 ? "3" : "4"
-                } `}
+                className={`col-span-${otherImages.length > 0 ? "3" : "4"} pb-4`}
               >
-                <div className={`relative overflow-hidden ${
-                  otherImages.length > 0 ? 'aspect-square' : ''}`}>
+                <div
+                  className={`relative overflow-hidden ${
+                    otherImages.length > 0 ? "aspect-square" : ""
+                  }`}
+                >
                   {!!product?.imagemPrincipal ? (
                     <>
                       <CachedImage
@@ -168,7 +178,10 @@ export default function Produto(props: IProdutoProps) {
                 <DimensionsGroup productId={product.id} />
               </Box>
               <Box>
-                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md">
+                <button
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md"
+                  onClick={handleAddList}
+                >
                   Adicionar à lista
                 </button>
               </Box>

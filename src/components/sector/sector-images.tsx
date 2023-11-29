@@ -16,7 +16,7 @@ export default function SectorImages(props: { id: string }) {
   const sectorImages = data?.data as ISectorImages[];
 
   return (
-    <div className="flex flex-col gap-2 py-4">
+    <div className="flex flex-col gap-6 py-6">
       {sectorImages.map((image) => (
         <ImageWithLegend
           legend={image.legenda}
@@ -30,7 +30,7 @@ export default function SectorImages(props: { id: string }) {
 }
 
 export function Loading() {
-  return <div className="flex flex-col gap-2 py-4">
+  return <div className="flex flex-col gap-6 py-6">
     <div className="w-full h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse"/>
     <div className="w-full h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse"/>
     <div className="w-full h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse"/>
