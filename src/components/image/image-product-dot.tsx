@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDisclosure } from "@mantine/hooks";
 import { Popover, Text, Button } from "@mantine/core";
+import { isMobileOnly } from "react-device-detect";
 import CachedImage from "@/components/cached-image";
 
 export default function ImageProductDot() {
@@ -25,34 +26,52 @@ export function Dot() {
     element.style.top = "50%";
   }, [refDot]);
 
+  function handleClick() {
+    navigate(
+      "/produtos/0fd0e97d-7363-4ea3-be92-f93aba88dd80?setor=3fdf9b10-58ac-42aa-a50e-8ddaff28b52b"
+    );
+  }
+
   return (
     <div ref={refDot} className="absolute w-0 h-0 z-50">
-      <Popover
-        position="bottom"
-        withArrow
-        shadow="md"
-        opened={opened}
-        styles={{ dropdown: { marginTop: "-1rem" } }}
-      >
-        <Popover.Target>
-          <div
-            className="absolute top-[-2rem] left-[-2rem] w-[4rem] h-[4rem] z-50 cursor-pointer"
-            onMouseEnter={open}
-            onMouseLeave={close}
-            onClick={() => {
-              navigate(
-                "/produtos/0fd0e97d-7363-4ea3-be92-f93aba88dd80?setor=3fdf9b10-58ac-42aa-a50e-8ddaff28b52b"
-              );
-            }}
-          />
-        </Popover.Target>
-        <Popover.Dropdown style={{ pointerEvents: "none" }}>
-          <DropdownProduct />
-        </Popover.Dropdown>
-      </Popover>
-      <div className="absolute top-[-1rem] left-[-1rem] w-[2rem] h-[2rem] rounded-full bg-slate-300 animate-ping" />
-      <div className="absolute top-[-.50rem] left-[-.50rem] w-[1rem] h-[1rem] rounded-full bg-white opacity-80" />
+      {isMobileOnly ? (
+        <DotClickArea onClick={handleClick} />
+      ) : (
+        <Popover
+          position="bottom"
+          withArrow
+          shadow="md"
+          opened={opened}
+          styles={{ dropdown: { marginTop: "-1rem", cursor: 'pointer'} }}
+        >
+          <Popover.Target>
+            <DotClickArea
+              onMouseEnter={open}
+              onMouseLeave={close}
+              onClick={handleClick}
+            />
+          </Popover.Target>
+          <Popover.Dropdown style={{ pointerEvents: "none" }}>
+            <DropdownProduct />
+          </Popover.Dropdown>
+        </Popover>
+      )}
+      <div className="absolute top-[-1rem] left-[-1rem] w-[2rem] h-[2rem] rounded-full bg-slate-300 animate-ping cursor-pointer" />
+      <div className="absolute top-[-.50rem] left-[-.50rem] w-[1rem] h-[1rem] rounded-full bg-white opacity-80 cursor-pointer" />
     </div>
+  );
+}
+
+export function DotClickArea(props: {
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
+  onClick: () => void;
+}) {
+  return (
+    <div
+      className="absolute top-[-2rem] left-[-2rem] w-[4rem] h-[4rem] z-50 cursor-pointer"
+      {...props}
+    />
   );
 }
 

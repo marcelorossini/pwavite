@@ -1,5 +1,5 @@
 import React from "react";
-import SectorCarousel from "./sector-carousel";
+import SectorCarouselMobile, { Loading as LoadingCarousel } from "./sector-carousel";
 import { Link } from "react-router-dom";
 import { isMobileOnly } from "react-device-detect";
 import { useQuery } from "react-query";
@@ -37,29 +37,19 @@ export default function Sector(props: ISectorProps) {
       ) : (
         <SectorHeader {...props} />
       )}
-      {isMobileOnly ? (
-        <div className="w-full h-fit">
-          <SectorCarousel
-            images={sectorImages.map((image) => ({
-              legend: image.legenda,
-              thumbnailSrc: `${
-                import.meta.env.VITE_STORAGE_IMAGES
-              }/promarket/Setores/Principal/${image.fileName}__preview.webp`,
-              src: `${
-                import.meta.env.VITE_STORAGE_IMAGES
-              }/promarket/Setores/Principal/${image.fileName}_.webp`,
-            }))}
-          />
-        </div>
-      ) : (
-        <Gallery
+      <div className="w-full h-fit">
+        <SectorCarouselMobile
           images={sectorImages.map((image) => ({
+            legend: image.legenda,
+            thumbnailSrc: `${
+              import.meta.env.VITE_STORAGE_IMAGES
+            }/promarket/Setores/Principal/${image.fileName}__preview.webp`,
             src: `${
               import.meta.env.VITE_STORAGE_IMAGES
             }/promarket/Setores/Principal/${image.fileName}_.webp`,
           }))}
         />
-      )}
+      </div>
     </div>
   );
 }
@@ -104,12 +94,7 @@ export function LoadingItem(props: {
     <div className={`flex flex-col gap-4 ${className}`}>
       <div className="w-full h-6 bg-slate-300 animate-pulse rounded-md" />
       <div className="w-full h-4 bg-slate-300 animate-pulse rounded-md" />
-      {withCarousel ? (
-        <div className="w-full flex gap-4 overflow-hidden">
-          <div className="w-5/6 h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse" />
-          <div className="w-5/6 h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse" />
-        </div>
-      ) : null}
+      {withCarousel ? <LoadingCarousel /> : null}
     </div>
   );
 }

@@ -18,10 +18,7 @@ export default function Layout(props: ILayout) {
 
   React.useEffect(() => {
     if (!isMobileOnly) return;
-    setStartAnimation((oldState) => true);
-    setTimeout(() => {
-      setStartAnimation((oldState) => false);
-    }, 1);
+    setStartAnimation((oldState) => false);
   }, []);
 
   return (
@@ -33,7 +30,7 @@ export default function Layout(props: ILayout) {
         } overflow-auto flex-1 relative flex justify-center`}
       >
         <div
-          className={`w-full max-w-7xl transition-transform delay-75 ${
+          className={`w-full max-w-7xl transition-transform duration-100 ${
             isMobileOnly
               ? `transform ${
                   startAnimation

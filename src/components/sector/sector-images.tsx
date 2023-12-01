@@ -11,7 +11,7 @@ export default function SectorImages(props: { id: string }) {
     getImages(id)
   );
 
-  if (isLoading) return <Loading/>; //<LoadingItem withCarousel={false} />;
+  if (isLoading) return <Loading />; //<LoadingItem withCarousel={false} />;
 
   const sectorImages = data?.data as ISectorImages[];
 
@@ -30,12 +30,14 @@ export default function SectorImages(props: { id: string }) {
 }
 
 export function Loading() {
-  return <div className="flex flex-col gap-6 py-6">
-    <div className="w-full h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse"/>
-    <div className="w-full h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse"/>
-    <div className="w-full h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse"/>
-    <div className="w-full h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse"/>
-    <div className="w-full h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse"/>
-    <div className="w-full h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse"/>
-  </div>;
+  return (
+    <div className="flex flex-col gap-6 py-6">
+      <div className="w-full h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse" />
+      <div className="w-full h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse" />
+      <div className="w-full h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse" />
+      <div className="w-full h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse" />
+      <div className="w-full h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse" />
+      <div className="w-full h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse" />
+    </div>
+  );
 }

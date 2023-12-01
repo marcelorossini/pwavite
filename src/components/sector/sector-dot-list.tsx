@@ -1,9 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ISector } from "@/interfaces/api/sector";
 import { useQuery } from "react-query";
+import { isMobileOnly } from "react-device-detect";
+
+import SectorDotDesktop from "@/components/sector/sector-dot-list-desktop";
 
 import { getAll } from "@/fetch/sectors";
+
+import { ISector } from "@/interfaces/api/sector";
 
 interface ISectorDotList {
   className?: string;
@@ -19,18 +23,31 @@ export default function SectorDotList(props: ISectorDotList) {
 
   return (
     <div>
-      <ul
-        className={`w-full flex gap-2 overflow-x-auto scrollbar-hide ${className}`}
-      >
-        {sectors.map((sector) => (
-          <Item
-            key={sector.id}
-            name={sector.nome}
-            url={`/setores/${sector.id}`}
-            image={sector.icone}
-          />
-        ))}
-      </ul>
+      {isMobileOnly ? (
+        <ul
+          className={`w-full flex gap-2 overflow-x-auto scrollbar-hide ${className}`}
+        >
+          {sectors.map((sector) => (
+            <Item
+              key={sector.id}
+              name={sector.nome}
+              url={`/setores/${sector.id}`}
+              image={sector.icone}
+            />
+          ))}
+        </ul>
+      ) : (
+        <SectorDotDesktop
+          items={sectors.map((sector) => (
+            <Item
+              key={sector.id}
+              name={sector.nome}
+              url={`/setores/${sector.id}`}
+              image={sector.icone}
+            />
+          ))}
+        />
+      )}
     </div>
   );
 }
@@ -45,7 +62,7 @@ function Item(props: ISectorItemProps) {
   const { name, image, url } = props;
 
   return (
-    <li className="w-full h-full flex flex-col gap-2">
+    <li className="w-full h-full flex flex-col items-center gap-2">
       <Link to={url}>
         <div className="w-20 flex flex-col gap-2 relative overflow-hidden">
           <div className="w-full h-full aspect-square rounded-full bg-slate-200 relative">
