@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "react-query";
+import { isMobileOnly } from "react-device-detect";
 
 import CachedImage from "@/components/cached-image";
 import { SectorHeader } from "@/components/sector/index";
@@ -53,7 +54,7 @@ export default function Produto(props: IProdutoProps) {
     modals.openConfirmModal({
       title: "Confirma a adição a lista?",
       labels: { confirm: "Confirmar", cancel: "Cancelar" },
-      onConfirm: () => {},
+      onConfirm: () => {}
     });
   };
 

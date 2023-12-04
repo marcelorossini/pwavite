@@ -13,6 +13,6 @@ export async function get(id: string) {
 }
 
 export async function getImages(id: string) {
-  const response = await fetchWrapper<ISectorImages[]>(`/api/SetorImagens/GetAllFromSetor?SetorId=${id}`); 
+  const response = await fetchWrapper<ISectorImages[]>(`/api/SetorImagens/GetAllForGrid?Setor=${id}`); 
   return response
 }

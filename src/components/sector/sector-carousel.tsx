@@ -6,12 +6,12 @@ import "swiper/css/navigation";
 import { isMobileOnly } from "react-device-detect";
 
 import Lightbox from "@/components/lightbox";
-import ImageProductDot from "@/components/image/image-product-dot";
+import ImageProductMarker, {
+  IImageMarker,
+} from "@/components/image/image-product-marker";
 import ImageWithLegend from "@/components/image/image-with-legend";
 
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi2";
-
-
 
 const sliderSettings = {
   0: {
@@ -34,6 +34,7 @@ interface IImages {
   thumbnailSrc: string;
   src: string;
   legend?: string;
+  markers?: IImageMarker[];
 }
 
 interface ISectorCarousel {
@@ -75,7 +76,9 @@ export default function SectorCarousel(props: ISectorCarousel) {
               setLightboxCarouselOpen(true);
             }}
           >
-            <ImageProductDot />
+            <ImageProductMarker
+              markers={image.markers || ([] as IImageMarker[])}
+            />
             <ImageWithLegend src={image.thumbnailSrc} legend={image.legend} />
           </SwiperSlide>
         ))}

@@ -1,5 +1,5 @@
 import React from "react";
-import SectorCarouselMobile, { Loading as LoadingCarousel } from "./sector-carousel";
+import SectorCarousel, { Loading as LoadingCarousel } from "./sector-carousel";
 import { Link } from "react-router-dom";
 import { isMobileOnly } from "react-device-detect";
 import { useQuery } from "react-query";
@@ -38,7 +38,7 @@ export default function Sector(props: ISectorProps) {
         <SectorHeader {...props} />
       )}
       <div className="w-full h-fit">
-        <SectorCarouselMobile
+        <SectorCarousel
           images={sectorImages.map((image) => ({
             legend: image.legenda,
             thumbnailSrc: `${
@@ -47,6 +47,12 @@ export default function Sector(props: ISectorProps) {
             src: `${
               import.meta.env.VITE_STORAGE_IMAGES
             }/promarket/Setores/Principal/${image.fileName}_.webp`,
+            markers: image.produtos.map(i => ({
+              x: i.x,
+              y: i.y,
+              placeholder: i.produto.codigo,
+              productId: i.produtoId
+            }))
           }))}
         />
       </div>

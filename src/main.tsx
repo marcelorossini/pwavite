@@ -23,6 +23,7 @@ const updateSW = registerSW({
       labels: { confirm: 'Confirm', cancel: 'Cancel' },
       onCancel: () => {},
       onConfirm: () => updateSW(true),
+      centered: true
     })
   },
   onOfflineReady() {
