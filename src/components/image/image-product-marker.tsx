@@ -8,6 +8,7 @@ import { get } from "@/fetch/products";
 import { useQuery } from "react-query";
 import { IProduct } from "@/interfaces/api/product";
 
+let oTimerPopover = undefined
 export interface IImageMarker {
   x: number;
   y: number;
@@ -91,7 +92,9 @@ export function DotClickArea(props: {
   function handleClick() {
     if (isMobileOnly) {
       open();
-      setTimeout(() => {
+      // @ts-ignore
+      clearTimeout(oTimerPopover)
+      oTimerPopover = setTimeout(() => {
         close();
       }, 2000)
     } else {
