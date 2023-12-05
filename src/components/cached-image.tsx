@@ -13,80 +13,52 @@ export default function CachedImage(props: any) {
 
   const { isOnline } = useAppStore();
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const [isOffilineError, setIsOfflineError] = React.useState<boolean>(false);
-  const [isOnlineError, setIsOnlineError] = React.useState<boolean>(false);
-  const [isOnlineLoaded, setIsOnlineLoaded] = React.useState<boolean>(false);
-  const [srcBase64, setSrcBase64] = React.useState<string>("");
+  const [isError, setIsError] = React.useState<boolean>(false);
+  const [srcFinal, setSrcFinal] = React.useState<string>("");
 
   React.useEffect(() => {
     async function getImage() {
-      setIsOfflineError((oldState) => false);
+      setIsError((oldState) => false);
       setIsLoading((oldState) => true);
 
-      if (!isOnline) {
+      if (!srcProps) return;
+      if (isOnline) {
+        setSrcFinal((oldState) => srcProps);
+      } else {
+        // Get offline
         try {
           const cachedImage = await convertToOfflineImage(srcProps);
-          setSrcBase64((oldState) => cachedImage);
+          setSrcFinal((oldState) => cachedImage);
         } catch (error) {
-          setIsOfflineError((oldState) => true);
+          setIsError((oldState) => true);
         }
       }
-      setIsLoading((oldState) => false);
     }
     getImage();
   }, [, srcProps, isOnline]);
 
+  // Se houve erro
+  /*
+  if (isError)
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-slate-100">
+        <CiImageOff size={56} className="text-blue-700" />
+      </div>
+    );
+*/
   // Default
   return (
     <>
-      {(isOnline || isOnlineLoaded) ? (
-        <>
-          {!isOnlineError ? (
-            <img
-              {...props}
-              className={`${classNameProps} ${
-                !isLoading ? "" : "bg-slate-200"
-              }`}
-              src={srcProps}
-              onLoad={() => {
-                setIsLoading((oldState) => false)
-                setIsOnlineLoaded((oldState) => true)
-              }
-            }
-              onError={() => {
-                setIsLoading((oldState) => false);
-                setIsOnlineError((olsState) => true);
-              }}
-            />
-          ) : (
-            <ErrorComponent />
-          )}
-        </>
-      ) : (
-        <>
-          {!isOffilineError ? (
-            <img
-              {...props}
-              className={`${classNameProps} ${
-                !isLoading ? "" : "bg-slate-200"
-              }`}
-              src={srcBase64}
-              original-url={srcProps}
-              loading={"eager"}
-            />
-          ) : (
-            <ErrorComponent />
-          )}
-        </>
-      )}
+      <img
+        {...props}
+        className={`${classNameProps} ${
+          !isLoading ? "" : "bg-slate-200"
+        }`}
+        src={srcFinal}
+        original-url={srcProps}
+        loading={isOnline ? loadingProps : "eager"}
+        onLoad={() => setIsLoading(oldState => false)}
+      />
     </>
-  );
-}
-
-function ErrorComponent() {
-  return (
-    <div className="w-full h-full flex items-center justify-center">
-      <CiImageOff size={56} className="text-blue-700" />
-    </div>
   );
 }
