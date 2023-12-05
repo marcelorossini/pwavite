@@ -42,7 +42,7 @@ export function ProductCard(props: IProductCard) {
           <CachedImage
             src={`${
               import.meta.env.VITE_STORAGE_IMAGES
-            }/promarket/Produtos/Principal/${imagemPrincipal}__small.webp`}
+            }/promarket/Produtos/Variacoes/${imagemVariacaoPrincipal}__small.webp`}      
             alt=""
             loading="lazy"
             className="w-full h-full object-cover"

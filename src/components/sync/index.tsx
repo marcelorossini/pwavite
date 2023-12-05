@@ -23,7 +23,7 @@ import {
   getAll as getAllFinishing,
 } from "@/fetch/finishing";
 import { getByProductId as getDimensionsByProductId } from "@/fetch/dimensions";
-import { get as getProductImages } from "@/fetch/products-images";
+import { get as getProductImages, getVariable as getProductImagesVariable} from "@/fetch/products-images";
 
 import { imageToCache } from "@/utils/image";
 
@@ -117,6 +117,25 @@ export async function generateProductImageCache(id: string) {
       )
     ),
     ...productsImages.data.map((product) =>
+      imageToCache(
+        `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Produtos/Principal/${
+          product.fileName
+        }__small.webp`
+      )
+    ),
+  ]);
+
+  const productsImagesVariable = await getProductImagesVariable(id);
+
+  await Promise.allSettled([
+    ...productsImagesVariable.data.map((product) =>
+      imageToCache(
+        `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Produtos/Variacoes/${
+          product.fileName
+        }_.webp`
+      )
+    ),
+    ...productsImagesVariable.data.map((product) =>
       imageToCache(
         `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Produtos/Principal/${
           product.fileName

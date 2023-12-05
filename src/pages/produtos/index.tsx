@@ -9,6 +9,7 @@ import ProductListBySector from "@/components/product/product-list-by-sector";
 import Select from "@/components/forms/select";
 import Layout from "@/components/layout";
 import Lightbox from "@/components/lightbox";
+import { InputComponent } from "@/components/forms";
 import { modals } from "@mantine/modals";
 
 import { get } from "@/fetch/products";
@@ -48,13 +49,13 @@ export default function Produto(props: IProdutoProps) {
 
   //const otherImages  = productImages.filter((image) => !image.padrao);
   const otherImages = [] as IImage[]; //productImages.filter((image) => !image.padrao);
-  const storeImages = productImages.filter((image) => !image.padrao);
+  const storeImages = productImages//.filter((image) => !image.padrao);
 
   const handleAddList = () => {
     modals.openConfirmModal({
       title: "Confirma a adição a lista?",
       labels: { confirm: "Confirmar", cancel: "Cancelar" },
-      onConfirm: () => {}
+      onConfirm: () => {},
     });
   };
 
@@ -69,24 +70,27 @@ export default function Produto(props: IProdutoProps) {
             <small>{product.codigo}</small>
           </div>
           {/*IMAGENS*/}
-          <div className="grid grid-cols-1 md:grid-cols-[400px_auto_400px] gap-6">
-            <div className="grid grid-cols-4 gap-x-4">
+          <div className="grid grid-cols-1 md:grid-cols-[400px_auto_400px] grid-rows-[auto_auto] gap-6">
+            <div className="grid grid-cols-4 gap-x-4 md:row-span-2">
               {/*PRINCIPAL*/}
               <div
-                className={`col-span-${otherImages.length > 0 ? "3" : "4"} pb-4`}
+                className={`col-span-${
+                  otherImages.length > 0 ? "3" : "4"
+                } pb-4`}
               >
                 <div
                   className={`relative overflow-hidden ${
                     otherImages.length > 0 ? "aspect-square" : ""
                   }`}
                 >
-                  {!!product?.imagemPrincipal ? (
+
+                  {!!product ? (
                     <>
                       <CachedImage
                         src={`${
                           import.meta.env.VITE_STORAGE_IMAGES
-                        }/promarket/Produtos/Principal/${
-                          product.imagemPrincipal
+                        }/promarket/Produtos/Variacoes/${
+                          product.imagemVariacaoPrincipal
                         }_.webp`}
                         alt=" "
                         className="w-full h-full top-0 left-0 object-contain"
@@ -101,8 +105,8 @@ export default function Produto(props: IProdutoProps) {
                             description: product.nome?.toUpperCase(),
                             src: `${
                               import.meta.env.VITE_STORAGE_IMAGES
-                            }/promarket/Produtos/Principal/${
-                              product.imagemPrincipal
+                            }/promarket/Produtos/Variacoes/${
+                              product.imagemVariacaoPrincipal
                             }_.webp`,
                           },
                         ]}
@@ -166,34 +170,26 @@ export default function Produto(props: IProdutoProps) {
                 </div>
               </div>
             </div>
-            <div></div>
+            <div className="md:row-span-2"></div>
             <div className="flex flex-col gap-2">
-              <Box name="Acabamentos">
+              <InputComponent name="Acabamentos">
                 <FinishGroup
                   productId={product.id}
                   selectedFinishing={selectedFinishing}
                   setSelectedFinishing={(id) => setSelectedFinishing(id)}
                 />
-              </Box>
-              <Box name="Dimensões (m)">
+              </InputComponent>
+              <InputComponent name="Dimensões (m)">
                 <DimensionsGroup productId={product.id} />
-              </Box>
-              <Box>
-                <button
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md"
-                  onClick={handleAddList}
-                >
-                  Adicionar à lista
-                </button>
-              </Box>
+              </InputComponent>
               {!!product?.diferenciais ? (
-                <Box name="Diferenciais">
+                <InputComponent name="Diferenciais">
                   <p
                     dangerouslySetInnerHTML={{
                       __html: product?.diferenciais || "",
                     }}
                   ></p>
-                </Box>
+                </InputComponent>
               ) : (
                 <></>
               )}
@@ -205,6 +201,14 @@ export default function Produto(props: IProdutoProps) {
               </p>
             </Box>          
               */}
+            </div>
+            <div className="w-full flex items-end">
+              <button
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md"
+                onClick={handleAddList}
+              >
+                Adicionar à lista
+              </button>
             </div>
           </div>
 
@@ -225,20 +229,6 @@ export default function Produto(props: IProdutoProps) {
 interface IBoxProps {
   name?: string;
   children: React.ReactNode;
-}
-
-function Box(props: IBoxProps) {
-  const { name, children } = props;
-  return (
-    <div>
-      {!!name ? (
-        <label>
-          <strong>{name}</strong>
-        </label>
-      ) : null}
-      <div className="h-full w-full">{children}</div>
-    </div>
-  );
 }
 
 function StoreImages(props: IOtherImagesProps) {

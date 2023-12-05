@@ -99,7 +99,7 @@ export function LoadingItem(props: {
   return (
     <div className={`flex flex-col gap-4 ${className}`}>
       <div className="w-full h-6 bg-slate-300 animate-pulse rounded-md" />
-      <div className="w-full h-4 bg-slate-300 animate-pulse rounded-md" />
+      <div className="w-full h-32 md:h-4 bg-slate-300 animate-pulse rounded-md" />
       {withCarousel ? <LoadingCarousel /> : null}
     </div>
   );

@@ -18,9 +18,9 @@ export default function ImageWithLegend({
         loading="eager"
       />
 
-      <strong className="absolute bottom-0 left-0 px-4 py-2 text-white text-shadow-lg">
+      <p className="absolute bottom-0 left-0 px-4 py-2 text-white text-shadow-lg font-medium">
         {legend}
-      </strong>
+      </p>
     </div>
   );
 }

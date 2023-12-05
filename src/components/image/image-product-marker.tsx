@@ -8,7 +8,8 @@ import { get } from "@/fetch/products";
 import { useQuery } from "react-query";
 import { IProduct } from "@/interfaces/api/product";
 
-let oTimerPopover = undefined
+// @ts-ignore
+let oTimerPopover = undefined;
 export interface IImageMarker {
   x: number;
   y: number;
@@ -58,10 +59,12 @@ export function Dot(props: IImageMarker) {
         trapFocus
         offset={20}
         zIndex={10}
-        styles={{dropdown: {
-          borderRadius: "10px",
-          padding: 0
-        }}}
+        styles={{
+          dropdown: {
+            borderRadius: "10px",
+            padding: 0,
+          },
+        }}
       >
         <Popover.Target>
           <div>
@@ -93,10 +96,10 @@ export function DotClickArea(props: {
     if (isMobileOnly) {
       open();
       // @ts-ignore
-      clearTimeout(oTimerPopover)
+      clearTimeout(oTimerPopover);
       oTimerPopover = setTimeout(() => {
         close();
-      }, 2000)
+      }, 2000);
     } else {
       goToProductPage();
     }

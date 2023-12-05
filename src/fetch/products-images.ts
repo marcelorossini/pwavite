@@ -17,3 +17,20 @@ export async function get(id: string) {
     }
   );
 }
+
+export async function getVariable(id: string) {
+  return await fetchWrapper<IImage[]>(
+    `/api/ProdutosVariacoes/GetAllForGrid?Produto=${id}`,
+    {
+      formatToStore(data) {
+        return data.map((item) => {
+          const { fileName, padrao, ...rest } = item;
+          return {
+            fileName,
+            padrao,
+          };
+        });
+      },
+    }
+  );
+}
