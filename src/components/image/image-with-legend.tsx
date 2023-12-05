@@ -3,12 +3,14 @@ import CachedImage from "@/components/cached-image";
 export default function ImageWithLegend({
   src,
   legend,
+  onClick
 }: {
   src: string;
   legend?: string;
+  onClick?: () => void;
 }) {
   return (
-    <div className="w-full aspect-[4/3] relative overflow-hidden">
+    <div className="w-full aspect-[4/3] relative overflow-hidden" onClick={onClick}>
       <CachedImage
         src={src}
         alt=""

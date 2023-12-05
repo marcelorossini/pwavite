@@ -28,8 +28,8 @@ export default function Setor() {
   return (
     <Layout defaultPadding={false}>
       <div className="flex flex-col gap-6 py-6">
-        <SectorDotList className="px-6" />
-        <div className="flex flex-col gap-6 px-6">
+        <SectorDotList className="px-6 md:p-0" />
+        <div className="flex flex-col gap-6 px-6 md:p-0">
           <SectorHeader id={id as string} />
           <Tabs
             items={[

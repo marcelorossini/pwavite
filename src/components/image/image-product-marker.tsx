@@ -43,37 +43,38 @@ export function Dot(props: IImageMarker) {
     element.style.top = `${y}%`;
   }, [refDot]);
 
-  function handleClick() {
+  function goToProductPage() {
     navigate(`/produtos/${productId}`);
   }
 
   return (
     <div ref={refDot} className="absolute w-0 h-0 z-50">
-      {isMobileOnly ? (
-        <DotClickArea onClick={handleClick} />
-      ) : (
-        <Popover
-          position="bottom"
-          withArrow
-          shadow="md"
-          opened={opened}
-          trapFocus
-          offset={20}
-        >
-          <Popover.Target>
-            <div>
-              <DotClickArea
-                onMouseEnter={open}
-                onMouseLeave={close}
-                onClick={handleClick}
-              />
-            </div>
-          </Popover.Target>
-          <Popover.Dropdown style={{ pointerEvents: "none" }}>
-            <DropdownProduct id={productId} />
-          </Popover.Dropdown>
-        </Popover>
-      )}
+      <Popover
+        position="bottom"
+        withArrow
+        shadow="md"
+        opened={opened}
+        trapFocus
+        offset={20}
+        zIndex={10}
+        styles={{dropdown: {
+          borderRadius: "10px",
+          padding: 0
+        }}}
+      >
+        <Popover.Target>
+          <div>
+            <DotClickArea
+              close={close}
+              open={open}
+              goToProductPage={goToProductPage}
+            />
+          </div>
+        </Popover.Target>
+        <Popover.Dropdown>
+          <DropdownProduct id={productId} goToProductPage={goToProductPage} />
+        </Popover.Dropdown>
+      </Popover>
       <div className="absolute top-[-1rem] left-[-1rem] w-[2rem] h-[2rem] rounded-full bg-slate-300 animate-ping cursor-pointer" />
       <div className="absolute top-[-.50rem] left-[-.50rem] w-[1rem] h-[1rem] rounded-full bg-white opacity-80 cursor-pointer" />
     </div>
@@ -81,23 +82,40 @@ export function Dot(props: IImageMarker) {
 }
 
 export function DotClickArea(props: {
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
-  onClick: () => void;
+  close?: any;
+  open?: any;
+  goToProductPage: () => void;
 }) {
-  const { onClick, onMouseEnter, onMouseLeave } = props;
+  const { goToProductPage, close, open } = props;
+
+  function handleClick() {
+    if (isMobileOnly) {
+      open();
+      setTimeout(() => {
+        close();
+      }, 2000)
+    } else {
+      goToProductPage();
+    }
+  }
 
   return (
     <div
       className="absolute top-[-2rem] left-[-2rem] w-[4rem] h-[4rem] z-50 cursor-pointer"
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      onClick={onClick}
+      onMouseEnter={open}
+      //onMouseLeave={close}
+      onClick={handleClick}
     />
   );
 }
 
-export function DropdownProduct({ id }: { id: string }) {
+export function DropdownProduct({
+  id,
+  goToProductPage,
+}: {
+  id: string;
+  goToProductPage: () => void;
+}) {
   const { isLoading: isLoadingProduct, data: dataProduct } = useQuery(
     ["product", id],
     async () => get(id as string)
@@ -105,22 +123,29 @@ export function DropdownProduct({ id }: { id: string }) {
   const product = dataProduct?.data || ({} as IProduct);
 
   return (
-    <div className="grid grid-cols-[128px_300px] gap-x-2 cursor-pointer">
+    <div
+      className="grid grid-cols-1 md:grid-cols-[auto_auto] p-4 gap-2 cursor-pointer"
+      onClick={goToProductPage}
+    >
       {isLoadingProduct ? (
         "Carregando"
       ) : (
         <>
-          <div className="row-span-2 aspect-[4/3]">
+          <div className="w-[36vw] md:w-32 row-span-2 aspect-[4/3]">
             <CachedImage
               src={`${
                 import.meta.env.VITE_STORAGE_IMAGES
-              }/promarket/Produtos/Principal/${product.imagemPrincipal}__preview.webp`}
+              }/promarket/Produtos/Principal/${
+                product.imagemPrincipal
+              }__preview.webp`}
               alt=""
               loading="lazy"
-              className="w-full h-full object-contain"
+              className="w-full h-full object-cover"
             />
           </div>
-          <strong>{product.codigo}</strong>
+          <strong className="text-center md:text-left md:w-72">
+            {product.codigo}
+          </strong>
           <p className="text-sm">{product.descricao?.toUpperCase()}</p>
         </>
       )}

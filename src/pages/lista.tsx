@@ -46,10 +46,10 @@ function ListaItem(props: IListaItem) {
         <InputComponent name="Acabamento">campo</InputComponent>
       </div>
       <div className="col-span-4">
-        <div className="flex">
-          <textarea className="border w-full" placeholder="Observações" />
-          <div className="flex items-center justify-end p-4">
-            <HiOutlineTrash size={25} className="text-red-500" />
+        <div className="flex gap-4">
+          <textarea className="border w-full h-14 p-2" placeholder="Observações" />
+          <div className="flex items-center justify-end p-4 bg-red-500 rounded-md">
+            <HiOutlineTrash size={25} className="text-white" />
           </div>
         </div>
       </div>

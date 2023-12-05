@@ -69,17 +69,18 @@ export default function SectorCarousel(props: ISectorCarousel) {
         }}
       >
         {images.map((image, index) => (
-          <SwiperSlide
-            key={index}
-            onClick={() => {
-              setLightboxCarouselSlide(index);
-              setLightboxCarouselOpen(true);
-            }}
-          >
+          <SwiperSlide key={index}>
             <ImageProductMarker
               markers={image.markers || ([] as IImageMarker[])}
             />
-            <ImageWithLegend src={image.thumbnailSrc} legend={image.legend} />
+            <ImageWithLegend
+              src={image.thumbnailSrc}
+              legend={image.legend}
+              onClick={() => {
+                setLightboxCarouselSlide(index);
+                setLightboxCarouselOpen(true);
+              }}
+            />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -101,7 +102,7 @@ export default function SectorCarousel(props: ISectorCarousel) {
 function PrevButton({ swiperRef }: any) {
   return (
     <button
-      className="hidden md:flex absolute top-0 left-0 z-50 w-10 h-full items-center justify-center"
+      className="hidden md:flex absolute top-0 left-0 z-10 w-10 h-full items-center justify-center"
       onClick={() => swiperRef.current.swiper.slidePrev()}
     >
       <HiOutlineChevronLeft
@@ -115,7 +116,7 @@ function PrevButton({ swiperRef }: any) {
 function NextButton({ swiperRef }: any) {
   return (
     <button
-      className="hidden md:flex absolute top-0 right-0 z-50 w-10 h-full items-center justify-center"
+      className="hidden md:flex absolute top-0 right-0 z-10 w-10 h-full items-center justify-center"
       onClick={() => swiperRef.current.swiper.slideNext()}
     >
       <HiOutlineChevronRight

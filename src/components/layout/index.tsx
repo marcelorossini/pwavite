@@ -35,7 +35,7 @@ export default function Layout(props: ILayout) {
               ? `transform ${
                   startAnimation
                     ? "translate-x-[100vw] opacity-0"
-                    : "translate-x-0 opacity-100"
+                    : "translate-x-[initial] opacity-100"
                 }`
               : ""
           }`}
