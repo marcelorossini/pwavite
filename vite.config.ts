@@ -66,9 +66,9 @@ export default defineConfig(({ mode }) => {
           display: "standalone",
           scope: "/",
           start_url: "/",
-          short_name: "Catálogo",
-          description: "Catálogo Representantes",
-          name: "Catálogo Representantes",
+          short_name: "Catálogo ProMarket",
+          description: "Catálogo ProMarket",
+          name: "Catálogo ProMarket",
           icons: [
             {
               src: "/icon-192x192.png",
