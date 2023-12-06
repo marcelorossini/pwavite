@@ -1,3 +1,4 @@
+import React from 'react'
 import { useQuery } from "react-query";
 import { get, getImages } from "@/fetch/sectors";
 import { ISector } from "@/interfaces/api/sector";
@@ -6,6 +7,7 @@ import ImageWithLegend from "@/components/image/image-with-legend";
 import ImageProductMarker, {
   IImageMarker,
 } from "@/components/image/image-product-marker";
+import Lightbox from "@/components/lightbox";
 
 export default function SectorImages(props: { id: string }) {
   const { id } = props;
@@ -18,9 +20,14 @@ export default function SectorImages(props: { id: string }) {
 
   const sectorImages = data?.data as ISectorImages[];
 
+  const [lightboxCarouselOpen, setLightboxCarouselOpen] =
+    React.useState<boolean>(false);
+  const [lightboxCarouselSlide, setLightboxCarouselSlide] =
+    React.useState<number>(0);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
-      {sectorImages.map((image) => (
+      {sectorImages.map((image, index) => (
         <div className="relative" key={image.fileName}>
           <ImageProductMarker
             markers={image.produtos.map((i) => ({
@@ -35,9 +42,25 @@ export default function SectorImages(props: { id: string }) {
             src={`${
               import.meta.env.VITE_STORAGE_IMAGES
             }/promarket/Setores/Principal/${image.fileName}_.webp`}
+            onClick={() => {
+              setLightboxCarouselSlide(index);
+              setLightboxCarouselOpen(true);
+            }}            
           />
         </div>
       ))}
+        <Lightbox
+          isOpen={lightboxCarouselOpen}
+          onClose={() => setLightboxCarouselOpen(false)}
+          index={lightboxCarouselSlide}
+          images={sectorImages.map((image) => ({
+            title: null,
+            description: image.legenda,
+            src: `${
+              import.meta.env.VITE_STORAGE_IMAGES
+            }/promarket/Setores/Principal/${image.fileName}_.webp`,
+          }))}
+        />      
     </div>
   );
 }
