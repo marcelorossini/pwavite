@@ -20,7 +20,7 @@ export default function BottomBar() {
 
   return (
     <div
-      className={`flex flex-nowrap px-6 gap-4 border-t z-20 bg-white ${sizeClassName} ${marginBottomClassName}`}
+      className={`flex md:hidden flex-nowrap px-6 gap-4 border-t z-20 bg-white ${sizeClassName} ${marginBottomClassName}`}
     >
       <LinkIcons
         route="/"

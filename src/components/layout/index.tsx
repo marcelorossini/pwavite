@@ -26,7 +26,7 @@ export default function Layout(props: ILayout) {
       <Navbar />
       <main
         className={`${
-          defaultPadding ? "p-6" : ""
+          defaultPadding ? "p-4" : ""
         } overflow-auto flex-1 relative flex justify-center`}
       >
         <div
@@ -40,7 +40,7 @@ export default function Layout(props: ILayout) {
               : ""
           }`}
         >
-          <div className="fixed top-16 right-0 opacity-80 p-6 z-10">
+          <div className="fixed top-16 right-0 opacity-80 p-4 z-10">
             <Sync />
           </div>
           {children}

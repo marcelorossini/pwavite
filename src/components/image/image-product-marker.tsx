@@ -141,8 +141,8 @@ export function DropdownProduct({
             <CachedImage
               src={`${
                 import.meta.env.VITE_STORAGE_IMAGES
-              }/promarket/Produtos/Principal/${
-                product.imagemPrincipal
+              }/promarket/Produtos/Variacoes/${
+                product.imagemVariacaoPrincipal
               }__preview.webp`}
               alt=""
               loading="lazy"

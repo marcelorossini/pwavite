@@ -69,3 +69,9 @@ body {
     display: none;
   }
 }
+
+@media (hover: none) {
+  *::-webkit-scrollbar {
+    display: none;
+  }
+}

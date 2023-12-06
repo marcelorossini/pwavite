@@ -32,7 +32,7 @@ export function SearchPortalAux() {
           !!searchText ? "h-[calc(100dvh)]" : ""
         }`}
       >
-        <div className={`px-6 ${!!searchText ? "border-b" : ""}`}>
+        <div className={`px-4 ${!!searchText ? "border-b" : ""}`}>
           <SearchBox />
         </div>
       </div>
@@ -59,7 +59,9 @@ export function SearchBox(props: { clearButton?: boolean }) {
   }, []);
 
   React.useEffect(() => {
-    setFocus("search");
+    if (isMobileOnly) {
+      setFocus("search");
+    }
   }, [setSearchOpened]);
 
   async function handleSearch(data: IFormValues) {
@@ -179,7 +181,7 @@ export function Results(props: IResultsProps) {
   return (
     <div
       className={`w-full ${
-        !!query ? "flex-1 p-6 bg-white overflow-auto" : "h-0"
+        !!query ? "flex-1 p-4 bg-white overflow-auto" : "h-0"
       }`}
     >
       <div className={`w-full h-fit ${marginBottomClassName}`}>

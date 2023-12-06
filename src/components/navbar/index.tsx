@@ -24,7 +24,7 @@ export default function Navbar() {
   const size = getSizeClassName();
   //max-w-7xl
   return (
-    <div className={`flex justify-center px-6 shadow-md z-20 bg-white ${size}`}>
+    <div className={`flex justify-center px-4 shadow-md z-20 bg-white ${size}`}>
       <div className={`flex w-full max-w-7xl items-center gap-4 lg:gap-8`}>
         <div className="w-20 relative h-full">
           <Link to="/">

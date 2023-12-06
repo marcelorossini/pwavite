@@ -5,9 +5,9 @@ import SectorList from "@/components/sector/sector-list";
 export default function Root() {
   return (
     <Layout defaultPadding={false}>
-      <div className="flex flex-col gap-6 py-6">
-        <SectorDotList className="px-6 md:p-0" />
-        <SectorList className="px-6 md:p-0"/>
+      <div className="flex flex-col gap-4 py-4">
+        <SectorDotList className="px-4 min-xl:px-0" />
+        <SectorList className="px-4 min-xl:px-0"/>
       </div>
     </Layout>
   );

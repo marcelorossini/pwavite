@@ -16,17 +16,17 @@ import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi2";
 const sliderSettings = {
   0: {
     slidesPerView: 1.2,
-    spaceBetween: 24,
+    spaceBetween: 16,
   },
   768: {
     slidesPerView: 2,
     slidesPerGroup: 2,
-    spaceBetween: 24,
+    spaceBetween: 16,
   },
   1024: {
     slidesPerView: 3,
     slidesPerGroup: 3,
-    spaceBetween: 24,
+    spaceBetween: 16,
   },
 };
 
@@ -39,10 +39,11 @@ interface IImages {
 
 interface ISectorCarousel {
   images: IImages[];
+  className?: string;
 }
 
 export default function SectorCarousel(props: ISectorCarousel) {
-  const { images } = props;
+  const { images, className } = props;
   const [lightboxCarouselOpen, setLightboxCarouselOpen] =
     React.useState<boolean>(false);
   const [lightboxCarouselSlide, setLightboxCarouselSlide] =
@@ -51,50 +52,52 @@ export default function SectorCarousel(props: ISectorCarousel) {
   const swiperRef = React.useRef<any>();
 
   return (
-    <div className="relative">
-      <PrevButton swiperRef={swiperRef} />
-      <Swiper
-        ref={swiperRef}
-        breakpoints={sliderSettings}
-        loop
-        modules={[Navigation, Autoplay]}
-        pagination={{ clickable: true }}
-        style={{ paddingLeft: isMobileOnly ? "24px" : "" }}
-        autoplay={{
-          // @ts-ignore
-          enabled: !isMobileOnly,
-          stopOnLastSlide: false,
-          pauseOnMouseEnter: true,
-          delay: 5000,
-        }}
-      >
-        {images.map((image, index) => (
-          <SwiperSlide key={index}>
-            <ImageProductMarker
-              markers={image.markers || ([] as IImageMarker[])}
-            />
-            <ImageWithLegend
-              src={image.thumbnailSrc}
-              legend={image.legend}
-              onClick={() => {
-                setLightboxCarouselSlide(index);
-                setLightboxCarouselOpen(true);
-              }}
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-      <NextButton swiperRef={swiperRef} />
-      <Lightbox
-        isOpen={lightboxCarouselOpen}
-        onClose={() => setLightboxCarouselOpen(false)}
-        index={lightboxCarouselSlide}
-        images={images.map((image) => ({
-          title: null,
-          description: image.legend,
-          src: image.src,
-        }))}
-      />
+    <div className={className}>
+      <div className="relative">
+        <PrevButton swiperRef={swiperRef} />
+        <Swiper
+          ref={swiperRef}
+          breakpoints={sliderSettings}
+          loop
+          modules={[Navigation, Autoplay]}
+          pagination={{ clickable: true }}
+          //style={{ paddingLeft: isMobileOnly ? "24px" : "" }}
+          autoplay={{
+            // @ts-ignore
+            enabled: !isMobileOnly,
+            stopOnLastSlide: false,
+            pauseOnMouseEnter: true,
+            delay: 5000,
+          }}
+        >
+          {images.map((image, index) => (
+            <SwiperSlide key={index}>
+              <ImageProductMarker
+                markers={image.markers || ([] as IImageMarker[])}
+              />
+              <ImageWithLegend
+                src={image.thumbnailSrc}
+                legend={image.legend}
+                onClick={() => {
+                  setLightboxCarouselSlide(index);
+                  setLightboxCarouselOpen(true);
+                }}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        <NextButton swiperRef={swiperRef} />
+        <Lightbox
+          isOpen={lightboxCarouselOpen}
+          onClose={() => setLightboxCarouselOpen(false)}
+          index={lightboxCarouselSlide}
+          images={images.map((image) => ({
+            title: null,
+            description: image.legend,
+            src: image.src,
+          }))}
+        />
+      </div>
     </div>
   );
 }
@@ -129,7 +132,7 @@ function NextButton({ swiperRef }: any) {
 
 export function Loading() {
   return (
-    <div className="w-full flex gap-6 overflow-hidden">
+    <div className="w-full flex gap-4 overflow-hidden">
       <div className="w-5/6 sm:w-1/2 md:w-1/3 h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse" />
       <div className="w-5/6 sm:w-1/2 md:w-1/3 h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse" />
       <div className="w-5/6 sm:w-1/2 md:w-1/3 h-full shrink-0 aspect-[4/3] bg-slate-300 animate-pulse" />

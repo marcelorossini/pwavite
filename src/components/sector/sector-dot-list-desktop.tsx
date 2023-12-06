@@ -63,7 +63,7 @@ export default function SectorCarousel({
 function PrevButton({ swiperRef }: any) {
   return (
     <button
-      className="hidden sm:flex absolute top-7 left-0 xl:left-[-2.5rem] z-50 w-10 justify-start"
+      className="flex absolute top-7 left-0 xl:left-[-2.5rem] z-50 w-10 justify-start"
       onClick={() => swiperRef.current.swiper.slidePrev()}
     >
       <HiOutlineChevronLeft
@@ -77,7 +77,7 @@ function PrevButton({ swiperRef }: any) {
 function NextButton({ swiperRef }: any) {
   return (
     <button
-      className="hidden sm:flex absolute top-6 right-0 xl:right-[-2.5rem] z-50 w-10 justify-end"
+      className="flex absolute top-6 right-0 xl:right-[-2.5rem] z-50 w-10 justify-end"
       onClick={() => swiperRef.current.swiper.slideNext()}
     >
       <HiOutlineChevronRight

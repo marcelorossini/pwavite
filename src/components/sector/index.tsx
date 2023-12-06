@@ -39,6 +39,7 @@ export default function Sector(props: ISectorProps) {
       )}
       <div className="w-full h-fit">
         <SectorCarousel
+          className={className}
           images={sectorImages.map((image) => ({
             legend: image.legenda,
             thumbnailSrc: `${
@@ -47,12 +48,12 @@ export default function Sector(props: ISectorProps) {
             src: `${
               import.meta.env.VITE_STORAGE_IMAGES
             }/promarket/Setores/Principal/${image.fileName}_.webp`,
-            markers: image.produtos.map(i => ({
+            markers: image.produtos.map((i) => ({
               x: i.x,
               y: i.y,
               placeholder: i.produto.codigo,
-              productId: i.produtoId
-            }))
+              productId: i.produtoId,
+            })),
           }))}
         />
       </div>
@@ -63,10 +64,11 @@ export default function Sector(props: ISectorProps) {
 interface ISectorHeaderProps {
   id: string;
   className?: string;
+  showText?: boolean;
 }
 
 export function SectorHeader(props: ISectorHeaderProps) {
-  const { id, className } = props;
+  const { id, className, showText = false } = props;
 
   const { isLoading, data: queryData } = useQuery(
     ["sectors", id],
@@ -86,7 +88,7 @@ export function SectorHeader(props: ISectorHeaderProps) {
         ></div>
         <strong className="text-slate-800">{data.nome}</strong>
       </div>
-      <p className="">{data.descricao}</p>
+      {showText ? <p className="">{data.descricao}</p> : null}
     </div>
   );
 }

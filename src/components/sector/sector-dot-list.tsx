@@ -37,16 +37,18 @@ export default function SectorDotList(props: ISectorDotList) {
           ))}
         </ul>
       ) : (
-        <SectorDotDesktop
-          items={sectors.map((sector) => (
-            <Item
-              key={sector.id}
-              name={sector.nome}
-              url={`/setores/${sector.id}`}
-              image={sector.icone}
-            />
-          ))}
-        />
+        <div className={className}>
+          <SectorDotDesktop
+            items={sectors.map((sector) => (
+              <Item
+                key={sector.id}
+                name={sector.nome}
+                url={`/setores/${sector.id}`}
+                image={sector.icone}
+              />
+            ))}
+          />
+        </div>
       )}
     </div>
   );
@@ -76,7 +78,7 @@ function Item(props: ISectorItemProps) {
               />
             ) : null}
           </div>
-          <small className="w-full h-8 text-xs line-clamp-2 text-center subpixel-antialiased leading-tight">
+          <small className="w-full h-4 text-xs truncate text-center subpixel-antialiased leading-tight">
             {name}
           </small>
         </div>
@@ -117,7 +119,7 @@ function LoadingItem() {
     <li className="w-full h-full flex flex-col gap-2">
       <div className="w-20 flex flex-col gap-2 relative">
         <div className="w-full h-full aspect-square rounded-full bg-slate-300 animate-pulse" />
-        <small className="w-full h-8 bg-slate-300 animate-pulse rounded-md" />
+        <small className="w-full h-4 bg-slate-300 animate-pulse rounded-md" />
       </div>
     </li>
   );

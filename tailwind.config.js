@@ -13,6 +13,13 @@ export default {
         DEFAULT: '0 0 4px rgb(0,0,0,1)',
         lg: '0 0 20px rgb(0,0,0,.8)',
       },
+      screens: {
+        'min-sm': {'min': '641px'},
+        'min-md': {'min': '769px'},
+        'min-lg': {'min': '1025px'},
+        'min-xl': {'min': '1281px'},
+        'min-2xl': {'min': '1537px'},
+      }
     },
   },
   plugins: [
