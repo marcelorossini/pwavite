@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useAppStore } from "@/stores/app";
 import { getSizeClassName as getSizeNavbarClassName } from "@/components/navbar";
 import { getMarginBottomClassName as getMarginBottomBottomBarClassName } from "@/components/bottom-bar";
-import { isMobileOnly } from "react-device-detect";
+import { isMobileOnly, isTablet } from "react-device-detect";
 
 const HEIGHT_SEARCH_BAR = 9;
 
@@ -68,7 +68,7 @@ export function SearchBox(props: { clearButton?: boolean }) {
     setSearchText(data.search);
     setSearchResultsOpened(true)
     //setSearchOpened(true)
-    if (isMobileOnly) {
+    if (isMobileOnly || isTablet) {
       // @ts-ignore
       document.activeElement.blur();
     }
