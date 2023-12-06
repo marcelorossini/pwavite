@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { useQuery } from "react-query";
 import { get, getImages } from "@/fetch/sectors";
 import { ISector } from "@/interfaces/api/sector";
@@ -45,22 +45,22 @@ export default function SectorImages(props: { id: string }) {
             onClick={() => {
               setLightboxCarouselSlide(index);
               setLightboxCarouselOpen(true);
-            }}            
+            }}
           />
         </div>
       ))}
-        <Lightbox
-          isOpen={lightboxCarouselOpen}
-          onClose={() => setLightboxCarouselOpen(false)}
-          index={lightboxCarouselSlide}
-          images={sectorImages.map((image) => ({
-            title: null,
-            description: image.legenda,
-            src: `${
-              import.meta.env.VITE_STORAGE_IMAGES
-            }/promarket/Setores/Principal/${image.fileName}_.webp`,
-          }))}
-        />      
+      <Lightbox
+        isOpen={lightboxCarouselOpen}
+        onClose={() => setLightboxCarouselOpen(false)}
+        index={lightboxCarouselSlide}
+        images={sectorImages.map((image) => ({
+          title: null,
+          description: image.legenda,
+          src: `${
+            import.meta.env.VITE_STORAGE_IMAGES
+          }/promarket/Setores/Principal/${image.fileName}_.webp`,
+        }))}
+      />
     </div>
   );
 }

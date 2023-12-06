@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
 import { isMobileOnly } from "react-device-detect";
+import { useLocation } from "react-router-dom";
 
 import SectorDotDesktop from "@/components/sector/sector-dot-list-desktop";
 
@@ -43,55 +44,32 @@ interface ISectorItemProps {
 
 function Item(props: ISectorItemProps) {
   const { name, image, url } = props;
+  const location = useLocation();
+  const pathname = location.pathname
 
   return (
-    <div className="w-full h-full flex flex-col gap-2 pl-4">
-      <div className="w-full h-full aspect-square rounded-full bg-slate-200 relative">
-        {image ? (
-          <img
-            src={`${
-              import.meta.env.VITE_STORAGE_IMAGES
-            }/promarket/Setores/Icones/${image}`}
-            alt={name}
-            className="p-2"
-          />
-        ) : null}
-      </div>
-      <small className="w-full h-4 text-xs truncate text-center subpixel-antialiased leading-tight">
-        {name}
-      </small>
-    </div>
-  );
-}
-
-/*
-function Item(props: ISectorItemProps) {
-  const { name, image, url } = props;
-
-  return (
-    <li className="w-full h-full flex flex-col items-center gap-2">
-      <Link to={url}>
-        <div className="w-20 flex flex-col gap-2 relative overflow-hidden">
-          <div className="w-full h-full aspect-square rounded-full bg-slate-200 relative">
-            {image ? (
-              <img
-                src={`${
-                  import.meta.env.VITE_STORAGE_IMAGES
-                }/promarket/Setores/Icones/${image}`}
-                alt={name}
-                className="p-2"
-              />
-            ) : null}
-          </div>
-          <small className="w-full h-4 text-xs truncate text-center subpixel-antialiased leading-tight">
-            {name}
-          </small>
+    <Link to={url}>
+      <div className="w-full h-full flex flex-col gap-2 pl-4">
+        <div className={`w-full h-full aspect-square rounded-full bg-slate-200 relative border-2 transition-all ${pathname.includes(url) ? 'border-slate-500 drop-shadow-md' :  'border-slate-200'}`}>
+          {image ? (
+            <img
+              src={`${
+                import.meta.env.VITE_STORAGE_IMAGES
+              }/promarket/Setores/Icones/${image}`}
+              alt={name}
+              className="p-2"
+            />
+          ) : null}
         </div>
-      </Link>
-    </li>
+        <small className="w-full h-4 text-xs truncate text-center subpixel-antialiased leading-tight">
+          {name}
+        </small>
+      </div>
+    </Link>
   );
 }
-*/
+
+
 
 function Loading(props: ISectorDotList) {
   const { className } = props;
@@ -123,7 +101,7 @@ function Loading(props: ISectorDotList) {
 function LoadingItem() {
   return (
     <li className="w-full h-full flex flex-col gap-2">
-      <div className="w-20 flex flex-col gap-2 relative">
+      <div className="w-28 flex flex-col gap-2 relative">
         <div className="w-full h-full aspect-square rounded-full bg-slate-300 animate-pulse" />
         <small className="w-full h-4 bg-slate-300 animate-pulse rounded-md" />
       </div>

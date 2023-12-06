@@ -5,6 +5,7 @@ import "swiper/css/navigation";
 import { FreeMode } from "swiper/modules";
 
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi2";
+import { isMobileOnly } from "react-device-detect";
 
 const sliderSettings = {
   0: {
@@ -54,7 +55,7 @@ export default function SectorCarousel({
       <Swiper
         ref={swiperRef}
         breakpoints={sliderSettings}
-        loop
+        loop={!isMobileOnly}
         modules={[FreeMode]}
         freeMode
       >
