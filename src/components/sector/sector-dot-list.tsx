@@ -22,35 +22,16 @@ export default function SectorDotList(props: ISectorDotList) {
   const sectors = data?.data as ISector[];
 
   return (
-    <div>
-      {isMobileOnly ? (
-        <ul
-          className={`w-full flex gap-2 overflow-x-auto scrollbar-hide ${className}`}
-        >
-          {sectors.map((sector) => (
-            <Item
-              key={sector.id}
-              name={sector.nome}
-              url={`/setores/${sector.id}`}
-              image={sector.icone}
-            />
-          ))}
-        </ul>
-      ) : (
-        <div className={className}>
-          <SectorDotDesktop
-            items={sectors.map((sector) => (
-              <Item
-                key={sector.id}
-                name={sector.nome}
-                url={`/setores/${sector.id}`}
-                image={sector.icone}
-              />
-            ))}
-          />
-        </div>
-      )}
-    </div>
+    <SectorDotDesktop
+      items={sectors.map((sector) => (
+        <Item
+          key={sector.id}
+          name={sector.nome}
+          url={`/setores/${sector.id}`}
+          image={sector.icone}
+        />
+      ))}
+    />
   );
 }
 
@@ -60,6 +41,30 @@ interface ISectorItemProps {
   url: string;
 }
 
+function Item(props: ISectorItemProps) {
+  const { name, image, url } = props;
+
+  return (
+    <div className="w-full h-full flex flex-col gap-2 pl-4">
+      <div className="w-full h-full aspect-square rounded-full bg-slate-200 relative">
+        {image ? (
+          <img
+            src={`${
+              import.meta.env.VITE_STORAGE_IMAGES
+            }/promarket/Setores/Icones/${image}`}
+            alt={name}
+            className="p-2"
+          />
+        ) : null}
+      </div>
+      <small className="w-full h-4 text-xs truncate text-center subpixel-antialiased leading-tight">
+        {name}
+      </small>
+    </div>
+  );
+}
+
+/*
 function Item(props: ISectorItemProps) {
   const { name, image, url } = props;
 
@@ -86,6 +91,7 @@ function Item(props: ISectorItemProps) {
     </li>
   );
 }
+*/
 
 function Loading(props: ISectorDotList) {
   const { className } = props;
