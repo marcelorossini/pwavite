@@ -1,4 +1,4 @@
-import CachedImage from "@/components/cached-image";
+import CachedImage from "@/components/image/cached-image";
 
 export default function ImageWithLegend({
   src,

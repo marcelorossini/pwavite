@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { IProduct } from "@/interfaces/api/product";
 
-import CachedImage from "@/components/cached-image";
+import CachedImage from "@/components/image/cached-image";
 
 interface IQueryParamsProps {
   [key: string]: any;

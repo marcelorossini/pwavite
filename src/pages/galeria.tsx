@@ -1,25 +1,19 @@
 import React from "react";
 import Layout from "../components/layout";
 
+import GalleryOpening from "@/components/gallery";
+
 export default function Gallery() {
   return (
-    <Layout>
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-2">
+    <Layout defaultPadding={false}>
+      <div className="flex flex-col gap-4 py-4">
+        <div className="flex flex-col gap-2 pl-4 pr-0 md:pr-4 min-xl:pl-0">
           <strong className="text-blue-700">Últimas inaugurações</strong>
           <div className="w-full h-full">
-            <div className="flex gap-2 flex-nowrap overflow-auto">
-              <ImagemInauguracoes />
-              <ImagemInauguracoes />
-              <ImagemInauguracoes />
-              <ImagemInauguracoes />
-              <ImagemInauguracoes />
-              <ImagemInauguracoes />
-              <ImagemInauguracoes />
-            </div>
+            <GalleryOpening />
           </div>
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 px-4 min-xl:px-0">
           <strong className="text-blue-700">Principais Redes</strong>
           <div className="w-full h-full">
             <div className="grid grid-cols-2 gap-2">
@@ -53,23 +47,6 @@ function ImagemLoja(props: IImagemLoja) {
       <img
         src="https://pmkt.blob.core.windows.net/promarket/Produtos/Principal/bb8b58fe6fcf4ae0bda54b01abdad135__preview.png"
         alt=" "
-        className="w-full h-full top-0 left-0 object-cover"
-      />
-      <div className="absolute bottom-0 left-0 px-2 py-1 font-medium text-sm text-white text-shadow-md">
-        NOME LOJA
-      </div>
-    </div>
-  );
-}
-
-function ImagemInauguracoes() {
-  return (
-    <div
-      className={`w-[25%] shrink-0 relative aspect-[9/16] border rounded-md overflow-hidden`}
-    >
-      <img
-        src="https://pmkt.blob.core.windows.net/promarket/Produtos/Principal/bb8b58fe6fcf4ae0bda54b01abdad135__preview.png"
-        alt=" "        
         className="w-full h-full top-0 left-0 object-cover"
       />
       <div className="absolute bottom-0 left-0 px-2 py-1 font-medium text-sm text-white text-shadow-md">

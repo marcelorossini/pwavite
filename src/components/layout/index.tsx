@@ -1,7 +1,7 @@
 import React from "react";
 import Sync from "../sync";
 
-import { MobileView, isMobileOnly } from "react-device-detect";
+import { isMobileOnly } from "react-device-detect";
 
 import Navbar from "../navbar";
 import BottomBar from "../bottom-bar";
@@ -27,7 +27,7 @@ export default function Layout(props: ILayout) {
       <main
         className={`${
           defaultPadding ? "p-4" : ""
-        } overflow-auto flex-1 relative flex justify-center`}
+        } overflow-y-scroll overflow-x-hidden flex-1 relative flex justify-center`}
       >
         <div
           className={`w-full max-w-7xl transition-transform duration-300 ${
@@ -46,9 +46,7 @@ export default function Layout(props: ILayout) {
           {children}
         </div>
       </main>
-      <MobileView>
-        <BottomBar />
-      </MobileView>
+      <BottomBar />
       <SearchPortal />
     </div>
   );

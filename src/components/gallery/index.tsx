@@ -1,73 +1,110 @@
 import React from "react";
+import Slider from "@/components/slider";
+import Lightbox from "@/components/lightbox";
 
-interface IImages {
-  src: string;
-}
-
-interface ISectorCarousel {
-  images: IImages[];
-}
-
-const teste = {
-  2: [["col-span-6", "col-span-6"]],
-  3: [],
-  4: [],
-  5: [
-    [
-      "row-span-2 col-span-4",
-      "col-span-4 max-h-48",
-      "col-span-4 max-h-48",
-      "col-span-4 max-h-48",
-      "col-span-4 max-h-48",
-    ],
-    [
-      "col-span-4 max-h-48",
-      "row-span-2 col-span-4",
-      "col-span-4 max-h-48",
-      "col-span-4 max-h-48",
-      "col-span-4 max-h-48",
-    ],
-    [
-      "col-span-4 max-h-48",
-      "col-span-4 max-h-48",
-      "row-span-2 col-span-4",
-      "col-span-4 max-h-48",
-      "col-span-4 max-h-48",
-    ],
-  ],
-  6: [],
+const sliderSettings = {
+  0: {
+    slidesPerView: 3.7,
+  },
+  400: {
+    slidesPerView: 4.7,
+  },
+  590: {
+    slidesPerView: 5.7,
+  },
+  690: {
+    slidesPerView: 6.7,
+    slidesPerGroup: 7,
+  },
+  767: {
+    slidesPerView: 7,
+    slidesPerGroup: 7,
+  },
+  790: {
+    slidesPerView: 8,
+    slidesPerGroup: 8,
+  },
+  890: {
+    slidesPerView: 9,
+    slidesPerGroup: 9,
+  },
+  990: {
+    slidesPerView: 10,
+    slidesPerGroup: 10,
+  },
+  1190: {
+    slidesPerView: 12,
+    slidesPerGroup: 12,
+  },
+  1290: {
+    slidesPerView: 14,
+    slidesPerGroup: 14,
+  },
 };
 
-export default function GalleryComponent(props: ISectorCarousel) {
-  const { images } = props;
-  const imageDispositionArray = teste[5];
-  const arrayFinal = getRandomFromArray(imageDispositionArray);
+export default function Gallery() {
+  const [lightboxCarouselOpen, setLightboxCarouselOpen] =
+    React.useState<boolean>(false);
 
-  return (
-    <div className="grid grid-flow-row-dense grid-cols-12 gap-2">
-      {images.map((image, index) => (
-        <ItemGrid key={index} className={`${arrayFinal[index]}`} src={image.src} />
-      ))}
-    </div>
-  );
-}
-
-function ItemGrid(props: { className: string; src: string }) {
-  const { className, src } = props;
   return (
     <>
-      <div className={`relative ${className}`}>
-        <img src={src} className="w-full h-full object-cover" />
-        <strong className="absolute bottom-0 left-0 px-4 py-2 text-white text-shadow-lg">
-          TESTE
-        </strong>
-      </div>
+      <Slider
+        data={[
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+        ]}
+        breakpoints={sliderSettings}
+        spaceBetween={8}
+        imageComponent={({ data, onClick }) => {
+          return (
+            <ImagemInauguracoes
+              onClick={() => {
+                setLightboxCarouselOpen(true);
+              }}
+            />
+          );
+        }}
+      />
+      <Lightbox
+        isOpen={lightboxCarouselOpen}
+        onClose={() => setLightboxCarouselOpen(false)}
+        images={[]}
+      />
     </>
   );
 }
 
-function getRandomFromArray(originalArray: any[]) {
-  if ((originalArray?.length || 0) == 0) return undefined;
-  const random = Math.floor(Math.random() * originalArray.length);
-  return originalArray[random];
+function ImagemInauguracoes(props: any) {
+  return (
+    <div
+      {...props}
+      className={`w-full shrink-0 relative aspect-[9/16] border rounded-md overflow-hidden`}
+    >
+      <img
+        src="https://pmkt.blob.core.windows.net/promarket/Produtos/Principal/bb8b58fe6fcf4ae0bda54b01abdad135__preview.png"
+        alt=" "
+        className="w-full h-full top-0 left-0 object-cover"
+      />
+      <div className="absolute bottom-0 left-0 px-2 py-1 font-medium text-sm text-white text-shadow-md">
+        NOME LOJA
+      </div>
+    </div>
+  );
 }

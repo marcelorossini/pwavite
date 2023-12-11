@@ -3,6 +3,7 @@ import { getStoreDataByKey, Stores, IStoreImages } from "@/utils/db";
 import { CiImageOff } from "react-icons/ci";
 import { useAppStore } from "@/stores/app";
 import { convertToOfflineImage } from "@/utils/image";
+import Loading from '@/assets/loading.svg'
 
 export default function CachedImage(props: any) {
   const {
@@ -59,6 +60,9 @@ export default function CachedImage(props: any) {
         loading={isOnline ? loadingProps : "eager"}
         onLoad={() => setIsLoading(oldState => false)}
       />
+      <div className={`${isLoading ? 'flex': 'hidden'} absolute top-0 left-0 w-full h-full  items-center justify-center`}>
+        <img src={Loading} className="w-7" />
+      </div>
     </>
   );
 }

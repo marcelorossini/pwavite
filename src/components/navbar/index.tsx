@@ -8,7 +8,7 @@ import { useAppStore } from "@/stores/app";
 import { SearchBox, SearchBoxButton } from "../search-portal";
 import LinkIcons from "../link-icons";
 import { isMobileOnly } from "react-device-detect";
-import CachedImage from "@/components/cached-image";
+import CachedImage from "@/components/image/cached-image";
 
 import {
   HiOutlineHeart,
@@ -42,12 +42,11 @@ export default function Navbar() {
           </strong>
           <small>Usuário | {isOnline ? "online" : "offline"}</small>
         </div>
-        <div className="flex-1 flex justify-end">
-          {isMobileOnly ? (
-            <SearchBoxButton />
-          ) : (
-            <SearchBox clearButton={false} />
-          )}
+        <div className="hidden md:flex flex-1 justify-end">
+          <SearchBox clearButton={false} />
+        </div>
+        <div className="flex md:hidden flex-1 justify-end">
+          <SearchBoxButton />
         </div>
         <div className="hidden md:block">
           <LinkIcons

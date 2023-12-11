@@ -75,3 +75,11 @@ body {
     display: none;
   }
 }
+
+img {
+  user-select: none;
+}
+
+.rtl {
+  direction: rtl;
+}

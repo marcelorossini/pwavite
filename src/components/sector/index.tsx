@@ -77,7 +77,13 @@ export function SectorHeader(props: ISectorHeaderProps) {
   const data = queryData?.data as ISector;
 
   if (isLoading)
-    return <LoadingItem className={className} withCarousel={false} />;
+    return (
+      <LoadingItem
+        className={className}
+        withCarousel={false}
+        showText={showText}
+      />
+    );
 
   return (
     <div className={`flex flex-col gap-4 ${className}`}>
@@ -96,12 +102,15 @@ export function SectorHeader(props: ISectorHeaderProps) {
 export function LoadingItem(props: {
   className?: string;
   withCarousel?: boolean;
+  showText?: boolean;
 }) {
-  const { className, withCarousel = true } = props;
+  const { className, withCarousel = true, showText } = props;
   return (
     <div className={`flex flex-col gap-4 ${className}`}>
       <div className="w-full h-6 bg-slate-300 animate-pulse rounded-md" />
-      <div className="w-full h-32 md:h-4 bg-slate-300 animate-pulse rounded-md" />
+      {showText ? (
+        <div className="w-full h-32 md:h-4 bg-slate-300 animate-pulse rounded-md" />
+      ) : null}
       {withCarousel ? <LoadingCarousel /> : null}
     </div>
   );

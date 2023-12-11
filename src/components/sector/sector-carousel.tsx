@@ -1,17 +1,13 @@
 import React from "react";
-import { Swiper, SwiperSlide, useSwiper, SwiperRef } from "swiper/react";
-import { Navigation, Autoplay, Pagination } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import { isMobileOnly } from "react-device-detect";
 
-import Lightbox from "@/components/lightbox";
 import ImageProductMarker, {
   IImageMarker,
 } from "@/components/image/image-product-marker";
 import ImageWithLegend from "@/components/image/image-with-legend";
+import { isMobileOnly } from "react-device-detect";
 
-import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi2";
+
+import Slider from "@/components/slider";
 
 const sliderSettings = {
   0: {
@@ -44,89 +40,35 @@ interface ISectorCarousel {
 
 export default function SectorCarousel(props: ISectorCarousel) {
   const { images, className } = props;
-  const [lightboxCarouselOpen, setLightboxCarouselOpen] =
-    React.useState<boolean>(false);
-  const [lightboxCarouselSlide, setLightboxCarouselSlide] =
-    React.useState<number>(0);
-
-  const swiperRef = React.useRef<any>();
 
   return (
-    <div className={className}>
-      <div className="relative">
-        <PrevButton swiperRef={swiperRef} />
-        <Swiper
-          ref={swiperRef}
-          breakpoints={sliderSettings}
-          loop
-          modules={[Navigation, Autoplay]}
-          pagination={{ clickable: true }}
-          //style={{ paddingLeft: isMobileOnly ? "24px" : "" }}
-          autoplay={{
-            // @ts-ignore
-            enabled: !isMobileOnly,
-            stopOnLastSlide: false,
-            pauseOnMouseEnter: true,
-            delay: 5000,
-          }}
-        >
-          {images.map((image, index) => (
-            <SwiperSlide key={index}>
-              <ImageProductMarker
-                markers={image.markers || ([] as IImageMarker[])}
-              />
-              <ImageWithLegend
-                src={image.thumbnailSrc}
-                legend={image.legend}
-                onClick={() => {
-                  setLightboxCarouselSlide(index);
-                  setLightboxCarouselOpen(true);
-                }}
-              />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-        <NextButton swiperRef={swiperRef} />
-        <Lightbox
-          isOpen={lightboxCarouselOpen}
-          onClose={() => setLightboxCarouselOpen(false)}
-          index={lightboxCarouselSlide}
-          images={images.map((image) => ({
-            title: null,
-            description: image.legend,
-            src: image.src,
-          }))}
-        />
-      </div>
-    </div>
-  );
-}
-
-function PrevButton({ swiperRef }: any) {
-  return (
-    <button
-      className="hidden md:flex absolute top-0 left-0 z-10 w-10 h-full items-center justify-center"
-      onClick={() => swiperRef.current.swiper.slidePrev()}
-    >
-      <HiOutlineChevronLeft
-        size={40}
-        className="text-white drop-shadow-[0_0_10px_rgb(0,0,0,1)] transition-all hover:scale-125"
-      />
-    </button>
-  );
-}
-
-function NextButton({ swiperRef }: any) {
-  return (
-    <button
-      className="hidden md:flex absolute top-0 right-0 z-10 w-10 h-full items-center justify-center"
-      onClick={() => swiperRef.current.swiper.slideNext()}
-    >
-      <HiOutlineChevronRight
-        size={40}
-        className="text-white drop-shadow-[0_0_10px_rgb(0,0,0,1)] transition-all hover:scale-125"
-      />
-    </button>
+    <Slider
+      data={images}
+      className={className}
+      breakpoints={sliderSettings}
+      lightbox={true}
+      imageComponent={({data, onClick}) => {
+        return (
+          <>
+            <ImageProductMarker
+              markers={data.markers || ([] as IImageMarker[])}
+            />
+            <ImageWithLegend
+              src={data.thumbnailSrc}
+              legend={data.legend}
+              onClick={onClick}
+            />
+          </>
+        );
+      }}
+      autoplay={{
+        // @ts-ignore
+        enabled: !isMobileOnly,
+        stopOnLastSlide: false,
+        pauseOnMouseEnter: true,
+        delay: 5000,
+      }}
+    />
   );
 }
 

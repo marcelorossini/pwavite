@@ -7,16 +7,26 @@ import { FreeMode } from "swiper/modules";
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi2";
 import { isMobileOnly } from "react-device-detect";
 
+import Slider from "@/components/slider";
+
 const sliderSettings = {
   0: {
     slidesPerView: 3.7,
     slidesPerGroup: 1,
   },
+  400: {
+    slidesPerView: 4.7,
+    slidesPerGroup: 1,
+  },  
   590: {
-    slidesPerView: 6,
-    slidesPerGroup: 6,
+    slidesPerView: 5.7,
+    slidesPerGroup: 1,
   },
   690: {
+    slidesPerView: 6.7,
+    slidesPerGroup: 7,
+  },
+  767: {
     slidesPerView: 7,
     slidesPerGroup: 7,
   },
@@ -44,54 +54,27 @@ const sliderSettings = {
 
 export default function SectorCarousel({
   items,
+  initialSlide,
 }: {
   items: React.ReactNode[];
+  initialSlide?: number;
 }) {
-  const swiperRef = React.useRef<any>();
 
   return (
-    <div className="relative">
-      <PrevButton swiperRef={swiperRef} />
-      <Swiper
-        ref={swiperRef}
+    <div className="relative md:px-8 xl:px-0">
+      <Slider
+        data={items}
         breakpoints={sliderSettings}
-        loop={!isMobileOnly}
-        modules={[FreeMode]}
-        freeMode
-      >
-        {items.map((item, index) => (
-          <SwiperSlide key={index}>{item}</SwiperSlide>
-        ))}
-      </Swiper>
-      <NextButton swiperRef={swiperRef} />
+        initialSlide={initialSlide}
+        imageComponent={({ data, index, onClick }) => {
+          return <SwiperSlide key={index}>{data}</SwiperSlide>;
+        }}
+        buttonsOptions={{
+          color: "#59729C",
+          leftClassName: 'hidden md:flex absolute top-0 left-[-2.5rem] h-full pb-4 z-10 w-10 justify-start items-center pl-2',
+          rightClassName: 'hidden md:flex absolute top-0 right-[-2.5rem] h-full pb-4 z-10 w-10 justify-end items-center pr-2'
+        }}
+      />
     </div>
-  );
-}
-
-function PrevButton({ swiperRef }: any) {
-  return (
-    <button
-      className="hidden md:flex absolute top-7 left-0 xl:left-[-2.5rem] z-50 w-10 justify-start"
-      onClick={() => swiperRef.current.swiper.slidePrev()}
-    >
-      <HiOutlineChevronLeft
-        size={30}
-        className="text-[#59729C] transition-all hover:scale-125"
-      />
-    </button>
-  );
-}
-
-function NextButton({ swiperRef }: any) {
-  return (
-    <button
-      className="hidden md:flex absolute top-6 right-0 xl:right-[-2.5rem] z-50 w-10 justify-end"
-      onClick={() => swiperRef.current.swiper.slideNext()}
-    >
-      <HiOutlineChevronRight
-        size={30}
-        className="text-[#59729C] transition-all hover:scale-125"
-      />
-    </button>
   );
 }

@@ -3,7 +3,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { isMobileOnly } from "react-device-detect";
 
-import CachedImage from "@/components/cached-image";
+import CachedImage from "@/components/image/cached-image";
 import { SectorHeader } from "@/components/sector/index";
 import ProductListBySector from "@/components/product/product-list-by-sector";
 import Select from "@/components/forms/select";
@@ -21,6 +21,9 @@ import { IFinishing } from "@/interfaces/api/finishing";
 import { IProduct } from "@/interfaces/api/product";
 import { IDimension } from "@/interfaces/api/dimension";
 import { IImage } from "@/interfaces/api/image";
+
+import Breadcrumbs from '@/components/breadcrumbs'
+
 
 interface IProdutoProps {}
 
@@ -61,6 +64,8 @@ export default function Produto(props: IProdutoProps) {
 
   return (
     <Layout>
+      <Breadcrumbs />
+
       {isLoadingProduct ? (
         "Carregando..."
       ) : (

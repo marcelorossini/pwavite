@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDisclosure } from "@mantine/hooks";
 import { Popover, Text, Button } from "@mantine/core";
 import { isMobileOnly } from "react-device-detect";
-import CachedImage from "@/components/cached-image";
+import CachedImage from "@/components/image/cached-image";
 import { get } from "@/fetch/products";
 import { useQuery } from "react-query";
 import { IProduct } from "@/interfaces/api/product";
@@ -109,7 +109,7 @@ export function DotClickArea(props: {
     <div
       className="absolute top-[-2rem] left-[-2rem] w-[4rem] h-[4rem] z-50 cursor-pointer"
       onMouseEnter={open}
-      //onMouseLeave={close}
+      onMouseLeave={close}
       onClick={handleClick}
     />
   );

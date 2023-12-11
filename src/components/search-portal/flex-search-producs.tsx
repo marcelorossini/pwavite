@@ -7,7 +7,7 @@ import { useAppStore } from "@/stores/app";
 import Document from "flexsearch/dist/module/document";
 import removeAccents from "remove-accents";
 
-import CachedImage from "@/components/cached-image";
+import CachedImage from "@/components/image/cached-image";
 import { getAll } from "@/fetch/products";
 
 interface IFlexSearchProductsProps {
