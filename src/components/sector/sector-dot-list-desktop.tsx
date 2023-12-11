@@ -14,10 +14,6 @@ const sliderSettings = {
     slidesPerView: 3.7,
     slidesPerGroup: 1,
   },
-  400: {
-    slidesPerView: 4.7,
-    slidesPerGroup: 1,
-  },  
   590: {
     slidesPerView: 5.7,
     slidesPerGroup: 1,

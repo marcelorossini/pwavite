@@ -6,9 +6,6 @@ const sliderSettings = {
   0: {
     slidesPerView: 3.7,
   },
-  400: {
-    slidesPerView: 4.7,
-  },
   590: {
     slidesPerView: 5.7,
   },
