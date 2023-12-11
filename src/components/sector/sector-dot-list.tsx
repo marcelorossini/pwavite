@@ -19,14 +19,17 @@ export default function SectorDotList(props: ISectorDotList) {
   const { className = "" } = props;
   const { isLoading, data } = useQuery(["sectors"], getAll);
   const location = useLocation();
-  const pathname = location.pathname
+  const pathname = location.pathname;
 
   if (isLoading) return <Loading className={className} />;
 
   const sectors = data?.data as ISector[];
-//pathname.includes(url)
+  //pathname.includes(url)
 
-const activeSector = sectors.map((item, index) => ({id: item.id, index})).filter((item) => pathname.includes(item.id))[0] || {}
+  const activeSector =
+    sectors
+      .map((item, index) => ({ id: item.id, index }))
+      .filter((item) => pathname.includes(item.id))[0] || {};
 
   return (
     <SectorDotDesktop
@@ -48,7 +51,7 @@ interface ISectorItemProps {
   name: string;
   image: string;
   url: string;
-  active?: boolean
+  active?: boolean;
 }
 
 function Item(props: ISectorItemProps) {
@@ -57,7 +60,11 @@ function Item(props: ISectorItemProps) {
   return (
     <Link to={url}>
       <div className="w-full h-full flex flex-col gap-2 pl-4 md:px-2">
-        <div className={`w-full h-full aspect-square rounded-full bg-slate-200 relative border-2 transition-all overflow-hidden ${active ? 'border-slate-500 drop-shadow-md' :  'border-slate-200'}`}>
+        <div
+          className={`w-full h-full aspect-square rounded-full bg-slate-200 relative border-2 transition-all overflow-hidden ${
+            active ? "border-slate-500 drop-shadow-md" : "border-slate-200"
+          }`}
+        >
           {image ? (
             <CachedImage
               src={`${
@@ -75,8 +82,6 @@ function Item(props: ISectorItemProps) {
     </Link>
   );
 }
-
-
 
 function Loading(props: ISectorDotList) {
   const { className } = props;

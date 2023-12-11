@@ -3,7 +3,7 @@ import SectorCarousel, { Loading as LoadingCarousel } from "./sector-carousel";
 import { Link } from "react-router-dom";
 import { isMobileOnly } from "react-device-detect";
 import { useQuery } from "react-query";
-import Gallery from "@/components/gallery";
+import Gallery from "@/components/gallery/opening";
 
 import { get, getImages } from "@/fetch/sectors";
 import { ISector } from "@/interfaces/api/sector";

@@ -52,15 +52,13 @@ export default function CachedImage(props: any) {
     <>
       <img
         {...props}
-        className={`${classNameProps} ${
-          !isLoading ? "" : "bg-slate-200"
-        }`}
+        className={`${classNameProps}`}
         src={srcFinal}
         original-url={srcProps}
         loading={isOnline ? loadingProps : "eager"}
         onLoad={() => setIsLoading(oldState => false)}
       />
-      <div className={`${isLoading ? 'flex': 'hidden'} absolute top-0 left-0 w-full h-full  items-center justify-center`}>
+      <div className={`${isLoading ? 'flex bg-slate-100': 'hidden'} absolute top-0 left-0 w-full h-full  items-center justify-center`}>
         <img src={Loading} className="w-7" />
       </div>
     </>

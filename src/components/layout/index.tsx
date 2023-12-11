@@ -10,16 +10,20 @@ import SearchPortal from "../search-portal";
 export interface ILayout {
   children: React.ReactNode;
   defaultPadding?: boolean;
+  animationObserver?: any;
 }
 
 export default function Layout(props: ILayout) {
-  const { children, defaultPadding = true } = props;
+  const { children, defaultPadding = true, animationObserver } = props;
   const [startAnimation, setStartAnimation] = React.useState(true);
 
   React.useEffect(() => {
+    setStartAnimation((oldState) => true);
     if (!isMobileOnly) return;
-    setStartAnimation((oldState) => false);
-  }, []);
+    setTimeout(() => {
+      setStartAnimation((oldState) => false);
+    },100)
+  }, [animationObserver]);
 
   return (
     <div className="h-[calc(100dvh)] flex flex-col overscroll-none overflow-hidden">
@@ -30,7 +34,7 @@ export default function Layout(props: ILayout) {
         } overflow-y-scroll overflow-x-hidden flex-1 relative flex justify-center`}
       >
         <div
-          className={`w-full max-w-7xl transition-transform duration-300 ${
+          className={`w-full max-w-7xl transition-transform duration-200 ${
             isMobileOnly
               ? `transform ${
                   startAnimation

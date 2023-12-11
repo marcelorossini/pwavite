@@ -1,7 +1,8 @@
 import React from "react";
 import Layout from "../components/layout";
 
-import GalleryOpening from "@/components/gallery";
+import GalleryOpening from "@/components/gallery/opening";
+import PrincipalStores from "@/components/gallery/principal-stores";
 
 export default function Gallery() {
   return (
@@ -15,43 +16,10 @@ export default function Gallery() {
         </div>
         <div className="flex flex-col gap-2 px-4 min-xl:px-0">
           <strong className="text-blue-700">Principais Redes</strong>
-          <div className="w-full h-full">
-            <div className="grid grid-cols-2 gap-2">
-              <ImagemLoja />
-              <ImagemLoja />
-              <ImagemLoja className="col-span-2" />
-              <ImagemLoja />
-              <ImagemLoja />
-              <ImagemLoja className="col-span-2" />
-              <ImagemLoja />
-              <ImagemLoja />
-              <ImagemLoja className="col-span-2" />
-            </div>
-          </div>
+          <PrincipalStores />
         </div>
       </div>
     </Layout>
   );
 }
 
-interface IImagemLoja {
-  className?: string;
-}
-
-function ImagemLoja(props: IImagemLoja) {
-  const { className } = props;
-  return (
-    <div
-      className={`w-full relative aspect-[4/3] border rounded-md overflow-hidden ${className}`}
-    >
-      <img
-        src="https://pmkt.blob.core.windows.net/promarket/Produtos/Principal/bb8b58fe6fcf4ae0bda54b01abdad135__preview.png"
-        alt=" "
-        className="w-full h-full top-0 left-0 object-cover"
-      />
-      <div className="absolute bottom-0 left-0 px-2 py-1 font-medium text-sm text-white text-shadow-md">
-        NOME LOJA
-      </div>
-    </div>
-  );
-}

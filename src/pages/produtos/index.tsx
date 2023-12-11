@@ -84,9 +84,7 @@ export default function Produto(props: IProdutoProps) {
                 } pb-4`}
               >
                 <div
-                  className={`relative overflow-hidden ${
-                    otherImages.length > 0 ? "aspect-square" : ""
-                  }`}
+                  className={`relative overflow-hidden aspect-[4/3]`}
                 >
 
                   {!!product ? (

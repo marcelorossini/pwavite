@@ -55,6 +55,12 @@ export default function Slider(props: ISlider) {
 
   const swiperRef = React.useRef<any>();
 
+  React.useEffect(() => {
+    if (!swiperRef.current) return;
+    if (!restOfProps?.initialSlide) return;
+    swiperRef.current.swiper.slideTo(restOfProps.initialSlide);
+  }, [restOfProps?.initialSlide]);
+
   return (
     <div className={className}>
       <div className="relative">
@@ -104,12 +110,18 @@ export default function Slider(props: ISlider) {
 function PrevButton({ swiperRef, options }: any) {
   return (
     <button
-      className={options?.leftClassName ? options?.leftClassName : "hidden md:flex absolute top-0 left-0 z-10 w-10 h-full items-center justify-center"}
+      className={
+        options?.leftClassName
+          ? options?.leftClassName
+          : "hidden md:flex absolute top-0 left-0 z-10 w-10 h-full items-center justify-center"
+      }
       onClick={() => swiperRef.current.swiper.slidePrev()}
     >
       <HiOutlineChevronLeft
         size={30}
-        className={`${options?.color ? `text-[${options?.color}]` : 'text-white'}  drop-shadow-[0_0_10px_rgb(0,0,0,1)] transition-all hover:scale-125`}
+        className={`${
+          options?.color ? `text-[${options?.color}]` : "text-white"
+        }  drop-shadow-[0_0_10px_rgb(0,0,0,1)] transition-all hover:scale-125`}
       />
     </button>
   );
@@ -118,12 +130,18 @@ function PrevButton({ swiperRef, options }: any) {
 function NextButton({ swiperRef, options }: any) {
   return (
     <button
-      className={options?.rightClassName ? options?.rightClassName : "hidden md:flex absolute top-0 right-0 z-10 w-10 h-full items-center justify-center"}
+      className={
+        options?.rightClassName
+          ? options?.rightClassName
+          : "hidden md:flex absolute top-0 right-0 z-10 w-10 h-full items-center justify-center"
+      }
       onClick={() => swiperRef.current.swiper.slideNext()}
     >
       <HiOutlineChevronRight
         size={30}
-        className={`${options?.color ? `text-[${options?.color}]` : 'text-white'}  drop-shadow-[0_0_10px_rgb(0,0,0,1)] transition-all hover:scale-125`}
+        className={`${
+          options?.color ? `text-[${options?.color}]` : "text-white"
+        }  drop-shadow-[0_0_10px_rgb(0,0,0,1)] transition-all hover:scale-125`}
       />
     </button>
   );
