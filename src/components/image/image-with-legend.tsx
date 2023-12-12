@@ -4,15 +4,20 @@ export default function ImageWithLegend({
   src,
   legend,
   onClick,
-  loading
+  loading,
+  className,
 }: {
   src: string;
   legend?: string;
   onClick?: () => void;
   loading?: string;
+  className?: string;
 }) {
   return (
-    <div className="w-full aspect-[4/3] relative overflow-hidden" onClick={onClick}>
+    <div
+      className={`${className} w-full aspect-[4/3] relative overflow-hidden`}
+      onClick={onClick}
+    >
       <CachedImage
         src={src}
         alt=""
@@ -21,7 +26,12 @@ export default function ImageWithLegend({
       />
 
       <p className="absolute bottom-0 left-0 px-4 py-2 text-white text-shadow-lg font-medium">
-        {legend}
+        <span className="relative z-[1]">{legend}</span>
+        {!!legend ? (
+          <div className="absolute z-0 top-0 left-0 w-full h-full bg-black blur-xl opacity-30">
+            <span className="invisible">{legend}</span>
+          </div>
+        ) : null}
       </p>
     </div>
   );
