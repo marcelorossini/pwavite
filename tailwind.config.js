@@ -12,6 +12,7 @@ export default {
         sm: '0 0 2px rgb(0,0,0,1)',
         DEFAULT: '0 0 4px rgb(0,0,0,1)',
         lg: '0 0 20px rgb(0,0,0,.8)',
+        xl: '0 0 20px rgb(0,0,0,1)',
       },
       screens: {
         'min-sm': {'min': '641px'},

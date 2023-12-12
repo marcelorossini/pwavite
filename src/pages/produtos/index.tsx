@@ -11,7 +11,7 @@ import Layout from "@/components/layout";
 import Lightbox from "@/components/lightbox";
 import { InputComponent } from "@/components/forms";
 import { modals } from "@mantine/modals";
-import { notifications } from '@mantine/notifications';
+import { notifications } from "@mantine/notifications";
 
 import { get } from "@/fetch/products";
 import { getByProductId as getFinishingByProductId } from "@/fetch/finishing";
@@ -23,9 +23,8 @@ import { IProduct } from "@/interfaces/api/product";
 import { IDimension } from "@/interfaces/api/dimension";
 import { IImage } from "@/interfaces/api/image";
 
-import Breadcrumbs from '@/components/breadcrumbs'
+import Breadcrumbs from "@/components/breadcrumbs";
 import { IoInformationOutline } from "react-icons/io5";
-
 
 interface IProdutoProps {}
 
@@ -54,14 +53,14 @@ export default function Produto(props: IProdutoProps) {
 
   //const otherImages  = productImages.filter((image) => !image.padrao);
   const otherImages = [] as IImage[]; //productImages.filter((image) => !image.padrao);
-  const storeImages = productImages//.filter((image) => !image.padrao);
+  const storeImages = productImages; //.filter((image) => !image.padrao);
 
   const handleAddList = () => {
     notifications.show({
       //title: 'Default notification',
-      message: 'Item adicionado a lista',
-      icon: <IoInformationOutline />
-    })
+      message: "Item adicionado a lista",
+      icon: <IoInformationOutline />,
+    });
     /*
     modals.openConfirmModal({
       title: "Confirma a adição a lista?",
@@ -73,7 +72,12 @@ export default function Produto(props: IProdutoProps) {
 
   return (
     <Layout>
-      <Breadcrumbs />
+      <Breadcrumbs
+        items={[
+          { title: "HOME", href: "/" },
+          { title: product.codigo, href: "#" },
+        ]}
+      />
 
       {isLoadingProduct ? (
         "Carregando..."
@@ -92,10 +96,7 @@ export default function Produto(props: IProdutoProps) {
                   otherImages.length > 0 ? "3" : "4"
                 } pb-4`}
               >
-                <div
-                  className={`relative overflow-hidden aspect-[4/3]`}
-                >
-
+                <div className={`relative overflow-hidden aspect-[4/3]`}>
                   {!!product ? (
                     <>
                       <CachedImage

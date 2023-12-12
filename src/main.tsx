@@ -17,7 +17,7 @@ const updateSW = registerSW({
       title: 'Atualização',
       children: (
         <div>
-          Há uma nova versão disponivel, deseja atulizar agora?
+          Há uma nova versão disponivel, deseja atualizar agora?
         </div>
       ),
       labels: { confirm: 'Confirm', cancel: 'Cancel' },

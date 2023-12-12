@@ -24,7 +24,7 @@ export default function SectorImages(props: { id: string }) {
   const sectorImages = data?.data as ISectorImages[];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-4">
       {sectorImages.map((image, index) => (
         <div className="relative" key={image.fileName}>
           <ImageProductMarker

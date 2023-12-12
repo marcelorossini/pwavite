@@ -89,7 +89,7 @@ function WrapperIcon({
   return (
     <div
       className={`transition-all opacity-0 ${
-        imageState == condition ? "flex bg-slate-100 opacity-100" : "hidden"
+        imageState == condition ? "flex border border-slate-100 opacity-100" : "hidden"
       } absolute top-0 left-0 w-full h-full  items-center justify-center`}
     >
       {children}

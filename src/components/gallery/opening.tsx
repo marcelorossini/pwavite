@@ -99,7 +99,7 @@ function ImagemInauguracoes(props: any) {
         alt=" "
         className="w-full h-full top-0 left-0 object-cover"
       />
-      <div className="absolute bottom-0 left-0 px-2 py-1 font-medium text-sm text-white text-shadow-md">
+      <div className="absolute bottom-0 left-0 px-2 py-1 font-medium text-sm text-white text-shadow-xl">
         NOME LOJA
       </div>
     </div>

@@ -10,13 +10,15 @@ export default function PrincipalStores() {
 
   if (isLoading) return <>loading</>;
 
+    if ((data?.data?.length || 0) == 0) return <>Sem dados</>
+
   return (
     <div className="w-full h-full">
       <div className="grid grid-cols-2 md:grid-cols-6 gap-2">
         {data?.data.map((store, index) => {
           let className = "";
           if (!isMobileOnly) {
-
+            className = "col-span-2";
           } else {
               if ((index + 1) % 3 == 0) className = "col-span-2";
           }
@@ -48,19 +50,18 @@ interface IStoreImage {
 
 function StoreImage(props: IStoreImage) {
   const { className, data } = props;
-  const capa = data?.redeImagem?.find(i => !!i.capa)?.imagem?.fileName;
   return (
     <div
-      className={`w-full relative aspect-[4/3] border rounded-md overflow-hidden ${className}`}
+      className={`w-full relative aspect-[4/3] overflow-hidden ${className} cursor-pointer`}
     >
       <CachedImage
         src={`${
             import.meta.env.VITE_STORAGE_IMAGES
-          }/promarket/Imagens/${capa}__preview.webp`}
+          }/promarket/Imagens/${data?.redeImagem?.find(i => !!i.capa)?.imagem?.fileName}__preview.webp`}
         alt=" "
         className="w-full h-full top-0 left-0 object-cover"
       />
-      <div className="absolute bottom-0 left-0 px-2 py-1 font-medium text-sm text-white text-shadow-md">
+      <div className="absolute bottom-0 left-0 px-2 py-1 font-medium text-sm text-white text-shadow-lg">
         {data.nome}
       </div>
     </div>
