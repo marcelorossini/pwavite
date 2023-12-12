@@ -1,37 +1,34 @@
-import { Breadcrumbs, Anchor } from "@mantine/core";
-import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi2";
-import { useNavigate, Link  } from "react-router-dom";
+import { Breadcrumbs } from "@mantine/core";
+import { HiOutlineChevronRight } from "react-icons/hi2";
+import { Link } from "react-router-dom";
 
 const items = [
   { title: "HOME", href: "/" },
   { title: "FLORES E JARDINAGEM", href: "#" },
   { title: "EXP90118", href: "#" },
 ].map((item, index) => (
-  <Link className="text-xs hover:bg-slate-200 p-2 rounded-md" to={item.href} key={index}>
+  <Link
+    className="text-xs px-1 first:pl-0 rounded-md"
+    to={item.href}
+    key={index}
+  >
     {item.title}
   </Link>
 ));
 
 export default function BreadcrumbsComponent() {
-  const navigate = useNavigate();
-
   return (
-    <div className="w-full flex pb-4 gap-4">
-      <div className="xl:hidden w-8 h-8 bg-slate-200 text-slate-800 flex items-center justify-center rounded-md cursor-pointer" onClick={() => navigate(-1)}>
-        <HiOutlineChevronLeft size={20} />
-      </div>
-      <div className="h-8 flex-1 overflow-hidden flex justify-start relative">
+    <div className="w-full flex pb-4 gap-2">
+    <div className="w-1 bg-blue-500 rounded-md"/>
+      <div className="flex-1 overflow-hidden flex justify-start relative">
         <div className="w-fit h-full overflow-hidden flex items-center rounded-md ">
-          <Breadcrumbs separator={<HiOutlineChevronRight size={20}/> } separatorMargin={0}>
+          <Breadcrumbs
+            separator={<HiOutlineChevronRight size={12} />}
+            separatorMargin={0}
+          >
             {items}
           </Breadcrumbs>
         </div>
-        {/*
-        
-        <div className="absolute top-0 right-0 w-8 h-full bg-gradient-to-l from-white border">
-            
-        </div>
-        */}
       </div>
     </div>
   );
