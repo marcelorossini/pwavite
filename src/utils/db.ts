@@ -163,6 +163,26 @@ export const getStoreDataByKey = <T>(
   });
 };
 
+export const checkExists = <T>(storeName: Stores, key: string): Promise<T> => {
+  return new Promise((resolve, reject) => {
+    let request: IDBOpenDBRequest = window.indexedDB.open(DBNAME);
+
+    request.onsuccess = () => {
+      //console.log("request.onsuccess - getStoreDataByKey");
+      let db: IDBDatabase = request.result;
+      if (!checkStoreCreated(db, storeName)) reject(false);
+      const tx = db.transaction(storeName, "readonly");
+      const store = tx.objectStore(storeName);
+      var cursorRequest = store.openCursor(key);
+      cursorRequest.onsuccess = function (event) {
+        // @ts-ignore
+        var cursor = event.result;
+        resolve(cursor);
+      };
+    };
+  });
+};
+
 export const countStoreData = <T>(storeName: Stores): Promise<number> => {
   return new Promise((resolve) => {
     let request: IDBOpenDBRequest = window.indexedDB.open(DBNAME);
@@ -178,7 +198,6 @@ export const countStoreData = <T>(storeName: Stores): Promise<number> => {
     };
   });
 };
-
 
 export const clearDatabase = (): Promise<boolean> => {
   return new Promise((resolve) => {

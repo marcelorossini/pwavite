@@ -3,6 +3,7 @@ import { useQuery } from "react-query";
 import { GetAllPrincipal } from "@/fetch/stores";
 import { IStore } from "@/interfaces/api/store";
 import { isMobileOnly  } from "react-device-detect";
+import CachedImage from '@/components/image/cached-image';
 
 export default function PrincipalStores() {
   const { isLoading, data } = useQuery(["GetAllPrincipal"], GetAllPrincipal);
@@ -47,12 +48,15 @@ interface IStoreImage {
 
 function StoreImage(props: IStoreImage) {
   const { className, data } = props;
+  const capa = data?.redeImagem?.find(i => !!i.capa)?.imagem?.fileName;
   return (
     <div
       className={`w-full relative aspect-[4/3] border rounded-md overflow-hidden ${className}`}
     >
-      <img
-        src="https://pmkt.blob.core.windows.net/promarket/Produtos/Principal/bb8b58fe6fcf4ae0bda54b01abdad135__preview.png"
+      <CachedImage
+        src={`${
+            import.meta.env.VITE_STORAGE_IMAGES
+          }/promarket/Imagens/${capa}__preview.webp`}
         alt=" "
         className="w-full h-full top-0 left-0 object-cover"
       />

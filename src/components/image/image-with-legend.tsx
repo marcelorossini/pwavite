@@ -3,11 +3,13 @@ import CachedImage from "@/components/image/cached-image";
 export default function ImageWithLegend({
   src,
   legend,
-  onClick
+  onClick,
+  loading
 }: {
   src: string;
   legend?: string;
   onClick?: () => void;
+  loading?: string;
 }) {
   return (
     <div className="w-full aspect-[4/3] relative overflow-hidden" onClick={onClick}>
@@ -15,7 +17,7 @@ export default function ImageWithLegend({
         src={src}
         alt=""
         className="w-full h-full object-cover"
-        loading="eager"
+        loading={loading || "eager"}
       />
 
       <p className="absolute bottom-0 left-0 px-4 py-2 text-white text-shadow-lg font-medium">

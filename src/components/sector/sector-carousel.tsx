@@ -57,6 +57,7 @@ export default function SectorCarousel(props: ISectorCarousel) {
               src={data.thumbnailSrc}
               legend={data.legend}
               onClick={onClick}
+              loading="lazy"
             />
           </>
         );

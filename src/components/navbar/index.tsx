@@ -1,7 +1,5 @@
 import React from "react";
-import Separator from "../separator";
 
-import { IoSearchOutline } from "react-icons/io5";
 import Logo from "@/assets/logo-promarket-azul.svg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppStore } from "@/stores/app";
@@ -9,7 +7,7 @@ import { SearchBox, SearchBoxButton } from "../search-portal";
 import LinkIcons from "../link-icons";
 import { isMobileOnly } from "react-device-detect";
 import CachedImage from "@/components/image/cached-image";
-import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi2";
+import { HiOutlineChevronLeft } from "react-icons/hi2";
 
 import {
   HiOutlineHeart,
@@ -21,7 +19,7 @@ import {
 } from "react-icons/hi2";
 
 export default function Navbar() {
-  const { setSearchPortalOpened: setSearchOpened, isOnline } = useAppStore();
+  const { isOnline } = useAppStore();
   const size = getSizeClassName();
   const location = useLocation();
   const pathname = location.pathname;
@@ -46,7 +44,7 @@ export default function Navbar() {
             </div>
           ) : (
             <Link to="/">
-              <img
+              <CachedImage
                 src={Logo}
                 alt=" "
                 className="w-full h-full top-0 left-0 object-contain"
@@ -54,7 +52,6 @@ export default function Navbar() {
             </Link>
           )}
         </div>
-        <Separator direction="col" padding="py-5" />
         <div className="flex flex-col">
           <strong className="text-blue-700 p-0 whitespace-nowrap">
             CATÁLOGO DIGITAL

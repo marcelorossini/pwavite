@@ -152,6 +152,7 @@ export function DropdownProduct({
           <strong className="text-center md:text-left md:w-72">
             {product.codigo}
           </strong>
+          <span className="text-center text-sm md:hidden">ACESSAR</span>
           <p className="text-sm">{product.descricao?.toUpperCase()}</p>
         </>
       )}
