@@ -42,6 +42,7 @@ export default function BottomBar() {
         iconActive={<HiBriefcase size={25} />}
         title="Lista"
         direction={'col'}
+        mark={true}
       />
       <LinkIcons
         route="/galeria"

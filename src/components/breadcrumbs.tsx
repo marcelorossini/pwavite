@@ -7,7 +7,7 @@ const items = [
   { title: "FLORES E JARDINAGEM", href: "#" },
   { title: "EXP90118", href: "#" },
 ].map((item, index) => (
-  <Link className="text-xs" to={item.href} key={index}>
+  <Link className="text-xs hover:bg-slate-200 p-2 rounded-md" to={item.href} key={index}>
     {item.title}
   </Link>
 ));
@@ -22,7 +22,7 @@ export default function BreadcrumbsComponent() {
       </div>
       <div className="h-8 flex-1 overflow-hidden flex justify-start relative">
         <div className="w-fit h-full overflow-hidden flex items-center rounded-md ">
-          <Breadcrumbs separator={<HiOutlineChevronRight size={20} />}>
+          <Breadcrumbs separator={<HiOutlineChevronRight size={20}/> } separatorMargin={0}>
             {items}
           </Breadcrumbs>
         </div>

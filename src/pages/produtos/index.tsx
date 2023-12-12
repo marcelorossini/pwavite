@@ -11,6 +11,7 @@ import Layout from "@/components/layout";
 import Lightbox from "@/components/lightbox";
 import { InputComponent } from "@/components/forms";
 import { modals } from "@mantine/modals";
+import { notifications } from '@mantine/notifications';
 
 import { get } from "@/fetch/products";
 import { getByProductId as getFinishingByProductId } from "@/fetch/finishing";
@@ -23,6 +24,7 @@ import { IDimension } from "@/interfaces/api/dimension";
 import { IImage } from "@/interfaces/api/image";
 
 import Breadcrumbs from '@/components/breadcrumbs'
+import { IoInformationOutline } from "react-icons/io5";
 
 
 interface IProdutoProps {}
@@ -55,11 +57,18 @@ export default function Produto(props: IProdutoProps) {
   const storeImages = productImages//.filter((image) => !image.padrao);
 
   const handleAddList = () => {
+    notifications.show({
+      //title: 'Default notification',
+      message: 'Item adicionado a lista',
+      icon: <IoInformationOutline />
+    })
+    /*
     modals.openConfirmModal({
       title: "Confirma a adição a lista?",
       labels: { confirm: "Confirmar", cancel: "Cancelar" },
       onConfirm: () => {},
     });
+    */
   };
 
   return (
@@ -238,7 +247,7 @@ function StoreImages(props: IOtherImagesProps) {
   const { setLightboxOpen, filename, slideIndex, setLightboxSlide } = props;
   return (
     <div
-      className="w-[calc(25%-.75rem)] mr-4 shrink-0"
+      className="w-[calc(25%-.75rem)] mr-4 shrink-0 cursor-pointer"
       onClick={() => setLightboxOpen(true)}
     >
       <div className="relative aspect-square border rounded-md overflow-hidden">
