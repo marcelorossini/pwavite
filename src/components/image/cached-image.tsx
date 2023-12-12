@@ -49,7 +49,7 @@ export default function CachedImage(props: any) {
 */
   // Default
   return (
-    <div>
+    <div className={`${classNameProps} relative`}>
       <img
         {...props}
         className={`${classNameProps}`}
@@ -59,7 +59,7 @@ export default function CachedImage(props: any) {
         onLoad={() => setIsLoading(oldState => false)}
         draggable={false}
       />
-      <div className={`${isLoading ? 'flex bg-slate-100': 'hidden'} absolute top-0 left-0 w-full h-full  items-center justify-center`}>
+      <div className={`transition-all opacity-0 ${isLoading ? 'flex bg-slate-100 opacity-100': 'hidden'} absolute top-0 left-0 w-full h-full  items-center justify-center`}>
         <img src={Loading} className="w-7 select-none pointer-events-none" draggable={false} />
       </div>
     </div>
