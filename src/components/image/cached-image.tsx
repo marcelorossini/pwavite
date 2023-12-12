@@ -63,7 +63,7 @@ export default function CachedImage(props: any) {
       />
       <WrapperIcon
         imageState={imageState as ImageState}
-        condition={undefined as ImageState}
+        condition={undefined}
       >
         <ImSpinner8 className="animate-spin text-orange-600" />
       </WrapperIcon>
@@ -83,7 +83,7 @@ function WrapperIcon({
   children,
 }: {
   imageState: ImageState;
-  condition: ImageState;
+  condition?: ImageState;
   children: React.ReactNode;
 }) {
   return (
