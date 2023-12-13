@@ -30,7 +30,7 @@ export default function OnClickOutside(props: {
     };
   }, [childrenRef]);
 
-  if (isMobileOnly) return children
+  if (isMobileOnly) return <>{children}</>
 
   return <>{childrenClone}</>;
 }
