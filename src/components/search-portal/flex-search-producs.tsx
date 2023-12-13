@@ -87,9 +87,9 @@ export function FlexSearchProductsAux(props: IFlexSearchProductsAuxProps) {
   return (
     <div>
       {results.length > 0 ? (
-        <ul className="flex flex-col gap-4 divide-y">
+        <ul className="flex flex-col divide-y">
           {results.map((result) => (
-            <li className="title pt-4 first:pt-0" key={result.id}>
+            <li className="title py-2 first:pt-0 transition-all hover:bg-slate-100" key={result.id}>
               <ProductItem data={result} />
             </li>
           ))}

@@ -1,4 +1,5 @@
 import React from "react";
+import { isMobileOnly } from "react-device-detect";
 
 export default function OnClickOutside(props: {
   children: React.ReactNode;
@@ -28,6 +29,8 @@ export default function OnClickOutside(props: {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [childrenRef]);
+
+  if (isMobileOnly) return children
 
   return <>{childrenClone}</>;
 }
