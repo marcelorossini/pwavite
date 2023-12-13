@@ -25,7 +25,7 @@ export default function ImageWithLegend({
         loading={loading || "eager"}
       />
 
-      <p className="absolute bottom-0 left-0 px-4 py-2 text-white text-shadow-lg font-medium">
+      <p className="absolute bottom-0 left-0 px-4 py-2 text-white font-medium">
         <span className="relative z-[1]">{legend}</span>
         {!!legend ? (
           <div className="absolute z-0 top-0 left-0 w-full h-full bg-black blur-xl opacity-30">

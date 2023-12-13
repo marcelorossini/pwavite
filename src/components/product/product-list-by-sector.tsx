@@ -21,5 +21,5 @@ export default function ProductListBySector(props: IProductListBySectorProps) {
 
   const data = queryData?.data as IProduct[];
 
-  return <ProductList data={data} queryParams={{ setor: sectorId }} />;
+  return <ProductList data={data} />;
 }

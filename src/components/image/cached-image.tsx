@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { getStoreDataByKey, Stores, IStoreImages } from "@/utils/db";
 import { CiImageOff } from "react-icons/ci";
 import { useAppStore } from "@/stores/app";
@@ -61,10 +61,7 @@ export default function CachedImage(props: any) {
         onAbort={() => setImageState((oldState) => ImageState.Error)}
         draggable={false}
       />
-      <WrapperIcon
-        imageState={imageState as ImageState}
-        condition={undefined}
-      >
+      <WrapperIcon imageState={imageState as ImageState} condition={undefined}>
         <ImSpinner8 className="animate-spin text-orange-600" />
       </WrapperIcon>
       <WrapperIcon
@@ -86,11 +83,19 @@ function WrapperIcon({
   condition?: ImageState;
   children: React.ReactNode;
 }) {
+  const [started, setStarted] = React.useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setStarted((oldState) => true);
+    }, 500);
+  }, []);
+
+  if (imageState != condition) return <></>;
+
   return (
     <div
-      className={`transition-all opacity-0 ${
-        imageState == condition ? "flex border border-slate-100 opacity-100" : "hidden"
-      } absolute top-0 left-0 w-full h-full  items-center justify-center`}
+      className={`flex border border-slate-100 absolute top-0 left-0 w-full h-full items-center justify-center`}
     >
       {children}
     </div>

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 interface IBreadcrumb {
   title: string;
-  href: string;
+  href?: string;
 }
 interface IBreadcrumbsComponent {
   items: IBreadcrumb[];
@@ -13,17 +13,19 @@ interface IBreadcrumbsComponent {
 export default function BreadcrumbsComponent(props: IBreadcrumbsComponent) {
   const { items = [] } = props;
   const itemsMapped = items.map((item, index) => (
-    <Link
-      className="text-xs px-1 first:pl-0 rounded-md"
-      to={item.href}
-      key={index}
-    >
-      {item.title}
-    </Link>
+    <div className="text-xs px-1 first:pl-0 rounded-md">
+      {!!item?.href ? (
+        <Link to={item?.href} key={index}>
+          {item.title?.toUpperCase()}
+        </Link>
+      ) : (
+        item.title?.toUpperCase()
+      )}
+    </div>
   ));
   return (
     <div className="w-full flex pb-4 gap-2">
-      <div className="w-3 bg-blue-500 rounded-sm" />
+      <div className="w-1 bg-orange-500 rounded-sm" />
       <div className="flex-1 overflow-hidden flex justify-start relative">
         <div className="w-fit h-full overflow-hidden flex items-center rounded-md ">
           <Breadcrumbs

@@ -72,141 +72,145 @@ export default function Produto(props: IProdutoProps) {
 
   return (
     <Layout>
-      <Breadcrumbs
-        items={[
-          { title: "HOME", href: "/" },
-          { title: product.codigo, href: "#" },
-        ]}
-      />
-
       {isLoadingProduct ? (
         "Carregando..."
       ) : (
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col">
-            <strong>{product.nome?.toUpperCase()}</strong>
-            <small>{product.codigo}</small>
-          </div>
-          {/*IMAGENS*/}
-          <div className="grid grid-cols-1 md:grid-cols-[400px_auto_400px] grid-rows-[auto_auto] gap-6">
-            <div className="grid grid-cols-4 gap-x-4 md:row-span-2">
-              {/*PRINCIPAL*/}
-              <div
-                className={`col-span-${
-                  otherImages.length > 0 ? "3" : "4"
-                } pb-4`}
-              >
-                <div className={`relative overflow-hidden aspect-[4/3]`}>
-                  {!!product ? (
-                    <>
-                      <CachedImage
-                        src={`${
-                          import.meta.env.VITE_STORAGE_IMAGES
-                        }/promarket/Produtos/Variacoes/${
-                          product.imagemVariacaoPrincipal
-                        }_.webp`}
-                        alt=" "
-                        className="w-full h-full top-0 left-0 object-contain"
-                        onClick={() => setLightboxMainOpen(true)}
-                      />
-                      <Lightbox
-                        isOpen={lightboxMainOpen}
-                        onClose={() => setLightboxMainOpen(false)}
-                        images={[
-                          {
-                            title: product.codigo,
-                            description: product.nome?.toUpperCase(),
+        <>
+          <Breadcrumbs
+            items={[
+              { title: "HOME", href: "/" },
+              {
+                title: product.setor.nome,
+                href: `/setores/${product.setorId}`,
+              },
+              { title: product.codigo },
+            ]}
+          />
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col">
+              <strong>{product.nome?.toUpperCase()}</strong>
+              <small>{product.codigo}</small>
+            </div>
+            {/*IMAGENS*/}
+            <div className="grid grid-cols-1 md:grid-cols-[400px_auto_400px] grid-rows-[auto_auto] gap-6">
+              <div className="grid grid-cols-4 gap-x-4 md:row-span-2">
+                {/*PRINCIPAL*/}
+                <div
+                  className={`col-span-${
+                    otherImages.length > 0 ? "3" : "4"
+                  } pb-4`}
+                >
+                  <div className={`relative overflow-hidden aspect-[4/3]`}>
+                    {!!product ? (
+                      <>
+                        <CachedImage
+                          src={`${
+                            import.meta.env.VITE_STORAGE_IMAGES
+                          }/promarket/Produtos/Variacoes/${
+                            product.imagemVariacaoPrincipal
+                          }_.webp`}
+                          alt=" "
+                          className="w-full h-full top-0 left-0 object-contain"
+                          onClick={() => setLightboxMainOpen(true)}
+                        />
+                        <Lightbox
+                          isOpen={lightboxMainOpen}
+                          onClose={() => setLightboxMainOpen(false)}
+                          images={[
+                            {
+                              title: product.codigo,
+                              description: product.nome?.toUpperCase(),
+                              src: `${
+                                import.meta.env.VITE_STORAGE_IMAGES
+                              }/promarket/Produtos/Variacoes/${
+                                product.imagemVariacaoPrincipal
+                              }_.webp`,
+                            },
+                          ]}
+                        />
+                      </>
+                    ) : null}
+                  </div>
+                </div>
+                {/*VARIACOES*/}
+                <div className="relative overflow-auto">
+                  <div className="flex gap-4 flex-col absolute top-0 left-0 w-full">
+                    {isLoadingProductImages ? (
+                      <></>
+                    ) : (
+                      <>
+                        {otherImages.map((image) => (
+                          <OtherImages
+                            key={image.fileName}
+                            filename={image.fileName}
+                            setLightboxOpen={() => {}}
+                            setLightboxSlide={() => {}}
+                            slideIndex={0}
+                          />
+                        ))}
+                      </>
+                    )}
+                  </div>
+                </div>
+                {/*LOJAS*/}
+                <div className="col-span-4 w-full overflow-auto">
+                  <div className="flex flex-nowrap">
+                    {isLoadingProductImages ? (
+                      "carregando"
+                    ) : (
+                      <>
+                        {storeImages.map((image, index) => (
+                          <StoreImages
+                            key={image.fileName}
+                            filename={image.fileName}
+                            setLightboxOpen={setLightboxStoreOpen}
+                            setLightboxSlide={setLightboxStoreSlide}
+                            slideIndex={index}
+                          />
+                        ))}
+                        <Lightbox
+                          isOpen={lightboxStoreOpen}
+                          onClose={() => setLightboxStoreOpen(false)}
+                          index={lightboxStoreSlide}
+                          images={storeImages.map((image) => ({
+                            title: null,
+                            description: null,
                             src: `${
                               import.meta.env.VITE_STORAGE_IMAGES
-                            }/promarket/Produtos/Variacoes/${
-                              product.imagemVariacaoPrincipal
+                            }/promarket/Produtos/Principal/${
+                              image.fileName
                             }_.webp`,
-                          },
-                        ]}
-                      />
-                    </>
-                  ) : null}
-                </div>
-              </div>
-              {/*VARIACOES*/}
-              <div className="relative overflow-auto">
-                <div className="flex gap-4 flex-col absolute top-0 left-0 w-full">
-                  {isLoadingProductImages ? (
-                    <></>
-                  ) : (
-                    <>
-                      {otherImages.map((image) => (
-                        <OtherImages
-                          key={image.fileName}
-                          filename={image.fileName}
-                          setLightboxOpen={() => {}}
-                          setLightboxSlide={() => {}}
-                          slideIndex={0}
+                          }))}
                         />
-                      ))}
-                    </>
-                  )}
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
-              {/*LOJAS*/}
-              <div className="col-span-4 w-full overflow-auto">
-                <div className="flex flex-nowrap">
-                  {isLoadingProductImages ? (
-                    "carregando"
-                  ) : (
-                    <>
-                      {storeImages.map((image, index) => (
-                        <StoreImages
-                          key={image.fileName}
-                          filename={image.fileName}
-                          setLightboxOpen={setLightboxStoreOpen}
-                          setLightboxSlide={setLightboxStoreSlide}
-                          slideIndex={index}
-                        />
-                      ))}
-                      <Lightbox
-                        isOpen={lightboxStoreOpen}
-                        onClose={() => setLightboxStoreOpen(false)}
-                        index={lightboxStoreSlide}
-                        images={storeImages.map((image) => ({
-                          title: null,
-                          description: null,
-                          src: `${
-                            import.meta.env.VITE_STORAGE_IMAGES
-                          }/promarket/Produtos/Principal/${
-                            image.fileName
-                          }_.webp`,
-                        }))}
-                      />
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="md:row-span-2"></div>
-            <div className="flex flex-col gap-2">
-              <InputComponent name="Acabamentos">
-                <FinishGroup
-                  productId={product.id}
-                  selectedFinishing={selectedFinishing}
-                  setSelectedFinishing={(id) => setSelectedFinishing(id)}
-                />
-              </InputComponent>
-              <InputComponent name="Dimensões (m)">
-                <DimensionsGroup productId={product.id} />
-              </InputComponent>
-              {!!product?.diferenciais ? (
-                <InputComponent name="Diferenciais">
-                  <p
-                    dangerouslySetInnerHTML={{
-                      __html: product?.diferenciais || "",
-                    }}
-                  ></p>
+              <div className="md:row-span-2"></div>
+              <div className="flex flex-col gap-2">
+                <InputComponent name="Acabamentos">
+                  <FinishGroup
+                    productId={product.id}
+                    selectedFinishing={selectedFinishing}
+                    setSelectedFinishing={(id) => setSelectedFinishing(id)}
+                  />
                 </InputComponent>
-              ) : (
-                <></>
-              )}
-              {/*            
+                <InputComponent name="Dimensões (m)">
+                  <DimensionsGroup productId={product.id} />
+                </InputComponent>
+                {!!product?.diferenciais ? (
+                  <InputComponent name="Diferenciais">
+                    <p
+                      dangerouslySetInnerHTML={{
+                        __html: product?.diferenciais || "",
+                      }}
+                    ></p>
+                  </InputComponent>
+                ) : (
+                  <></>
+                )}
+                {/*            
             <Box name="Especificações">
               <p>
                 Lorem opsumLorem opsumLorem opsumLorem opsum opsumLore Lorem
@@ -214,26 +218,27 @@ export default function Produto(props: IProdutoProps) {
               </p>
             </Box>          
               */}
+              </div>
+              <div className="w-full flex items-end">
+                <button
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md"
+                  onClick={handleAddList}
+                >
+                  Adicionar à lista
+                </button>
+              </div>
             </div>
-            <div className="w-full flex items-end">
-              <button
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md"
-                onClick={handleAddList}
-              >
-                Adicionar à lista
-              </button>
-            </div>
+
+            <hr />
+
+            {!!product.setorId ? (
+              <>
+                <SectorHeader id={product.setorId} />
+                <ProductListBySector sectorId={product.setorId} />
+              </>
+            ) : null}
           </div>
-
-          <hr />
-
-          {!!setor ? (
-            <>
-              <SectorHeader id={setor as string} />
-              <ProductListBySector sectorId={setor as string} />
-            </>
-          ) : null}
-        </div>
+        </>
       )}
     </Layout>
   );
