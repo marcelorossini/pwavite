@@ -1,4 +1,5 @@
 import CachedImage from "@/components/image/cached-image";
+import { MdFullscreen } from "react-icons/md";
 
 export default function ImageWithLegend({
   src,
@@ -33,6 +34,9 @@ export default function ImageWithLegend({
           </div>
         ) : null}
       </p>
+      <div className="absolute top-0 right-0 text-white p-1 cursor-pointer">
+        <MdFullscreen size={25}/>
+      </div>
     </div>
   );
 }

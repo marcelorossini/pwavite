@@ -37,6 +37,7 @@ export default function LightboxComponent(props: ILightboxProps) {
       render={{
         buttonPrev: () => null,
         buttonNext: () => null,
+        buttonZoom: () => null,
       }}
     />
   );
