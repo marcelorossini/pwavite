@@ -99,7 +99,7 @@ export function DotClickArea(props: {
       clearTimeout(oTimerPopover);
       oTimerPopover = setTimeout(() => {
         close();
-      }, 2000);
+      }, 3000);
     } else {
       goToProductPage();
     }
@@ -127,7 +127,7 @@ export function DropdownProduct({
     async () => get(id as string)
   );
   const product = dataProduct?.data || ({} as IProduct);
-
+    console.log(id,product)
   return (
     <div
       className="grid grid-cols-1 md:grid-cols-[auto_auto] p-4 gap-2 cursor-pointer"
@@ -136,8 +136,8 @@ export function DropdownProduct({
       {isLoadingProduct ? (
         "Carregando"
       ) : (
-        <>
-          <div className="w-[36vw] md:w-32 row-span-2 aspect-[4/3]">
+        <>        
+          <div className="w-[50vw] md:w-32 row-span-2 aspect-[4/3]">
             <CachedImage
               src={`${
                 import.meta.env.VITE_STORAGE_IMAGES
@@ -146,14 +146,14 @@ export function DropdownProduct({
               }__preview.webp`}
               alt=""
               loading="lazy"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
             />
           </div>
           <strong className="text-center md:text-left md:w-72">
-            {product.codigo}
+            {product.codigo}            
           </strong>
           <span className="text-center text-sm md:hidden">ACESSAR</span>
-          <p className="text-sm">{product.descricao?.toUpperCase()}</p>
+          <p className="text-sm w-[50vw] md:w-64">{product.nome?.toUpperCase()}</p>
         </>
       )}
     </div>

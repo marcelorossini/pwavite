@@ -56,18 +56,17 @@ export default function Produto(props: IProdutoProps) {
   const storeImages = productImages; //.filter((image) => !image.padrao);
 
   const handleAddList = () => {
-    notifications.show({
-      //title: 'Default notification',
-      message: "Item adicionado a lista",
-      icon: <IoInformationOutline />,
-    });
-    /*
     modals.openConfirmModal({
       title: "Confirma a adição a lista?",
       labels: { confirm: "Confirmar", cancel: "Cancelar" },
-      onConfirm: () => {},
+      onConfirm: () => {
+        notifications.show({
+          //title: 'Default notification',
+          message: "Item adicionado a lista",
+          icon: <IoInformationOutline />,
+        });
+      },
     });
-    */
   };
 
   return (
@@ -175,11 +174,7 @@ export default function Produto(props: IProdutoProps) {
                           images={storeImages.map((image) => ({
                             title: null,
                             description: null,
-                            src: `${
-                              import.meta.env.VITE_STORAGE_IMAGES
-                            }/promarket/Produtos/Principal/${
-                              image.fileName
-                            }_.webp`,
+                            src: generateStoreUrl(image.fileName),
                           }))}
                         />
                       </>
@@ -258,9 +253,7 @@ function StoreImages(props: IOtherImagesProps) {
     >
       <div className="relative aspect-square border rounded-md overflow-hidden">
         <CachedImage
-          src={`${
-            import.meta.env.VITE_STORAGE_IMAGES
-          }/promarket/Produtos/Principal/${props.filename}__small.webp`}
+          src={generateStoreUrl(props.filename, true)}
           alt=" "
           className="w-full h-full top-0 left-0 object-cover"
           onClick={() => {
@@ -399,4 +392,10 @@ function FinishImages(props: IFinishImagesProps) {
       </div>
     </div>
   );
+}
+
+function generateStoreUrl(filename: string, small: boolean = false) {
+  return `${
+    import.meta.env.VITE_STORAGE_IMAGES
+  }/promarket/Imagens/${filename}_${small ? '_small' : ''}.webp`;
 }

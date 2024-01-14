@@ -3,7 +3,7 @@ import { IImage } from "@/interfaces/api/image";
 
 export async function get(id: string) {
   return await fetchWrapper<IImage[]>(
-    `/api/ProdutosImagensPrincipais/GetAllForGrid?Produto=${id}`,
+    `/api/Imagem/GetByProduto?product=${id}`,
     {
       formatToStore(data) {
         return data.map((item) => {
@@ -20,7 +20,7 @@ export async function get(id: string) {
 
 export async function getVariable(id: string) {
   return await fetchWrapper<IImage[]>(
-    `/api/ProdutosVariacoes/GetAllForGrid?Produto=${id}`,
+    `/api/Imagem/GetByProduto?Produto=${id}`,
     {
       formatToStore(data) {
         return data.map((item) => {

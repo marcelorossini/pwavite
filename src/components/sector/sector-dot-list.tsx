@@ -27,13 +27,12 @@ export default function SectorDotList(props: ISectorDotList) {
   //pathname.includes(url)
 
   const activeSector =
-    sectors
-      .map((item, index) => ({ id: item.id, index }))
+    sectors?.map((item, index) => ({ id: item.id, index }))
       .filter((item) => pathname.includes(item.id))[0] || {};
 
   return (
     <SectorDotDesktop
-      items={sectors.map((sector, index) => (
+      items={sectors?.map((sector, index) => (
         <Item
           key={sector.id}
           name={sector.nome}

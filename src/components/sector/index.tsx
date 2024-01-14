@@ -40,19 +40,19 @@ export default function Sector(props: ISectorProps) {
       <div className="w-full h-fit">
         <SectorCarousel
           className={className}
-          images={sectorImages.map((image) => ({
+          images={sectorImages?.map((image) => ({
             legend: image.legenda,
             thumbnailSrc: `${
               import.meta.env.VITE_STORAGE_IMAGES
-            }/promarket/Setores/Principal/${image.fileName}__preview.webp`,
+            }/promarket/Imagens/${image.fileName}__preview.webp`,
             src: `${
               import.meta.env.VITE_STORAGE_IMAGES
-            }/promarket/Setores/Principal/${image.fileName}_.webp`,
-            markers: image.produtos.map((i) => ({
+            }/promarket/Imagens/${image.fileName}_.webp`,
+            markers: image?.produtos?.map((i) => ({
               x: i.x,
               y: i.y,
               placeholder: i.produto.codigo,
-              productId: i.produtoId,
+              productId: i.produto.id,
             })),
           }))}
         />

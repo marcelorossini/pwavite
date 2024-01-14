@@ -39,7 +39,7 @@ export default function SectorImages(props: { id: string }) {
             legend={image.legenda}
             src={`${
               import.meta.env.VITE_STORAGE_IMAGES
-            }/promarket/Setores/Principal/${image.fileName}_.webp`}
+            }/promarket/Imagens/${image.fileName}_.webp`}
             onClick={() => {
               setLightboxCarouselSlide(index);
               setLightboxCarouselOpen(true);
@@ -57,7 +57,7 @@ export default function SectorImages(props: { id: string }) {
           description: image.legenda,
           src: `${
             import.meta.env.VITE_STORAGE_IMAGES
-          }/promarket/Setores/Principal/${image.fileName}_.webp`,
+          }/promarket/Imagens/${image.fileName}_.webp`,
         }))}
       />
     </div>

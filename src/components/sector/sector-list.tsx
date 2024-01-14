@@ -17,7 +17,7 @@ export default function SectorList(props: ISectorList) {
 
   return (
     <>
-      {data?.data.map((sector: any) => (
+      {data?.data?.map((sector: any) => (
         <Sector
           key={sector.id}
           id={sector.id}

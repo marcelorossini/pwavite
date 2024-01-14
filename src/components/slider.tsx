@@ -74,7 +74,7 @@ export default function Slider(props: ISlider) {
         >
           {
             // @ts-ignore
-            data.map((image, index) => (
+            data?.map((image, index) => (
               <SwiperSlide key={index}>
                 {imageComponent({
                   data: image,
@@ -95,7 +95,7 @@ export default function Slider(props: ISlider) {
           index={lightboxCarouselSlide}
           images={
             // @ts-ignore
-            data.map((image) => ({
+            data?.map((image) => ({
               title: null,
               description: image?.legend,
               src: image?.src,

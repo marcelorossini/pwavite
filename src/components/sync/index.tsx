@@ -111,14 +111,14 @@ export async function generateProductImageCache(id: string) {
   await Promise.allSettled([
     ...productsImages.data.map((product) =>
       imageToCache(
-        `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Produtos/Principal/${
+        `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Imagens/${
           product.fileName
         }_.webp`
       )
     ),
     ...productsImages.data.map((product) =>
       imageToCache(
-        `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Produtos/Principal/${
+        `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Imagens/${
           product.fileName
         }__small.webp`
       )
@@ -130,14 +130,14 @@ export async function generateProductImageCache(id: string) {
   await Promise.allSettled([
     ...productsImagesVariable.data.map((product) =>
       imageToCache(
-        `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Produtos/Variacoes/${
+        `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Imagens/${
           product.fileName
         }_.webp`
       )
     ),
     ...productsImagesVariable.data.map((product) =>
       imageToCache(
-        `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Produtos/Principal/${
+        `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Imagens/${
           product.fileName
         }__small.webp`
       )
@@ -151,14 +151,14 @@ export async function generateSectorsImageCache(id: string) {
   await Promise.allSettled([
     ...sectorImages.data.map((sectorImage) =>
       imageToCache(
-        `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Setores/Principal/${
+        `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Imagens/${
           sectorImage.fileName
         }__preview.webp`
       )
     ),
     ...sectorImages.data.map((sectorImage) =>
       imageToCache(
-        `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Setores/Principal/${
+        `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Imagens/${
           sectorImage.fileName
         }_.webp`
       )
@@ -172,7 +172,7 @@ export async function generateFinishingImageCache() {
   await Promise.allSettled(
     finishingImages.data.map((finishingImage) =>
       imageToCache(
-        `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Acabamentos/${
+        `${import.meta.env.VITE_STORAGE_IMAGES}/promarket/Imagens/${
           finishingImage.fileName
         }__small.png`
       )

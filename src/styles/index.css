@@ -83,3 +83,39 @@ img {
 .rtl {
   direction: rtl;
 }
+/*
+body[orient="landscape"] {
+  background: red !important;
+}
+
+body { 
+  -webkit-transform: rotate(-90deg);
+  width: 100vh !important; 
+  height: 100vw !important;
+  -webkit-transform-origin: left top !important;
+  overflow: hidden;
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+}
+*/
+/*
+
+body {
+  -webkit-transform: rotate(-90deg) !important;
+  -moz-transform: rotate(-90deg) !important;
+  -ms-transform: rotate(-90deg) !important;
+  -o-transform: rotate(-90deg) !important;
+  transform: rotate(-90deg) !important;
+  -webkit-transform-origin: left top !important;
+  -moz-transform-origin: left top !important;
+  -ms-transform-origin: left top !important;
+  -o-transform-origin: left top !important;
+  transform-origin: left top !important;
+  width: 100vw !important; 
+  height: 100vh !important;
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+}
+*/

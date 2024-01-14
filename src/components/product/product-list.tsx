@@ -45,7 +45,7 @@ export function ProductCard(props: IProductCard) {
             }/promarket/Produtos/Variacoes/${imagemVariacaoPrincipal}__small.webp`}      
             alt=""
             loading="lazy"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain"
           />
         </Link>
       </div>

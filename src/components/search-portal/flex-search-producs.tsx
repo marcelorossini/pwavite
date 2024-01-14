@@ -123,7 +123,7 @@ function ProductItem(props: { data: IProduct }) {
         <CachedImage
           src={`${
             import.meta.env.VITE_STORAGE_IMAGES
-          }/promarket/Produtos/Principal/${data.imagemPrincipal}__small.webp`}
+          }/promarket/Imagens/${data.imagemPrincipal}__small.webp`}
           alt=""
           loading="lazy"
           className="w-full h-full object-contain"
